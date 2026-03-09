@@ -1,2 +1,0 @@
-# algostech
-Trading Algoritham Website
