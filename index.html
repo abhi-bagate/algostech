@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Algostech</title>
+
 <link rel="stylesheet" href="style.css">
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 </head>
 
@@ -19,20 +24,33 @@
 <header class="navbar">
 
 <div class="logo">
-<img src="Images/logo.jpeg" alt="Algostech logo">
+<img src="Images/logo.jpeg">
 <span>Algostech</span>
 </div>
 
+<nav>
+
 <ul class="nav-links">
+
 <li><a href="#">Home</a></li>
 <li><a href="#">About Us</a></li>
 <li><a href="#">Services</a></li>
 <li><a href="#">Pricing</a></li>
 <li><a href="#">Payment</a></li>
 <li><a href="#">Contact Us</a></li>
+
 </ul>
 
+</nav>
+
+<div class="hamburger" id="hamburger">
+<span></span>
+<span></span>
+<span></span>
+</div>
+
 </header>
+
 
 
 <!-- HERO -->
@@ -63,14 +81,17 @@
 <div class="hero-text">
 
 <h1>
+
 AI Powered<br>
 
 <span class="gradient">
-Forex & COMEX   
+Forex & COMEX
 </span>
 
 <br>
+
 Trading Solutions
+
 </h1>
 
 <p>
@@ -132,10 +153,12 @@ View Performance
 
 <div>
 
-<h2 class="about-title">Our Story:</h2>
+<h2 class="about-title">
+Our Story:
+</h2>
 
 <div class="about-image">
-    <img src="images/crypto girl.png" alt="About Image">
+<img src="Images/crypto girl.png">
 </div>
 
 <p class="about-text">
@@ -163,5 +186,21 @@ functionality.
 
 
 
+<script>
+
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.querySelector(".nav-links");
+
+hamburger.addEventListener("click", () => {
+
+navLinks.classList.toggle("active");
+
+});
+
+</script>
+
+
+
 </body>
+
 </html>
