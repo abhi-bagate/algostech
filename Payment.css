@@ -1,9 +1,15 @@
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: #050517;
   color: white;
   text-align: center;
+  overflow-x: hidden;
 }
 
 /* NAV */
@@ -88,4 +94,37 @@ button {
   border: none;
   background: #aaa;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+
+  .payment-input h1 {
+    font-size: 32px;
+  }
+
+  .payment-qr h1 {
+    font-size: 36px;
+  }
+
+  .wallet-box {
+    width: 90%;
+  }
+
+  .qr {
+    width: 150px;
+  }
+
+  .payment-box {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .payment-box input {
+    width: 90%;
+  }
+
+  .payment-box button {
+    width: 90%;
+    margin-top: 10px;
+  }
 }

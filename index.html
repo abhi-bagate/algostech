@@ -27,7 +27,15 @@
     <li onclick="scrollToSection('payment')">Payment</li>
     <li onclick="scrollToSection('contact')">Contact</li>
     <li><button class="nav-btn">Login</button></li>
+    <ul id="navLinks"></ul>
   </ul>
+
+  <div class="hamburger" onclick="toggleMenu()">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
 </nav>
 
 <!-- HERO -->
@@ -179,6 +187,11 @@ function goToPayment() {
 
   window.location.href = `payment.html?amount=${amount}`;
 }
+
+function toggleMenu() {
+  document.getElementById("navLinks").classList.toggle("active");
+} 
+
 </script>
 
 </body>
