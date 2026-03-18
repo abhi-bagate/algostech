@@ -12,46 +12,66 @@
 <!-- NAV -->
 <nav>
   <h2>Algostech</h2>
-  <button onclick="goBack()">← Back</button>
+  <ul>
+    <li onclick="showInput()">Payment</li>
+  </ul>
+  
+  <div class="hamburger" onclick="toggleMenu()">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
 </nav>
-
-<!-- STEP 1 -->
+<div class="hamburger" onclick="toggleMenu()">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<!-- ================= STEP 1 (IMAGE 1) ================= -->
 <section class="payment-input" id="inputSection">
+
   <h1>Make a Crypto Payment</h1>
-  <p>Secure payment via USDT</p>
+  <p>Secure payment via USDT or Crypto Wallet</p>
 
   <div class="payment-box">
     <input type="number" id="amount" placeholder="Enter Amount (USD)">
-    <button onclick="showQR()">Continue</button>
+    <button onclick="showQR()">Pay with Crypto</button>
   </div>
+
 </section>
 
-<!-- STEP 2 -->
+
+<!-- ================= STEP 2 (IMAGE 2) ================= -->
 <section class="payment-qr hidden" id="qrSection">
-  <h1>Complete Payment</h1>
-  <h2 id="amountText"></h2>
+
+  <h1>Crypto Payment</h1>
+  <h2 id="amountText">Pay $0 in USDT</h2>
 
   <div class="wallet-box">
     <h3>USDT - ERC20</h3>
     <img src="Images/qr1.png" class="qr">
-    <p id="walletAddress">0x4be19a1a2ecb95cf7561815a0bdc3bc943c1712b</p>
-    <button onclick="copyAddress()">Copy Address</button>
+    <p class="wallet">0x4be19a1a2ecb95cf7561815a0bdc3bc943c1712b</p>
+    <button onclick="copyAddress()">Copy Wallet Address</button>
   </div>
 
-  <button class="back-btn" onclick="goBackToInput()">Change Amount</button>
+  <div class="wallet-box">
+    <h3>USDT - BEP20</h3>
+    <img src="Images/qr2.png" class="qr">
+    <p class="wallet">0xYourBEP20Address</p>
+  </div>
+
 </section>
 
 <script>
-
-// AUTO-FILL AMOUNT FROM URL
+  // GET AMOUNT FROM URL
 const params = new URLSearchParams(window.location.search);
-const urlAmount = params.get("amount");
+const amount = params.get("amount");
 
-if (urlAmount) {
-  document.getElementById("amount").value = urlAmount;
+if (amount) {
+  document.getElementById("amount").value = amount;
 }
 
-// SHOW QR
+// SHOW QR SECTION
 function showQR() {
   const amount = document.getElementById("amount").value;
 
@@ -66,22 +86,17 @@ function showQR() {
   document.getElementById("qrSection").classList.remove("hidden");
 }
 
-// BACK TO INPUT
-function goBackToInput() {
+// NAV CLICK → BACK TO INPUT
+function showInput() {
   document.getElementById("qrSection").classList.add("hidden");
   document.getElementById("inputSection").classList.remove("hidden");
 }
 
-// COPY
+// COPY FUNCTION
 function copyAddress() {
-  const address = document.getElementById("walletAddress").innerText;
+  const address = document.querySelector(".wallet").innerText;
   navigator.clipboard.writeText(address);
   alert("Copied!");
-}
-
-// BACK TO HOME
-function goBack() {
-  window.history.back();
 }
 
 </script>
