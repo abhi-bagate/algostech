@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #050517;
+  color: white;
+  text-align: center;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 8%;
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav li {
+  cursor: pointer;
+}
+
+/* COMMON */
+.hidden {
+  display: none;
+}
+
+/* ================= STEP 1 ================= */
+.payment-input {
+  padding: 120px 8%;
+}
+
+.payment-input h1 {
+  font-size: 60px;
+}
+
+.payment-box {
+  display: inline-flex;
+  border: 1px solid #444;
+  margin-top: 20px;
+}
+
+.payment-box input {
+  padding: 15px 20px;
+  width: 300px;
+  background: transparent;
+  border: none;
+  color: white;
+}
+
+.payment-box button {
+  padding: 15px 25px;
+  background: #aaa;
+  border: none;
+  cursor: pointer;
+}
+
+/* ================= STEP 2 ================= */
+.payment-qr {
+  padding: 100px 8%;
+}
+
+.payment-qr h1 {
+  font-size: 70px;
+}
+
+.wallet-box {
+  margin: 30px auto;
+  padding: 25px;
+  width: 320px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+}
+
+.qr {
+  width: 200px;
+  margin: 20px 0;
+}
+
+.wallet {
+  font-size: 14px;
+  word-break: break-all;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background: #aaa;
+  cursor: pointer;
+}
