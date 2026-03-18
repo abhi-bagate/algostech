@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Algostech</title>
 
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -15,35 +13,30 @@
 <!-- NAVBAR -->
 <nav>
   <h2 class="logo">
-    <img src="Images/logo.png" alt="logo" class="logo-img">
+    <img src="Images/logo.png" class="logo-img">
     Algostech
   </h2>
 
-  <ul>
+  <ul id="navLinks">
     <li onclick="scrollToSection('hero')">Home</li>
     <li onclick="scrollToSection('services')">Services</li>
     <li onclick="scrollToSection('about')">About</li>
-    <li onclick="scrollToSection('pricing')">Pricing</li>
     <li onclick="scrollToSection('payment')">Payment</li>
-    <li onclick="scrollToSection('contact')">Contact</li>
     <li><button class="nav-btn">Login</button></li>
-    <ul id="navLinks"></ul>
   </ul>
 
   <div class="hamburger" onclick="toggleMenu()">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
-
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="hero">
-
   <div class="hero-left">
     <h1>AI Powered <span>Forex Trading</span></h1>
-    <p>Trade smarter with automation, precision, and cutting-edge AI strategies.</p>
+    <p>Trade smarter with automation & AI strategies.</p>
 
     <div class="hero-buttons">
       <button class="btn primary">Get Started</button>
@@ -51,33 +44,9 @@
     </div>
   </div>
 
-  <!-- RIGHT VISUAL -->
   <div class="hero-right">
-
-    <div class="hero-bg"></div>
-
-    <img src="Images/robot2.png" class="robot-img" alt="robot">
-
-    <!-- TOP CARD -->
-    <div class="floating-card top-card">
-      <div class="icon"></div>
-      <div>
-        <span>Current Bid</span>
-        <h3>2.26 ETH</h3>
-      </div>
-    </div>
-
-    <!-- BOTTOM CARD -->
-    <div class="floating-card bottom-card">
-      <div class="profile-img"></div>
-      <div>
-        <h3>Algostech</h3>
-        <p>@Algostech</p>
-      </div>
-    </div>
-
+    <img src="Images/robot2.png" class="robot-img">
   </div>
-
 </section>
 
 <!-- SERVICES -->
@@ -85,96 +54,34 @@
   <h2>Our Services</h2>
 
   <div class="cards">
-    <div class="card">
-      <h3>Algo Trading</h3>
-      <p>Automated strategies for consistent and scalable profits.</p>
-    </div>
-
-    <div class="card">
-      <h3>AI Signals</h3>
-      <p>Real-time market signals powered by machine learning.</p>
-    </div>
-
-    <div class="card">
-      <h3>Commodities</h3>
-      <p>Advanced trading in Gold, Silver & global commodities.</p>
-    </div>
-
-    <div class="card">
-      <h3>Risk Management</h3>
-      <p>Smart capital protection with optimized drawdown control.</p>
-    </div>
+    <div class="card">Algo Trading</div>
+    <div class="card">AI Signals</div>
+    <div class="card">Commodities</div>
+    <div class="card">Risk Management</div>
   </div>
 </section>
 
 <!-- PAYMENT -->
 <section class="payment-home" id="payment">
   <h1>Make a Crypto Payment</h1>
-  <p>Secure payment via USDT or Crypto Wallet</p>
 
   <div class="payment-box">
-    <input type="number" id="amount" placeholder="Enter Amount (USD)">
-    <button onclick="goToPayment()">Pay with Crypto</button>
+    <input type="number" id="amount" placeholder="Enter Amount">
+    <button onclick="goToPayment()">Pay</button>
   </div>
 </section>
 
-<!-- ABOUT -->
-<section class="ai-section" id="about">
-  <div class="ai-container">
-
-    <div class="ai-visual">
-      <img src="Images/robot.png" class="ai-head">
-
-      <img src="Images/btc.png" class="coin btc">
-      <img src="Images/gold.png" class="coin gold">
-      <img src="Images/dollar.png" class="coin dollar">
-
-      <div class="circle red"></div>
-      <div class="circle orange"></div>
-      <div class="circle yellow"></div>
-    </div>
-
-    <div class="about-right">
-      <span class="tag">About Us</span>
-
-      <h1>
-        Smarter <br>
-        Trading with <br>
-        PipPlus Technology
-      </h1>
-
-      <p>
-        PipPlus Technology is a next-gen forex algo trading platform built for
-        precision, automation, and speed.
-      </p>
-
-      <p>
-        Our mission is to make algorithmic trading accessible, reliable, and profitable for every trader.
-      </p>
-
-      <button class="btn">More About Us</button>
-    </div>
-
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta">
-  <h2>Ready to Scale Your Trading?</h2>
-  <button class="btn primary">Join Now</button>
-</section>
-
-<!-- FOOTER -->
 <footer>
-  <p>© 2026 Algostech | Built by Traders for Traders</p>
+  <p>© 2026 Algostech</p>
 </footer>
 
-<!-- JS -->
 <script>
 function scrollToSection(id) {
-  document.getElementById(id).scrollIntoView({
-    behavior: 'smooth'
-  });
+  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+}
+
+function toggleMenu() {
+  document.getElementById("navLinks").classList.toggle("active");
 }
 
 function goToPayment() {
@@ -185,13 +92,8 @@ function goToPayment() {
     return;
   }
 
-  window.location.href = `payment.html?amount=${amount}`;
+  window.location.href = `Payment.html?amount=${amount}`;
 }
-
-function toggleMenu() {
-  document.getElementById("navLinks").classList.toggle("active");
-} 
-
 </script>
 
 </body>
