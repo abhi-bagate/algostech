@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Algostech</title>
+
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -27,6 +30,7 @@
   </ul>
 </nav>
 
+<!-- HERO -->
 <section class="hero" id="hero">
 
   <div class="hero-left">
@@ -42,21 +46,20 @@
   <!-- RIGHT VISUAL -->
   <div class="hero-right">
 
-    <!-- BACKGROUND SHAPE -->
     <div class="hero-bg"></div>
 
-    <!-- ROBOT IMAGE (ADD YOUR IMAGE HERE) -->
     <img src="Images/robot2.png" class="robot-img" alt="robot">
 
-    <!-- TOP FLOAT CARD -->
+    <!-- TOP CARD -->
     <div class="floating-card top-card">
       <div class="icon"></div>
       <div>
-        <img src="" alt="">
+        <span>Current Bid</span>
+        <h3>2.26 ETH</h3>
       </div>
     </div>
 
-    <!-- BOTTOM PROFILE CARD -->
+    <!-- BOTTOM CARD -->
     <div class="floating-card bottom-card">
       <div class="profile-img"></div>
       <div>
@@ -96,10 +99,8 @@
   </div>
 </section>
 
-<!-- Paymtn-->
-
+<!-- PAYMENT -->
 <section class="payment-home" id="payment">
-
   <h1>Make a Crypto Payment</h1>
   <p>Secure payment via USDT or Crypto Wallet</p>
 
@@ -107,41 +108,24 @@
     <input type="number" id="amount" placeholder="Enter Amount (USD)">
     <button onclick="goToPayment()">Pay with Crypto</button>
   </div>
-
 </section>
-
-<script>
-function goToPayment() {
-  const amount = document.getElementById("amount").value;
-
-  if (!amount || amount <= 0) {
-    alert("Enter valid amount");
-    return;
-  }
-
-  // redirect with amount
-  window.location.href = `payment.html?amount=${amount}`;
-}
-</script>
 
 <!-- ABOUT -->
 <section class="ai-section" id="about">
   <div class="ai-container">
 
-    <!-- LEFT VISUAL -->
     <div class="ai-visual">
       <img src="Images/robot.png" class="ai-head">
 
       <img src="Images/btc.png" class="coin btc">
-      <img src="Images/godl.png" class="coin gold">
-      <img src="Images/daller.png" class="coin dollar">
+      <img src="Images/gold.png" class="coin gold">
+      <img src="Images/dollar.png" class="coin dollar">
 
       <div class="circle red"></div>
       <div class="circle orange"></div>
       <div class="circle yellow"></div>
     </div>
 
-    <!-- RIGHT TEXT -->
     <div class="about-right">
       <span class="tag">About Us</span>
 
@@ -153,7 +137,7 @@ function goToPayment() {
 
       <p>
         PipPlus Technology is a next-gen forex algo trading platform built for
-        precision, automation, and speed. We simplify complex markets with AI-powered systems.
+        precision, automation, and speed.
       </p>
 
       <p>
@@ -177,11 +161,23 @@ function goToPayment() {
   <p>© 2026 Algostech | Built by Traders for Traders</p>
 </footer>
 
+<!-- JS -->
 <script>
 function scrollToSection(id) {
   document.getElementById(id).scrollIntoView({
     behavior: 'smooth'
   });
+}
+
+function goToPayment() {
+  const amount = document.getElementById("amount").value;
+
+  if (!amount || amount <= 0) {
+    alert("Enter valid amount");
+    return;
+  }
+
+  window.location.href = `payment.html?amount=${amount}`;
 }
 </script>
 
