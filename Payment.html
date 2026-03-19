@@ -1,105 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment</title>
-<link rel="stylesheet" href="payment.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment — Algostech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Payment.css" />
 </head>
-
 <body>
 
+<div class="noise"></div>
+<div class="orb orb-a"></div>
+<div class="orb orb-b"></div>
+
 <!-- NAV -->
-<nav>
-  <h2>Algostech</h2>
-  <ul>
-    <li onclick="showInput()">Payment</li>
-  </ul>
-  
-  <div class="hamburger" onclick="toggleMenu()">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
+<nav id="navbar">
+  <a href="index.html" class="logo">
+    <div class="logo-mark">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="none" stroke="#00ffcc" stroke-width="1.5"/>
+        <polygon points="14,7 21,11 21,17 14,21 7,17 7,11" fill="#00ffcc" opacity="0.15"/>
+        <circle cx="14" cy="14" r="3" fill="#00ffcc"/>
+      </svg>
+    </div>
+    <span>Algostech</span>
+  </a>
+
+  <!-- Step indicator -->
+  <div class="step-bar">
+    <div class="step active" id="s1"><span class="step-n">1</span><span class="step-lbl">Amount</span></div>
+    <div class="step-track" id="t1"></div>
+    <div class="step" id="s2"><span class="step-n">2</span><span class="step-lbl">Wallet</span></div>
+    <div class="step-track" id="t2"></div>
+    <div class="step" id="s3"><span class="step-n">3</span><span class="step-lbl">Pay</span></div>
+  </div>
+
+  <a href="index.html" class="nav-back">← Home</a>
 </nav>
-<div class="hamburger" onclick="toggleMenu()">
-  <span></span>
-  <span></span>
-  <span></span>
+
+<!-- ===== STEP 1: AMOUNT ===== -->
+<section class="pay-screen" id="screen1">
+  <div class="pay-hero-grid"></div>
+  <div class="screen-inner">
+    <span class="section-tag">SECURE CHECKOUT</span>
+    <h1 class="screen-title">Make a <span class="gradient-text">Payment</span></h1>
+    <p class="screen-desc">Enter the amount to proceed with your crypto payment.</p>
+
+    <div class="card amount-card">
+      <div class="card-top-line"></div>
+      <div class="field-wrap">
+        <div class="field-label">Payment Amount (USD)</div>
+        <div class="amount-row">
+          <span class="currency-sym">$</span>
+          <input type="number" id="amountInput" placeholder="0.00" min="1" />
+        </div>
+        <div class="equiv-line">≈ <span id="usdtVal">0.00</span> USDT</div>
+      </div>
+
+      <div class="trust-chips">
+        <div class="chip"><span>🔒</span> SSL Secured</div>
+        <div class="chip"><span>⚡</span> Instant Settlement</div>
+        <div class="chip"><span>✅</span> No Hidden Fees</div>
+      </div>
+
+      <button class="btn primary full" onclick="goStep2()">Continue to Payment →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STEP 2: WALLET SELECT ===== -->
+<section class="pay-screen hidden" id="screen2">
+  <div class="pay-hero-grid"></div>
+  <div class="screen-inner">
+    <span class="section-tag">CHOOSE WALLET</span>
+    <h1 class="screen-title">Select Payment <span class="gradient-text">Method</span></h1>
+    <p class="screen-desc">Choose your preferred wallet to continue.</p>
+
+    <div class="pay-badge" id="amtBadge">Paying: $0.00</div>
+
+    <div class="wallet-grid">
+
+      <!-- TRUST WALLET -->
+      <div class="wallet-card" onclick="goStep3('trust')">
+        <div class="card-top-line"></div>
+        <div class="wallet-icon-wrap trust-wrap">
+          <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+            <path d="M20 6L8 12v10c0 6.5 5 12.5 12 14 7-1.5 12-7.5 12-14V12L20 6z" fill="white" opacity="0.9"/>
+          </svg>
+        </div>
+        <h3>Trust Wallet</h3>
+        <p>Secure crypto payment<br/>using Trust Wallet</p>
+        <div class="wallet-divider"></div>
+        <div class="btn primary wallet-btn">Pay via BEP-20 →</div>
+        <div class="card-glow trust-glow"></div>
+      </div>
+
+      <!-- BINANCE PAY -->
+      <div class="wallet-card" onclick="goStep3('binance')">
+        <div class="card-top-line"></div>
+        <div class="wallet-icon-wrap binance-wrap">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 8l3 3-3 3-3-3 3-3z" fill="#F3BA2F"/>
+            <path d="M11 13l3 3-3 3-3-3 3-3z" fill="#F3BA2F"/>
+            <path d="M21 13l3 3-3 3-3-3 3-3z" fill="#F3BA2F"/>
+            <path d="M16 18l3 3-3 3-3-3 3-3z" fill="#F3BA2F"/>
+            <path d="M16 13l3 3-3 3-3-3 3-3z" fill="#F3BA2F"/>
+          </svg>
+        </div>
+        <h3>Binance Pay</h3>
+        <p>Pay directly using your<br/>Binance account</p>
+        <div class="wallet-divider"></div>
+        <div class="btn primary wallet-btn">Pay via TRC-20 →</div>
+        <div class="card-glow binance-glow"></div>
+      </div>
+
+    </div>
+
+    <button class="btn ghost back-btn" onclick="goStep1()">← Back</button>
+  </div>
+</section>
+
+<!-- ===== STEP 3: QR CODES ===== -->
+<section class="pay-screen hidden" id="screen3">
+  <div class="screen-inner wide">
+    <span class="section-tag">SCAN TO PAY</span>
+    <h1 class="screen-title" id="s3Title">Crypto <span class="gradient-text">Payment</span></h1>
+    <div class="pay-badge glow-badge" id="payBadge">Pay $0.00 in USDT</div>
+
+    <div class="qr-grid">
+
+      <!-- QR 1 -->
+      <div class="card qr-card">
+        <div class="card-top-line"></div>
+        <h3 class="qr-heading" id="qTitle1">Trust Wallet — <span class="gradient-text">TRC-20</span></h3>
+
+        <div class="qr-img-wrap">
+          <img src="Images/qr1.png" alt="QR" id="qImg1" class="qr-img" />
+          <div class="qr-badge" id="qBadge1">₮</div>
+        </div>
+
+        <div class="qr-row">
+          <span class="net-label">Network: <strong id="net1">TRON (TRC-20)</strong></span>
+          <button class="copy-btn" onclick="copyAddr('qAddr1', this)">Copy Address</button>
+        </div>
+
+        <div class="addr-box" id="qAddr1">TGG8P5LswwrGnrDsQaJJN9KziigrKSFEZeY</div>
+
+        <ul class="feat-list" id="feat1">
+          <li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via TRC-20 network</span></li>
+          <li><span class="chk">✓</span><span>Fast confirmation (1–2 minutes)</span></li>
+        </ul>
+
+        <button class="btn primary full mt20" onclick="openModal(1)">Submit Transaction Hash</button>
+      </div>
+
+      <!-- QR 2 -->
+      <div class="card qr-card">
+        <div class="card-top-line"></div>
+        <h3 class="qr-heading" id="qTitle2">Trust Wallet — <span class="gradient-text">BEP-20</span></h3>
+
+        <div class="qr-img-wrap">
+          <img src="Images/qr2.png" alt="QR" id="qImg2" class="qr-img" />
+          <div class="qr-badge" id="qBadge2">💎</div>
+        </div>
+
+        <div class="qr-row">
+          <span class="net-label">Network: <strong id="net2">BSC (BEP-20)</strong></span>
+          <button class="copy-btn" onclick="copyAddr('qAddr2', this)">Copy Address</button>
+        </div>
+
+        <div class="addr-box" id="qAddr2">0xdD7c6A6BFF0319fC28888DFcab8F360697f379B</div>
+
+        <ul class="feat-list" id="feat2">
+          <li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via BEP-20 network</span></li>
+          <li><span class="chk">✓</span><span>Low transaction fees</span></li>
+        </ul>
+
+        <button class="btn primary full mt20" onclick="openModal(2)">Submit Transaction Hash</button>
+      </div>
+
+    </div>
+
+    <button class="btn ghost back-btn" onclick="goStep2()">← Back</button>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-icon">📋</div>
+    <h3>Submit Transaction Hash</h3>
+    <p>Paste your TX hash so we can verify your payment.</p>
+    <input type="text" id="hashInput" placeholder="0x... or TXID..." class="hash-input" />
+    <button class="btn primary full" onclick="submitHash()">Submit →</button>
+    <div class="hash-ok hidden" id="hashOk">✅ Hash submitted! Verification within 30 min.</div>
+  </div>
 </div>
-<!-- ================= STEP 1 (IMAGE 1) ================= -->
-<section class="payment-input" id="inputSection">
 
-  <h1>Make a Crypto Payment</h1>
-  <p>Secure payment via USDT or Crypto Wallet</p>
-
-  <div class="payment-box">
-    <input type="number" id="amount" placeholder="Enter Amount (USD)">
-    <button onclick="showQR()">Pay with Crypto</button>
+<!-- FOOTER -->
+<footer>
+  <div class="f-container footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-mark">
+          <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+            <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="none" stroke="#00ffcc" stroke-width="1.5"/>
+            <circle cx="14" cy="14" r="3" fill="#00ffcc"/>
+          </svg>
+        </div>
+        <span>Algostech</span>
+      </div>
+      <p>Built by Traders, for Traders.</p>
+    </div>
+    <p class="footer-copy">© 2026 Algostech. All rights reserved.</p>
   </div>
-
-</section>
-
-
-<!-- ================= STEP 2 (IMAGE 2) ================= -->
-<section class="payment-qr hidden" id="qrSection">
-
-  <h1>Crypto Payment</h1>
-  <h2 id="amountText">Pay $0 in USDT</h2>
-
-  <div class="wallet-box">
-    <h3>USDT - ERC20</h3>
-    <img src="Images/qr1.png" class="qr">
-    <p class="wallet">0x4be19a1a2ecb95cf7561815a0bdc3bc943c1712b</p>
-    <button onclick="copyAddress()">Copy Wallet Address</button>
-  </div>
-
-  <div class="wallet-box">
-    <h3>USDT - BEP20</h3>
-    <img src="Images/qr2.png" class="qr">
-    <p class="wallet">0xYourBEP20Address</p>
-  </div>
-
-</section>
+</footer>
 
 <script>
-  // GET AMOUNT FROM URL
+// Pre-fill from URL
 const params = new URLSearchParams(window.location.search);
-const amount = params.get("amount");
+const pre = params.get('amount');
+if (pre) { document.getElementById('amountInput').value = pre; document.getElementById('usdtVal').textContent = parseFloat(pre).toFixed(2); }
 
-if (amount) {
-  document.getElementById("amount").value = amount;
-}
+document.getElementById('amountInput').addEventListener('input', e => {
+  document.getElementById('usdtVal').textContent = (parseFloat(e.target.value) || 0).toFixed(2);
+});
 
-// SHOW QR SECTION
-function showQR() {
-  const amount = document.getElementById("amount").value;
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
 
-  if (!amount || amount <= 0) {
-    alert("Enter valid amount");
-    return;
+// Steps
+function setStep(n) {
+  ['screen1','screen2','screen3'].forEach((id,i) => {
+    document.getElementById(id).classList.toggle('hidden', i+1 !== n);
+  });
+  for (let i=1;i<=3;i++) {
+    const dot = document.getElementById('s'+i);
+    dot.classList.toggle('active', i <= n);
+    dot.classList.toggle('done', i < n);
   }
-
-  document.getElementById("amountText").innerText = `Pay $${amount} in USDT`;
-
-  document.getElementById("inputSection").classList.add("hidden");
-  document.getElementById("qrSection").classList.remove("hidden");
+  for (let i=1;i<=2;i++) {
+    document.getElementById('t'+i).classList.toggle('active', i < n);
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
-// NAV CLICK → BACK TO INPUT
-function showInput() {
-  document.getElementById("qrSection").classList.add("hidden");
-  document.getElementById("inputSection").classList.remove("hidden");
+function goStep1() { setStep(1); }
+
+function goStep2() {
+  const amt = parseFloat(document.getElementById('amountInput').value);
+  if (!amt || amt <= 0) { alert('Please enter a valid amount'); return; }
+  document.getElementById('amtBadge').textContent = `Paying: $${amt.toFixed(2)} USD`;
+  setStep(2);
 }
 
-// COPY FUNCTION
-function copyAddress() {
-  const address = document.querySelector(".wallet").innerText;
-  navigator.clipboard.writeText(address);
-  alert("Copied!");
+function goStep3(wallet) {
+  const amt = parseFloat(document.getElementById('amountInput').value)||0;
+  document.getElementById('payBadge').textContent = `Pay $${amt.toFixed(2)} in USDT`;
+
+  if (wallet === 'trust') {
+    document.getElementById('s3Title').innerHTML = 'Trust Wallet <span class="gradient-text">Payment</span>';
+    document.getElementById('qTitle1').innerHTML = 'Trust Wallet — <span class="gradient-text">TRC-20</span>';
+    document.getElementById('qTitle2').innerHTML = 'Trust Wallet — <span class="gradient-text">BEP-20</span>';
+    document.getElementById('net1').textContent = 'TRON (TRC-20)';
+    document.getElementById('net2').textContent = 'BSC (BEP-20)';
+    document.getElementById('qAddr1').textContent = 'TGcrjJQWXvCuvkfgrbwYCUSx9gj3TBMqzr';
+    document.getElementById('qAddr2').textContent = '0xdD7c6A6BFF0319fC28888DFcab8F360697f379B';
+    document.getElementById('qBadge1').textContent = '🛡️';
+    document.getElementById('qBadge2').textContent = '💎';
+    document.getElementById('feat1').innerHTML = `<li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via TRC-20 network</span></li><li><span class="chk">✓</span><span>Confirmation time: 1–2 minutes</span></li>`;
+    document.getElementById('feat2').innerHTML = `<li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via BEP-20 network</span></li><li><span class="chk">✓</span><span>Low transaction fees</span></li>`;
+  } else {
+    document.getElementById('s3Title').innerHTML = 'Crypto <span class="gradient-text">Payment</span>';
+    document.getElementById('qTitle1').innerHTML = 'Pay via <span class="gradient-text">TRC-20</span> (USDT)';
+    document.getElementById('qTitle2').innerHTML = 'Pay via <span class="gradient-text">BEP-20</span> (USDT)';
+    document.getElementById('net1').textContent = 'TRON (TRC-20)';
+    document.getElementById('net2').textContent = 'BSC (BEP-20)';
+    document.getElementById('qAddr1').textContent = 'TGG8P5LswwrGnrDsQaJJN9KziigrKSFEZeY';
+    document.getElementById('qAddr2').textContent = '0x305a88662255fcf16e16d46B441633fd9Zfi';
+    document.getElementById('qBadge1').textContent = '₮';
+    document.getElementById('qBadge2').textContent = '₮';
+    document.getElementById('feat1').innerHTML = `<li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via TRC-20 network</span></li><li><span class="chk">✓</span><span>Fast confirmation (1–2 minutes)</span></li>`;
+    document.getElementById('feat2').innerHTML = `<li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via BEP-20 network</span></li><li><span class="chk">✓</span><span>Low transaction fees</span></li>`;
+  }
+  setStep(3);
 }
 
+// Copy
+function copyAddr(id, btn) {
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Modal
+function openModal(n) {
+  document.getElementById('hashInput').value='';
+  document.getElementById('hashOk').classList.add('hidden');
+  document.getElementById('modal').classList.remove('hidden');
+}
+function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+function submitHash() {
+  if (!document.getElementById('hashInput').value.trim()) { alert('Please paste your transaction hash'); return; }
+  document.getElementById('hashOk').classList.remove('hidden');
+  setTimeout(closeModal, 3000);
+}
+document.getElementById('modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
 </script>
-
 </body>
 </html>
