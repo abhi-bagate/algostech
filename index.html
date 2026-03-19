@@ -1,196 +1,435 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Algostech</title>
-
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algostech — AI Powered Forex Trading</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <h2 class="logo">
-    <img src="Images/logo.png" alt="logo" class="logo-img">
-    Algostech
-  </h2>
+<!-- NOISE OVERLAY -->
+<div class="noise"></div>
 
-  <ul id="navLinks">
-    <li onclick="scrollToSection('hero')">Home</li>
-    <li onclick="scrollToSection('services')">Services</li>
-    <li onclick="scrollToSection('about')">About</li>
-    <li onclick="scrollToSection('pricing')">Pricing</li>
-    <li onclick="scrollToSection('payment')">Payment</li>
-    <li onclick="scrollToSection('contact')">Contact</li>
-    <li><button class="nav-btn">Login</button></li>
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#hero" class="logo">
+    <div class="logo-mark">
+  <img src="Images/logo.png" alt="Algostech Logo" />
+  </div>
+    <span>Algostech</span>
+  </a>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#hero" class="nav-link">Home</a></li>
+    <li><a href="#services" class="nav-link">Services</a></li>
+    <li><a href="#about" class="nav-link">About</a></li>
+    <li><a href="#pricing" class="nav-link">Pricing</a></li>
+    <li><a href="#payment" class="nav-link">Payment</a></li>
+    <li><a href="contact.html" class="nav-link">Contact</a></li>
+    <li><button class="nav-btn">Login →</button></li>
   </ul>
 
-  <div class="hamburger" onclick="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="hero">
+  <!-- Grid lines background -->
+  <div class="hero-grid"></div>
 
-  <div class="hero-left">
-    <h1>AI Powered <span>Forex Trading</span></h1>
-    <p>Trade smarter with automation, precision, and cutting-edge AI strategies.</p>
+  <div class="container hero-container">
+    <!-- LEFT -->
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Live AI Engine Active</span>
+      </div>
 
-    <div class="hero-buttons">
-      <button class="btn primary">Get Started</button>
-      <button class="btn secondary">Learn More</button>
-    </div>
-  </div>
+      <h1 class="hero-title">
+        AI Powered<br/>
+        <span class="gradient-text">Forex Trading</span><br/>
+        <span class="hero-sub-title">Platform</span>
+      </h1>
 
-  <!-- RIGHT VISUAL -->
-  <div class="hero-right">
+      <p class="hero-desc">
+        Trade smarter with automation, precision, and cutting-edge AI strategies. Real-time signals. Zero emotion.
+      </p>
 
-    <div class="hero-bg"></div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">98.4<span class="stat-unit">%</span></span>
+          <span class="stat-label">Signal Accuracy</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">12k<span class="stat-unit">+</span></span>
+          <span class="stat-label">Active Traders</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">$2.4<span class="stat-unit">M</span></span>
+          <span class="stat-label">Daily Volume</span>
+        </div>
+      </div>
 
-    <img src="Images/robot2.png" class="robot-img" alt="robot">
-
-    <!-- TOP CARD -->
-    <div class="floating-card top-card">
-      <div class="icon"></div>
-      <div>
-        <span>Current Bid</span>
-        <h3>2.26 ETH</h3>
+      <div class="hero-actions">
+        <button class="btn primary">Get Started Free</button>
+        <button class="btn ghost">
+          <span class="play-icon">▶</span> Watch Demo
+        </button>
       </div>
     </div>
 
-    <!-- BOTTOM CARD -->
-    <div class="floating-card bottom-card">
-      <div class="profile-img"></div>
-      <div>
-        <h3>Algostech</h3>
-        <p>@Algostech</p>
+    <!-- RIGHT -->
+    <div class="hero-right">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+
+      <!-- Main card -->
+      <div class="hero-card main-card">
+        <div class="card-header">
+          <div class="card-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="card-tag">LIVE FEED</span>
+        </div>
+
+        <div class="chart-area">
+          <svg viewBox="0 0 320 120" class="chart-svg" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00ffcc" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#00ffcc" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,90 C20,85 40,70 60,72 C80,74 100,60 120,50 C140,40 160,55 180,40 C200,25 220,35 240,20 C260,5 280,15 320,10" stroke="#00ffcc" stroke-width="2" fill="none"/>
+            <path d="M0,90 C20,85 40,70 60,72 C80,74 100,60 120,50 C140,40 160,55 180,40 C200,25 220,35 240,20 C260,5 280,15 320,10 L320,120 L0,120Z" fill="url(#chartGrad)"/>
+            <circle cx="320" cy="10" r="4" fill="#00ffcc"/>
+            <circle cx="320" cy="10" r="8" fill="#00ffcc" opacity="0.3" class="pulse-circle"/>
+          </svg>
+        </div>
+
+        <div class="card-data-row">
+          <div class="data-item">
+            <span class="data-label">EUR/USD</span>
+            <span class="data-value up">1.0892 ↑</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">BTC/USD</span>
+            <span class="data-value up">67,420 ↑</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">GOLD</span>
+            <span class="data-value down">2,318 ↓</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating mini cards -->
+      <div class="float-card float-tl">
+        <div class="float-icon">🤖</div>
+        <div>
+          <div class="float-title">AI Signal</div>
+          <div class="float-val buy">BUY EUR/USD</div>
+        </div>
+      </div>
+
+      <div class="float-card float-br">
+        <div class="float-icon">📈</div>
+        <div>
+          <div class="float-title">Profit Today</div>
+          <div class="float-val">+$4,218</div>
+        </div>
       </div>
     </div>
-
   </div>
 
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
 </section>
 
 <!-- SERVICES -->
 <section class="services" id="services">
-  <h2>Our Services</h2>
-
-  <div class="cards">
-    <div class="card">
-      <h3>Algo Trading</h3>
-      <p>Automated strategies for consistent and scalable profits.</p>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">WHAT WE OFFER</span>
+      <h2 class="section-title">Our <span class="gradient-text">Services</span></h2>
+      <p class="section-desc">Precision-built tools to give you the ultimate trading edge.</p>
     </div>
 
-    <div class="card">
-      <h3>AI Signals</h3>
-      <p>Real-time market signals powered by machine learning.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect x="4" y="20" width="4" height="8" fill="#00ffcc" opacity="0.4"/>
+            <rect x="10" y="14" width="4" height="14" fill="#00ffcc" opacity="0.6"/>
+            <rect x="16" y="8" width="4" height="20" fill="#00ffcc" opacity="0.8"/>
+            <rect x="22" y="4" width="4" height="24" fill="#00ffcc"/>
+          </svg>
+        </div>
+        <div class="service-num">01</div>
+        <h3>Algo Trading</h3>
+        <p>Automated strategies for consistent and scalable profits with zero manual effort.</p>
+        <a href="#" class="service-link">Learn more →</a>
+      </div>
+
+      <div class="service-card featured">
+        <div class="service-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="10" stroke="#00ffcc" stroke-width="1.5" fill="none"/>
+            <circle cx="16" cy="16" r="4" fill="#00ffcc"/>
+            <line x1="16" y1="2" x2="16" y2="8" stroke="#00ffcc" stroke-width="1.5"/>
+            <line x1="16" y1="24" x2="16" y2="30" stroke="#00ffcc" stroke-width="1.5"/>
+            <line x1="2" y1="16" x2="8" y2="16" stroke="#00ffcc" stroke-width="1.5"/>
+            <line x1="24" y1="16" x2="30" y2="16" stroke="#00ffcc" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="service-num">02</div>
+        <h3>AI Signals</h3>
+        <p>Real-time market signals powered by machine learning with 98%+ accuracy.</p>
+        <a href="#" class="service-link">Learn more →</a>
+        <div class="featured-badge">Popular</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <polygon points="16,3 29,10 29,22 16,29 3,22 3,10" stroke="#00ffcc" stroke-width="1.5" fill="none"/>
+            <text x="12" y="20" font-size="12" fill="#00ffcc" font-weight="bold">Au</text>
+          </svg>
+        </div>
+        <div class="service-num">03</div>
+        <h3>Commodities</h3>
+        <p>Advanced trading in Gold, Silver & global commodities with deep market insights.</p>
+        <a href="#" class="service-link">Learn more →</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M4,28 L10,18 L16,22 L22,12 L28,4" stroke="#00ffcc" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="28" cy="4" r="3" fill="#00ffcc"/>
+          </svg>
+        </div>
+        <div class="service-num">04</div>
+        <h3>Risk Management</h3>
+        <p>Smart capital protection with optimized drawdown control and stop-loss automation.</p>
+        <a href="#" class="service-link">Learn more →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container about-container">
+    <div class="about-visual">
+      <div class="about-orb"></div>
+      <div class="about-img-wrap">
+        <img src="Images/robot.png" alt="AI Robot" class="about-robot" />
+        <div class="about-ring about-ring-1"></div>
+        <div class="about-ring about-ring-2"></div>
+      </div>
+      <div class="coin-chip coin-btc">
+        <img src="Images/btc.png" alt="BTC" />
+        <span>BTC +4.2%</span>
+      </div>
+      <div class="coin-chip coin-gold">
+        <img src="Images/godl.png" alt="GOLD" />
+        <span>XAU +1.1%</span>
+      </div>
+      <div class="coin-chip coin-usd">
+        <img src="Images/daller.png" alt="USD" />
+        <span>USD ↑</span>
+      </div>
     </div>
 
-    <div class="card">
-      <h3>Commodities</h3>
-      <p>Advanced trading in Gold, Silver & global commodities.</p>
-    </div>
+    <div class="about-content">
+      <span class="section-tag">ABOUT US</span>
+      <h2 class="section-title">Smarter Trading with <span class="gradient-text">Algostech</h2>
+      <p class="about-p">
+        Algostech is a next-gen forex algo trading platform built for precision, automation, and speed. We combine deep learning models with real-time data to power every trade.
+      </p>
+      <p class="about-p">
+        Our mission is to make algorithmic trading accessible, reliable, and profitable for every trader — from beginners to institutions.
+      </p>
 
-    <div class="card">
-      <h3>Risk Management</h3>
-      <p>Smart capital protection with optimized drawdown control.</p>
+      <div class="about-features">
+        <div class="af-item">
+          <div class="af-check">✓</div>
+          <span>No coding required — fully automated</span>
+        </div>
+        <div class="af-item">
+          <div class="af-check">✓</div>
+          <span>24/7 market monitoring & execution</span>
+        </div>
+        <div class="af-item">
+          <div class="af-check">✓</div>
+          <span>Institutional-grade risk controls</span>
+        </div>
+      </div>
+
+      <button class="btn primary">Learn Our Story →</button>
     </div>
   </div>
 </section>
 
 <!-- PAYMENT -->
-<section class="payment-home" id="payment">
-  <h1>Make a Crypto Payment</h1>
-  <p>Secure payment via USDT or Crypto Wallet</p>
+<section class="payment" id="payment">
+  <div class="container">
+    <div class="payment-inner">
+      <div class="payment-left">
+        <span class="section-tag">CRYPTO PAYMENTS</span>
+        <h2 class="section-title">Make a Secure <span class="gradient-text">Crypto Payment</span></h2>
+        <p>Lightning-fast, decentralized transactions. Pay via USDT, BTC, or any major crypto wallet.</p>
 
-  <div class="payment-box">
-    <input type="number" id="amount" placeholder="Enter Amount (USD)">
-    <button onclick="goToPayment()">Pay with Crypto</button>
-  </div>
-</section>
+        <div class="crypto-methods">
+          <div class="crypto-pill active">
+            <span>₮</span> USDT
+          </div>
+          <div class="crypto-pill">
+            <span>₿</span> Bitcoin
+          </div>
+          <div class="crypto-pill">
+            <span>Ξ</span> Ethereum
+          </div>
+        </div>
+      </div>
 
-<!-- ABOUT -->
-<section class="ai-section" id="about">
-  <div class="ai-container">
-
-    <div class="ai-visual">
-      <img src="Images/robot.png" class="ai-head">
-
-      <img src="Images/btc.png" class="coin btc">
-      <img src="Images/gold.png" class="coin gold">
-      <img src="Images/dollar.png" class="coin dollar">
-
-      <div class="circle red"></div>
-      <div class="circle orange"></div>
-      <div class="circle yellow"></div>
+      <div class="payment-right">
+        <div class="payment-card">
+          <div class="payment-card-header">
+            <span>Payment Amount</span>
+            <span class="secure-badge">🔒 Secured</span>
+          </div>
+          <div class="payment-input-wrap">
+            <span class="currency-prefix">$</span>
+            <input type="number" id="amount" placeholder="0.00" />
+          </div>
+          <div class="payment-equiv">≈ <span id="cryptoEquiv">0.00</span> USDT</div>
+          <button class="btn primary full-width" onclick="goToPayment()">
+            Pay with Crypto →
+          </button>
+          <p class="payment-note">Transactions settle in under 60 seconds.</p>
+        </div>
+      </div>
     </div>
-
-    <div class="about-right">
-      <span class="tag">About Us</span>
-
-      <h1>
-        Smarter <br>
-        Trading with <br>
-        PipPlus Technology
-      </h1>
-
-      <p>
-        PipPlus Technology is a next-gen forex algo trading platform built for
-        precision, automation, and speed.
-      </p>
-
-      <p>
-        Our mission is to make algorithmic trading accessible, reliable, and profitable for every trader.
-      </p>
-
-      <button class="btn">More About Us</button>
-    </div>
-
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta">
-  <h2>Ready to Scale Your Trading?</h2>
-  <button class="btn primary">Join Now</button>
+<section class="cta" id="pricing">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-glow"></div>
+      <span class="section-tag" style="color:#000; background:rgba(0,0,0,0.1);">START TODAY</span>
+      <h2 class="cta-title">Ready to Scale Your Trading?</h2>
+      <p class="cta-desc">Join 12,000+ traders already profiting with Algostech AI.</p>
+      <div class="cta-actions">
+        <button class="btn dark">Create Free Account</button>
+        <button class="btn ghost-dark">View Pricing Plans</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2026 Algostech | Built by Traders for Traders</p>
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-mark">
+          <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+            <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="none" stroke="#00ffcc" stroke-width="1.5"/>
+            <circle cx="14" cy="14" r="3" fill="#00ffcc"/>
+          </svg>
+        </div>
+        <span>Algostech</span>
+      </div>
+      <p>Built by Traders, for Traders.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#">Services</a>
+      <a href="#">About</a>
+      <a href="#">Pricing</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <p class="footer-copy">© 2026 Algostech. All rights reserved.</p>
+  </div>
 </footer>
 
-<!-- JS -->
 <script>
-function scrollToSection(id) {
-  document.getElementById(id).scrollIntoView({
-    behavior: 'smooth'
+// Sticky nav
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Mobile menu
+function toggleMenu() {
+  const links = document.getElementById('navLinks');
+  const ham = document.getElementById('hamburger');
+  links.classList.toggle('open');
+  ham.classList.toggle('active');
+}
+
+// Close menu on link click
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+
+// Crypto equiv calculator
+const amountInput = document.getElementById('amount');
+const cryptoEquiv = document.getElementById('cryptoEquiv');
+if (amountInput) {
+  amountInput.addEventListener('input', () => {
+    const val = parseFloat(amountInput.value) || 0;
+    cryptoEquiv.textContent = val.toFixed(2);
   });
 }
 
-function goToPayment() {
-  const amount = document.getElementById("amount").value;
+// Crypto pill toggle
+document.querySelectorAll('.crypto-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.crypto-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+});
 
+// Payment redirect
+function goToPayment() {
+  const amount = document.getElementById('amount').value;
   if (!amount || amount <= 0) {
-    alert("Enter valid amount");
+    alert('Please enter a valid amount');
     return;
   }
-
   window.location.href = `payment.html?amount=${amount}`;
 }
 
-function toggleMenu() {
-  document.getElementById("navLinks").classList.toggle("active");
-} 
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
 
+document.querySelectorAll('.service-card, .about-container, .payment-inner, .hero-left, .hero-right').forEach(el => {
+  el.classList.add('reveal');
+  observer.observe(el);
+});
 </script>
-
 </body>
 </html>
