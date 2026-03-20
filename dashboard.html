@@ -231,7 +231,7 @@
       <!-- Account Details -->
       <div class="profile-section-title">Account Details</div>
       <div class="profile-table" id="accountTable">
-        <div class="profile-row"><div class="profile-key">Email</div><div class="profile-val" id="pEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bfcddec9d691ccd7decdd2deffdac7ded2cfd3da91dcd0d2">[email&#160;protected]</a></div></div>
+        <div class="profile-row"><div class="profile-key">Email</div><div class="profile-val" id="pEmail">ravi.sharma@example.com</div></div>
         <div class="profile-row"><div class="profile-key">MT5 Account ID</div><div class="profile-val" id="pMT5">12345678</div></div>
         <div class="profile-row"><div class="profile-key">MT5 Server</div><div class="profile-val" id="pServer">xm global mt5 2</div></div>
         <div class="profile-row"><div class="profile-key">Broker Email ID</div><div class="profile-val muted" id="pBrokerEmail">Not Set</div></div>
@@ -283,54 +283,7 @@
 <!-- MOBILE SIDEBAR OVERLAY -->
 <div class="mobile-overlay hidden" id="mobileOverlay" onclick="toggleMobileSidebar()"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ============================================================
-// AUTH CHECK — redirect to login if not logged in
-// ============================================================
-const currentUser = JSON.parse(sessionStorage.getItem('algo_logged_user') || 'null');
-if (!currentUser) { window.location.href = 'auth.html'; }
-
-// ============================================================
-// LOAD USER DATA FROM LOCALSTORAGE
-// ============================================================
-function getUserTrades() {
-  const all = JSON.parse(localStorage.getItem('algo_trades') || '{}');
-  return all[currentUser.id] || [];
-}
-function getUserInsights() {
-  const all = JSON.parse(localStorage.getItem('algo_insights') || '{}');
-  return all[currentUser.id] || null;
-}
-
-// Populate profile fields from user object
-function populateProfile() {
-  const u = currentUser;
-  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val || 'N/A'; };
-  set('pName', u.name); set('pEmail', u.email); set('pMobile', u.mobile);
-  set('pDOB', u.dob); set('pCity', u.city); set('pMT5', u.mt5);
-  set('pServer', u.server); set('pService', u.plan);
-  const kycEl = document.getElementById('pKYC');
-  if (kycEl) { kycEl.textContent = u.kyc||'Pending'; kycEl.className = 'status-chip '+(u.kyc==='Completed'?'completed':'pending'); }
-  document.getElementById('pBrokerEmail').textContent = u.brokerEmail || 'Not Set';
-  document.getElementById('pBrokerPass').textContent = 'Not Set';
-  // Update topbar name & avatar
-  const nameEl = document.querySelector('.user-name');
-  if (nameEl) nameEl.textContent = u.name;
-  const avEl = document.querySelector('.user-avatar');
-  if (avEl) avEl.textContent = u.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-}
-
-// Populate stat cards from insights
-function populateStats() {
-  const ins = getUserInsights();
-  const defaults = { totalPL: 0, roi: 0, capital: currentUser.capital || 0, totalTrades: 0 };
-  const d = ins || defaults;
-  document.getElementById('totalPL').textContent = d.totalPL.toLocaleString('en',{minimumFractionDigits:2});
-  document.getElementById('overallROI').textContent = d.roi.toLocaleString('en',{minimumFractionDigits:2}) + ' %';
-  document.getElementById('capital').textContent = d.capital.toLocaleString('en',{minimumFractionDigits:2});
-  document.getElementById('totalTrades').textContent = d.totalTrades.toLocaleString('en',{minimumFractionDigits:2});
-}
-
+<script>
 // ---- NAV ----
 const sections = ['overview','trades','kyc','profile'];
 function showSection(name) {
@@ -360,8 +313,7 @@ function toggleMobileSidebar() {
 
 // ---- CHART ----
 const months = ['Aug 2024','Sep 2024','Oct 2024','Nov 2024','Dec 2024','Jan 2025','Feb 2025','Mar 2025','Apr 2025','May 2025','Jun 2025','Jul 2025','Aug 2025','Sep 2025','Oct 2025','Nov 2025','Dec 2025','Jan 2026'];
-const ins = getUserInsights();
-const plData = (ins && ins.chartData && ins.chartData.length) ? ins.chartData : new Array(18).fill(0);
+const plData = [2800,4400,4500,2000,3600,1200,1100,1100,1200,5000,2800,2500,2600,2200,12000,6500,1200,900];
 
 const ctx = document.getElementById('plChart').getContext('2d');
 const grad = ctx.createLinearGradient(0,0,0,300);
@@ -397,8 +349,8 @@ new Chart(ctx, {
         borderWidth: 1,
         titleColor: '#9aa5be',
         bodyColor: '#00ffcc',
-        titleFont: { family: 'Inter', size: 11 },
-        bodyFont: { family: 'Inter', size: 13 },
+        titleFont: { family: 'Space Mono', size: 11 },
+        bodyFont: { family: 'Space Mono', size: 13 },
         padding: 12,
         callbacks: { label: ctx => ` $${ctx.parsed.y.toLocaleString()}` }
       }
@@ -406,18 +358,24 @@ new Chart(ctx, {
     scales: {
       x: {
         grid: { color: 'rgba(255,255,255,0.04)', drawBorder: false },
-        ticks: { color: '#6b7a99', font: { family: 'Inter', size: 10 }, maxRotation: 0 }
+        ticks: { color: '#6b7a99', font: { family: 'Space Mono', size: 10 }, maxRotation: 0 }
       },
       y: {
         grid: { color: 'rgba(255,255,255,0.04)', drawBorder: false },
-        ticks: { color: '#6b7a99', font: { family: 'Inter', size: 10 }, callback: v => v.toLocaleString() }
+        ticks: { color: '#6b7a99', font: { family: 'Space Mono', size: 10 }, callback: v => v.toLocaleString() }
       }
     }
   }
 });
 
-// ---- TRADE TABLE ----
-const allUserTrades = getUserTrades();
+// ---- TRADE TABLE (sample data — replace with real data) ----
+const sampleTrades = [
+  { date: '2025-10-12', symbol: 'EUR/USD', type: 'BUY',  lots: 0.5, open: 1.0882, close: 1.0934, pl: 260.00 },
+  { date: '2025-10-15', symbol: 'GBP/USD', type: 'SELL', lots: 0.3, open: 1.2610, close: 1.2548, pl: 186.00 },
+  { date: '2025-10-20', symbol: 'XAU/USD', type: 'BUY',  lots: 0.1, open: 2301.0, close: 2342.5, pl: 415.00 },
+  { date: '2025-11-01', symbol: 'USD/JPY', type: 'SELL', lots: 0.4, open: 149.80, close: 150.30, pl: -200.00 },
+  { date: '2025-11-08', symbol: 'EUR/USD', type: 'BUY',  lots: 0.5, open: 1.0750, close: 1.0820, pl: 350.00 },
+];
 
 function renderTrades(trades) {
   const tbody = document.getElementById('tradeBody');
@@ -431,7 +389,7 @@ function renderTrades(trades) {
   }
   table.style.display = 'table';
   empty.style.display = 'none';
-  const total = trades.reduce((a,t) => a + parseFloat(t.pl), 0);
+  const total = trades.reduce((a,t) => a+t.pl, 0);
   document.getElementById('tradeTotalProfit').textContent = `Total Profit: $${total.toLocaleString('en',{minimumFractionDigits:2})}`;
   document.getElementById('tradeTotalProfit').className = 'total-profit-badge ' + (total >= 0 ? 'profit' : 'loss');
   tbody.innerHTML = trades.map(t => `
@@ -442,17 +400,18 @@ function renderTrades(trades) {
       <td>${t.lots}</td>
       <td>${t.open}</td>
       <td>${t.close}</td>
-      <td class="${parseFloat(t.pl) >= 0 ? 'profit-val' : 'loss-val'}">${parseFloat(t.pl) >= 0 ? '+' : ''}$${parseFloat(t.pl).toFixed(2)}</td>
+      <td class="${t.pl >= 0 ? 'profit-val' : 'loss-val'}">${t.pl >= 0 ? '+' : ''}$${t.pl.toFixed(2)}</td>
     </tr>
   `).join('');
 }
-renderTrades(allUserTrades);
+renderTrades(sampleTrades);
 
 function filterTrades() {
   const s = document.getElementById('startDate').value;
   const e = document.getElementById('endDate').value;
-  if (!s || !e) { renderTrades(allUserTrades); return; }
-  renderTrades(allUserTrades.filter(t => t.date >= s && t.date <= e));
+  if (!s || !e) { renderTrades(sampleTrades); return; }
+  const filtered = sampleTrades.filter(t => t.date >= s && t.date <= e);
+  renderTrades(filtered);
 }
 
 // ---- KYC ----
@@ -462,6 +421,7 @@ function fileSelected(side, input) {
   const label = document.getElementById(side === 'front' ? 'frontLabel' : 'backLabel');
   label.textContent = '✓ ' + file.name;
 }
+
 function submitKYC() {
   const front = document.getElementById('aadhaarFront').files[0];
   const back  = document.getElementById('aadhaarBack').files[0];
@@ -491,34 +451,10 @@ function saveProfile() {
   document.getElementById('pServer').textContent = document.getElementById('editServer').value || 'N/A';
   document.getElementById('pBrokerEmail').textContent = document.getElementById('editBrokerEmail').value || 'Not Set';
   document.getElementById('pBrokerPass').textContent  = document.getElementById('editBrokerPass').value ? '••••••••' : 'Not Set';
-  // Save back to sessionStorage
-  const u = JSON.parse(sessionStorage.getItem('algo_logged_user'));
-  u.name = document.getElementById('editName').value || u.name;
-  u.mobile = document.getElementById('editMobile').value;
-  u.dob = document.getElementById('editDOB').value;
-  u.city = document.getElementById('editCity').value;
-  u.mt5 = document.getElementById('editMT5').value;
-  u.server = document.getElementById('editServer').value;
-  sessionStorage.setItem('algo_logged_user', JSON.stringify(u));
-  // Also update in localStorage users array
-  const users = JSON.parse(localStorage.getItem('algo_users')||'[]');
-  const idx = users.findIndex(x=>x.id===u.id);
-  if (idx>=0) { users[idx]={...users[idx],...u}; localStorage.setItem('algo_users',JSON.stringify(users)); }
-  const nameEl = document.querySelector('.user-name');
-  if (nameEl) nameEl.textContent = u.name;
+  document.getElementById('user-name') && (document.getElementById('user-name').textContent = document.getElementById('editName').value);
   closeEditModal();
 }
-
-// ---- LOGOUT ----
-// Override logout to clear session
-document.querySelector('.logout').addEventListener('click', (e) => {
-  e.preventDefault();
-  sessionStorage.removeItem('algo_logged_user');
-  window.location.href = 'auth.html';
-});
-
-// ---- INIT ----
-populateProfile();
-populateStats();
-
-// dummy closing (was cut off before)
+document.getElementById('editModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeEditModal(); });
+</script>
+</body>
+</html>
