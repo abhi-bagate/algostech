@@ -18,22 +18,26 @@
 <nav id="navbar">
   <a href="index.html" class="logo">
     <div class="logo-mark">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="none" stroke="#00ffcc" stroke-width="1.5"/>
-        <polygon points="14,7 21,11 21,17 14,21 7,17 7,11" fill="#00ffcc" opacity="0.15"/>
-        <circle cx="14" cy="14" r="3" fill="#00ffcc"/>
-      </svg>
+      <img src="Images/logo.png" alt="Algostech Logo" />
     </div>
     <span>Algostech</span>
   </a>
 
-  <!-- Step indicator -->
   <div class="step-bar">
-    <div class="step active" id="s1"><span class="step-n">1</span><span class="step-lbl">Amount</span></div>
-    <div class="step-track" id="t1"></div>
-    <div class="step" id="s2"><span class="step-n">2</span><span class="step-lbl">Wallet</span></div>
-    <div class="step-track" id="t2"></div>
-    <div class="step" id="s3"><span class="step-n">3</span><span class="step-lbl">Pay</span></div>
+    <div class="step-bar-dots">
+      <div class="step active" id="s1"><span class="step-n">1</span></div>
+      <div class="step-track" id="t1"></div>
+      <div class="step" id="s2"><span class="step-n">2</span></div>
+      <div class="step-track" id="t2"></div>
+      <div class="step" id="s3"><span class="step-n">3</span></div>
+    </div>
+    <div class="step-bar-labels">
+      <span class="step-lbl active" id="l1">Amount</span>
+      <div class="step-track-spacer"></div>
+      <span class="step-lbl" id="l2">Wallet</span>
+      <div class="step-track-spacer"></div>
+      <span class="step-lbl" id="l3">Pay</span>
+    </div>
   </div>
 
   <a href="index.html" class="nav-back">← Home</a>
@@ -49,14 +53,12 @@
 
     <div class="card amount-card">
       <div class="card-top-line"></div>
-      <div class="field-wrap">
-        <div class="field-label">Payment Amount (USD)</div>
-        <div class="amount-row">
-          <span class="currency-sym">$</span>
-          <input type="number" id="amountInput" placeholder="0.00" min="1" />
-        </div>
-        <div class="equiv-line">≈ <span id="usdtVal">0.00</span> USDT</div>
+      <div class="field-label">Payment Amount (USD)</div>
+      <div class="amount-row">
+        <span class="currency-sym">$</span>
+        <input type="number" id="amountInput" placeholder="0.00" min="1" />
       </div>
+      <div class="equiv-line">≈ <span id="usdtVal">0.00</span> USDT</div>
 
       <div class="trust-chips">
         <div class="chip"><span>🔒</span> SSL Secured</div>
@@ -81,7 +83,6 @@
 
     <div class="wallet-grid">
 
-      <!-- TRUST WALLET -->
       <div class="wallet-card" onclick="goStep3('trust')">
         <div class="card-top-line"></div>
         <div class="wallet-icon-wrap trust-wrap">
@@ -92,11 +93,10 @@
         <h3>Trust Wallet</h3>
         <p>Secure crypto payment<br/>using Trust Wallet</p>
         <div class="wallet-divider"></div>
-        <div class="btn primary wallet-btn">Pay via BEP-20 →</div>
+        <div class="btn primary wallet-btn">Pay via BEP-20 / TRC-20 →</div>
         <div class="card-glow trust-glow"></div>
       </div>
 
-      <!-- BINANCE PAY -->
       <div class="wallet-card" onclick="goStep3('binance')">
         <div class="card-top-line"></div>
         <div class="wallet-icon-wrap binance-wrap">
@@ -111,7 +111,7 @@
         <h3>Binance Pay</h3>
         <p>Pay directly using your<br/>Binance account</p>
         <div class="wallet-divider"></div>
-        <div class="btn primary wallet-btn">Pay via TRC-20 →</div>
+        <div class="btn primary wallet-btn">Pay via BEP-20 / TRC-20 →</div>
         <div class="card-glow binance-glow"></div>
       </div>
 
@@ -136,8 +136,8 @@
         <h3 class="qr-heading" id="qTitle1">Trust Wallet — <span class="gradient-text">TRC-20</span></h3>
 
         <div class="qr-img-wrap">
-          <img src="Images/qr1.png" alt="QR" id="qImg1" class="qr-img" />
-          <div class="qr-badge" id="qBadge1">₮</div>
+          <img src="Images/trc_20_trust.jpeg" alt="QR Code" id="qImg1" class="qr-img" />
+          <div class="qr-badge" id="qBadge1">🛡️</div>
         </div>
 
         <div class="qr-row">
@@ -145,11 +145,11 @@
           <button class="copy-btn" onclick="copyAddr('qAddr1', this)">Copy Address</button>
         </div>
 
-        <div class="addr-box" id="qAddr1">TGG8P5LswwrGnrDsQaJJN9KziigrKSFEZeY</div>
+        <div class="addr-box" id="qAddr1">TGcrjJQWXvCuvkfgrbwYCUSx9gj3TBMqzr</div>
 
         <ul class="feat-list" id="feat1">
           <li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via TRC-20 network</span></li>
-          <li><span class="chk">✓</span><span>Fast confirmation (1–2 minutes)</span></li>
+          <li><span class="chk">✓</span><span>Confirmation time: 1–2 minutes</span></li>
         </ul>
 
         <button class="btn primary full mt20" onclick="openModal(1)">Submit Transaction Hash</button>
@@ -161,7 +161,7 @@
         <h3 class="qr-heading" id="qTitle2">Trust Wallet — <span class="gradient-text">BEP-20</span></h3>
 
         <div class="qr-img-wrap">
-          <img src="Images/qr2.png" alt="QR" id="qImg2" class="qr-img" />
+          <img src="Images/bep20_trust.jpeg" alt="QR Code" id="qImg2" class="qr-img" />
           <div class="qr-badge" id="qBadge2">💎</div>
         </div>
 
@@ -170,7 +170,7 @@
           <button class="copy-btn" onclick="copyAddr('qAddr2', this)">Copy Address</button>
         </div>
 
-        <div class="addr-box" id="qAddr2">0xdD7c6A6BFF0319fC28888DFcab8F360697f379B</div>
+        <div class="addr-box" id="qAddr2">0xdD7c6CA6Bf0319fC28888Dfcab8F360697f3979B</div>
 
         <ul class="feat-list" id="feat2">
           <li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via BEP-20 network</span></li>
@@ -205,24 +205,24 @@
     <div class="footer-brand">
       <div class="logo">
         <div class="logo-mark">
-          <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
-            <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="none" stroke="#00ffcc" stroke-width="1.5"/>
-            <circle cx="14" cy="14" r="3" fill="#00ffcc"/>
-          </svg>
+          <img src="Images/logo.png" alt="Algostech Logo" />
         </div>
         <span>Algostech</span>
       </div>
       <p>Built by Traders, for Traders.</p>
     </div>
-    <p class="footer-copy">© 2026 Algostech. All rights reserved.</p>
+    <p class="footer-copy">© 2018 Algostech. All rights reserved.</p>
   </div>
 </footer>
 
 <script>
-// Pre-fill from URL
+// Pre-fill amount from URL
 const params = new URLSearchParams(window.location.search);
 const pre = params.get('amount');
-if (pre) { document.getElementById('amountInput').value = pre; document.getElementById('usdtVal').textContent = parseFloat(pre).toFixed(2); }
+if (pre) {
+  document.getElementById('amountInput').value = pre;
+  document.getElementById('usdtVal').textContent = parseFloat(pre).toFixed(2);
+}
 
 document.getElementById('amountInput').addEventListener('input', e => {
   document.getElementById('usdtVal').textContent = (parseFloat(e.target.value) || 0).toFixed(2);
@@ -233,20 +233,24 @@ window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
 });
 
-// Steps
+// Step management
 function setStep(n) {
-  ['screen1','screen2','screen3'].forEach((id,i) => {
-    document.getElementById(id).classList.toggle('hidden', i+1 !== n);
+  ['screen1', 'screen2', 'screen3'].forEach((id, i) => {
+    document.getElementById(id).classList.toggle('hidden', i + 1 !== n);
   });
-  for (let i=1;i<=3;i++) {
-    const dot = document.getElementById('s'+i);
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('s' + i);
+    const lbl = document.getElementById('l' + i);
     dot.classList.toggle('active', i <= n);
     dot.classList.toggle('done', i < n);
+    if (lbl) {
+      lbl.classList.toggle('active', i <= n);
+    }
   }
-  for (let i=1;i<=2;i++) {
-    document.getElementById('t'+i).classList.toggle('active', i < n);
+  for (let i = 1; i <= 2; i++) {
+    document.getElementById('t' + i).classList.toggle('active', i < n);
   }
-  window.scrollTo({top:0, behavior:'smooth'});
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function goStep1() { setStep(1); }
@@ -259,7 +263,7 @@ function goStep2() {
 }
 
 function goStep3(wallet) {
-  const amt = parseFloat(document.getElementById('amountInput').value)||0;
+  const amt = parseFloat(document.getElementById('amountInput').value) || 0;
   document.getElementById('payBadge').textContent = `Pay $${amt.toFixed(2)} in USDT`;
 
   if (wallet === 'trust') {
@@ -269,19 +273,23 @@ function goStep3(wallet) {
     document.getElementById('net1').textContent = 'TRON (TRC-20)';
     document.getElementById('net2').textContent = 'BSC (BEP-20)';
     document.getElementById('qAddr1').textContent = 'TGcrjJQWXvCuvkfgrbwYCUSx9gj3TBMqzr';
-    document.getElementById('qAddr2').textContent = '0xdD7c6A6BFF0319fC28888DFcab8F360697f379B';
+    document.getElementById('qAddr2').textContent = '0xdD7c6CA6Bf0319fC28888Dfcab8F360697f3979B';
+    document.getElementById('qImg1').src = 'Images/trc_20_trust.jpeg';
+    document.getElementById('qImg2').src = 'Images/bep20_trust.jpeg';
     document.getElementById('qBadge1').textContent = '🛡️';
     document.getElementById('qBadge2').textContent = '💎';
     document.getElementById('feat1').innerHTML = `<li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via TRC-20 network</span></li><li><span class="chk">✓</span><span>Confirmation time: 1–2 minutes</span></li>`;
     document.getElementById('feat2').innerHTML = `<li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via BEP-20 network</span></li><li><span class="chk">✓</span><span>Low transaction fees</span></li>`;
   } else {
-    document.getElementById('s3Title').innerHTML = 'Crypto <span class="gradient-text">Payment</span>';
-    document.getElementById('qTitle1').innerHTML = 'Pay via <span class="gradient-text">TRC-20</span> (USDT)';
-    document.getElementById('qTitle2').innerHTML = 'Pay via <span class="gradient-text">BEP-20</span> (USDT)';
+    document.getElementById('s3Title').innerHTML = 'Binance <span class="gradient-text">Payment</span>';
+    document.getElementById('qTitle1').innerHTML = 'Binance — <span class="gradient-text">TRC-20</span>';
+    document.getElementById('qTitle2').innerHTML = 'Binance — <span class="gradient-text">BEP-20</span>';
     document.getElementById('net1').textContent = 'TRON (TRC-20)';
     document.getElementById('net2').textContent = 'BSC (BEP-20)';
-    document.getElementById('qAddr1').textContent = 'TGG8P5LswwrGnrDsQaJJN9KziigrKSFEZeY';
-    document.getElementById('qAddr2').textContent = '0x305a88662255fcf16e16d46B441633fd9Zfi';
+    document.getElementById('qAddr1').textContent = 'TGG8P5LsuwrGnrDGrQaJN9KzdjrKSFEZeY';
+    document.getElementById('qAddr2').textContent = '0x305c6a86962955cf16e18f691d48b841663fd976';
+    document.getElementById('qImg1').src = 'Images/binance-trc20.jpeg';
+    document.getElementById('qImg2').src = 'Images/binance-bep20.jpeg';
     document.getElementById('qBadge1').textContent = '₮';
     document.getElementById('qBadge2').textContent = '₮';
     document.getElementById('feat1').innerHTML = `<li><span class="chk">✓</span><span><span class="primary-txt">Send USDT</span> only via TRC-20 network</span></li><li><span class="chk">✓</span><span>Fast confirmation (1–2 minutes)</span></li>`;
@@ -290,7 +298,7 @@ function goStep3(wallet) {
   setStep(3);
 }
 
-// Copy
+// Copy address to clipboard
 function copyAddr(id, btn) {
   navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
     const orig = btn.textContent;
@@ -302,7 +310,7 @@ function copyAddr(id, btn) {
 
 // Modal
 function openModal(n) {
-  document.getElementById('hashInput').value='';
+  document.getElementById('hashInput').value = '';
   document.getElementById('hashOk').classList.add('hidden');
   document.getElementById('modal').classList.remove('hidden');
 }
@@ -312,7 +320,7 @@ function submitHash() {
   document.getElementById('hashOk').classList.remove('hidden');
   setTimeout(closeModal, 3000);
 }
-document.getElementById('modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+document.getElementById('modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 </script>
 </body>
 </html>
