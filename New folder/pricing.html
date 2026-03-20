@@ -32,7 +32,7 @@
     <li><a href="pricing.html" class="nav-link active">Pricing</a></li>
     <li><a href="index.html#payment" class="nav-link">Payment</a></li>
     <li><a href="contact.html" class="nav-link">Contact</a></li>
-    <li><button class="nav-btn" onclick="window.location.href='auth.html'">Login →</button></li>
+    <li><button class="nav-btn">Login →</button></li>
   </ul>
 
   <button class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -407,16 +407,11 @@ function toggleFaq(el) {
   if (!isOpen) el.classList.add('open');
 }
 
-// Scroll reveal — threshold 0 ensures cards trigger even when partially visible
+// Scroll reveal
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0 });
+}, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-// Fallback: make all cards visible after 500ms in case observer doesn't fire
-setTimeout(() => {
-  document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
-}, 500);
 </script>
 </body>
 </html>

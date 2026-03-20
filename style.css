@@ -1909,3 +1909,23 @@ footer { background: var(--bg-2); }
   height: 36px;
   object-fit: contain;
 }
+/* ---- PLAN BUTTON FIX ---- */
+.plan-btn {
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+  pointer-events: all !important;
+}
+.plan-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+.plan-card .plan-feature-list {
+  flex: 1;
+}

@@ -169,9 +169,8 @@ nav.scrolled {
 .pricing-card {
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 36px 30px;
-  position: relative; overflow: visible;
+  position: relative; overflow: hidden;
   transition: var(--transition);
-  display: flex; flex-direction: column;
 }
 
 .pricing-card:hover {
@@ -195,19 +194,15 @@ nav.scrolled {
   position: absolute; top: 0; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg, transparent, var(--primary), transparent);
   opacity: 0.5;
-  border-radius: var(--radius) var(--radius) 0 0;
-  pointer-events: none;
 }
 .featured .card-top-line { opacity: 1; }
 
 /* POPULAR BADGE */
 .popular-badge {
-  position: absolute; top: -1px; right: 18px;
+  position: absolute; top: 18px; right: 18px;
   background: var(--primary); color: #000;
   font-size: 0.65rem; font-weight: 700; font-family: var(--font-mono);
-  padding: 3px 12px; border-radius: 0 0 var(--radius-pill) var(--radius-pill);
-  letter-spacing: 0.05em;
-  z-index: 2;
+  padding: 3px 12px; border-radius: var(--radius-pill); letter-spacing: 0.05em;
 }
 
 /* PLAN HEADER */
@@ -235,7 +230,7 @@ nav.scrolled {
 .plan-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
 
 /* FEATURES */
-.plan-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; flex: 1; }
+.plan-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
 .plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: var(--text-dim); }
 
 .feat-icon {
@@ -367,14 +362,6 @@ footer { background: var(--bg-2); border-top: 1px solid var(--border); padding: 
 .reveal.visible { opacity: 1; transform: translateY(0); }
 .pricing-card.reveal.visible.featured { transform: scale(1.03); }
 .pricing-card.featured.reveal.visible:hover { transform: scale(1.03) translateY(-6px); }
-
-/* Ensure buttons always clickable regardless of animation state */
-.pricing-card .btn {
-  position: relative;
-  z-index: 5;
-  pointer-events: all !important;
-  cursor: pointer;
-}
 
 /* Stagger cards */
 .pricing-card:nth-child(1) { transition-delay: 0s; }
