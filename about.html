@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — Algostech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="about.css" />
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="orb orb-a"></div>
+<div class="orb orb-b"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="index.html" class="logo">
+    <div class="logo-mark">
+      <img src="Images/logo.png" alt="Algostech Logo" class="logo-img" />
+    </div>
+    <span>Algostech</span>
+  </a>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="nav-link">Home</a></li>
+    <li><a href="about.html" class="nav-link active">About</a></li>
+    <li><a href="index.html#services" class="nav-link">Services</a></li>
+    <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+    <li><a href="index.html#payment" class="nav-link">Payment</a></li>
+    <li><a href="contact.html" class="nav-link">Contact</a></li>
+    <li><button class="nav-btn" onclick="window.location.href='auth.html'">Login →</button></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-grid"></div>
+  <div class="page-hero-inner">
+    <span class="section-tag">WHO WE ARE</span>
+    <h1 class="page-title">About <span class="gradient-text">Algostech</span></h1>
+    <p class="page-desc">Empowering traders with next-generation algorithmic technology and institutional-grade intelligence.</p>
+  </div>
+</section>
+
+<!-- INTRO SECTION -->
+<section class="intro-section">
+  <div class="container intro-grid">
+
+    <div class="intro-visual reveal">
+      <div class="intro-img-zone">
+        <div class="intro-glow"></div>
+        <!-- Replace with your image: <img src="Images/about-team.jpg" alt="Algostech Team" class="intro-img-blend" /> -->
+        <div class="intro-img-placeholder">
+          <svg viewBox="0 0 480 380" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%">
+            <rect width="480" height="380" rx="20" fill="#080e1f"/>
+            <rect x="20" y="20" width="440" height="340" rx="12" fill="rgba(0,255,204,0.03)" stroke="rgba(0,255,204,0.1)" stroke-width="1"/>
+            <!-- Chart lines -->
+            <path d="M40,280 C80,260 120,240 160,220 C200,200 240,230 280,190 C320,150 360,170 400,130 L440,100" stroke="#00ffcc" stroke-width="2" fill="none"/>
+            <path d="M40,280 C80,260 120,240 160,220 C200,200 240,230 280,190 C320,150 360,170 400,130 L440,100 L440,340 L40,340Z" fill="url(#aGrad)" opacity="0.3"/>
+            <!-- Grid lines -->
+            <line x1="40" y1="100" x2="440" y2="100" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <line x1="40" y1="160" x2="440" y2="160" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <line x1="40" y1="220" x2="440" y2="220" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <line x1="40" y1="280" x2="440" y2="280" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <!-- Stats -->
+            <rect x="40" y="40" width="100" height="46" rx="8" fill="rgba(0,255,204,0.08)" stroke="rgba(0,255,204,0.2)" stroke-width="1"/>
+            <text x="52" y="58" font-size="9" fill="rgba(0,255,204,0.6)" font-family="monospace">TOTAL ROI</text>
+            <text x="52" y="76" font-size="16" font-weight="bold" fill="#00ffcc" font-family="monospace">+1,800%</text>
+            <rect x="160" y="40" width="100" height="46" rx="8" fill="rgba(0,194,255,0.08)" stroke="rgba(0,194,255,0.2)" stroke-width="1"/>
+            <text x="172" y="58" font-size="9" fill="rgba(0,194,255,0.6)" font-family="monospace">ACCURACY</text>
+            <text x="172" y="76" font-size="16" font-weight="bold" fill="#00c2ff" font-family="monospace">98.4%</text>
+            <rect x="280" y="40" width="100" height="46" rx="8" fill="rgba(245,193,108,0.08)" stroke="rgba(245,193,108,0.2)" stroke-width="1"/>
+            <text x="292" y="58" font-size="9" fill="rgba(245,193,108,0.6)" font-family="monospace">TRADERS</text>
+            <text x="292" y="76" font-size="16" font-weight="bold" fill="#f5c16c" font-family="monospace">12,000+</text>
+            <!-- Live dot -->
+            <circle cx="420" cy="130" r="6" fill="#00ffcc" opacity="0.9"/>
+            <circle cx="420" cy="130" r="12" fill="#00ffcc" opacity="0.15"/>
+            <defs>
+              <linearGradient id="aGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00ffcc" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#00ffcc" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <!-- Floating stat chips -->
+        <div class="float-chip chip-tl">
+          <div class="chip-label">Founded</div>
+          <div class="chip-val">2018</div>
+        </div>
+        <div class="float-chip chip-br">
+          <div class="chip-label">Daily Volume</div>
+          <div class="chip-val">$2.4M+</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intro-content reveal">
+      <span class="section-tag">OUR STORY</span>
+      <h2 class="section-title">Built by Traders,<br/><span class="gradient-text">for Traders</span></h2>
+      <p class="intro-p">At Algostech, we are dedicated to helping individuals and businesses achieve their financial goals through cutting-edge algorithmic trading services. Our algorithms are developed using advanced machine learning models and deployed on highly secure infrastructure, ensuring high-frequency trades with ultra-low latency and 100% automation across all major brokers worldwide.</p>
+      <p class="intro-p">Our team of experienced financial consultants brings deep expertise across investment management, Forex, and Comex markets. We take the time to understand your unique financial situation and craft a personalized strategy designed to meet your short-term and long-term objectives.</p>
+      <div class="intro-stats">
+        <div class="i-stat">
+          <span class="i-stat-num">7+</span>
+          <span class="i-stat-lbl">Years Experience</span>
+        </div>
+        <div class="i-stat-div"></div>
+        <div class="i-stat">
+          <span class="i-stat-num">12k+</span>
+          <span class="i-stat-lbl">Active Traders</span>
+        </div>
+        <div class="i-stat-div"></div>
+        <div class="i-stat">
+          <span class="i-stat-num">98.4%</span>
+          <span class="i-stat-lbl">Signal Accuracy</span>
+        </div>
+      </div>
+      <button class="btn primary" onclick="window.location.href='auth.html?tab=register'">Start Trading Today →</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- MISSION / VISION / WHY US -->
+<section class="mvw-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">WHAT DRIVES US</span>
+      <h2 class="section-title">Our <span class="gradient-text">Core Pillars</span></h2>
+      <p class="section-desc">The principles that guide every decision we make at Algostech.</p>
+    </div>
+
+    <div class="mvw-grid">
+
+      <div class="mvw-card reveal">
+        <div class="card-top-line"></div>
+        <div class="mvw-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 3L25 9v10L14 25 3 19V9L14 3z" stroke="#00ffcc" stroke-width="1.5" fill="rgba(0,255,204,0.08)"/>
+            <path d="M14 8l7 4v6l-7 4-7-4v-6l7-4z" fill="#00ffcc" opacity="0.3"/>
+            <circle cx="14" cy="14" r="3" fill="#00ffcc"/>
+          </svg>
+        </div>
+        <div class="mvw-num">01</div>
+        <h3>Our Mission</h3>
+        <p>To empower individuals and businesses to achieve their financial goals through expert guidance and cutting-edge algorithmic trading technology. We deliver personalized solutions and unparalleled service — helping clients make informed decisions and build a strong, scalable financial foundation through transparent and unbiased strategies.</p>
+      </div>
+
+      <div class="mvw-card featured reveal">
+        <div class="card-top-line"></div>
+        <div class="mvw-icon featured-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="10" stroke="#000" stroke-width="1.5" fill="none"/>
+            <path d="M14 6v3M14 19v3M6 14h3M19 14h3" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="14" cy="14" r="4" fill="#000" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="mvw-num">02</div>
+        <h3>Our Vision</h3>
+        <p>To be a leading algorithmic trading firm recognized globally for our integrity, precision, and commitment to client success. We aim to foster long-term relationships built on trust and mutual growth — continuously innovating to ensure our clients are equipped with the most advanced financial tools available in an ever-evolving market landscape.</p>
+      </div>
+
+      <div class="mvw-card reveal">
+        <div class="card-top-line"></div>
+        <div class="mvw-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M4,22 L8,14 L12,17 L16,10 L20,13 L24,5" stroke="#00ffcc" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="24" cy="5" r="3" fill="#00ffcc"/>
+            <path d="M4,26 L24,26" stroke="#00ffcc" stroke-width="1" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="mvw-num">03</div>
+        <h3>Why Algostech</h3>
+        <p>We combine deep financial expertise with institutional-grade technology. Our algorithms operate 24/7, executing trades with sub-millisecond precision across Forex, Comex, and US markets. We offer transparent reporting, dedicated support, and performance-first strategies — all designed to maximize your capital while minimizing your risk exposure.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US — DETAILED -->
+<section class="why-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">OUR EDGE</span>
+      <h2 class="section-title">Why Choose <span class="gradient-text">Algostech</span></h2>
+      <p class="section-desc">Eight reasons thousands of traders trust us with their capital.</p>
+    </div>
+
+    <div class="why-grid">
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <h4>Deep Expertise</h4>
+        <p>Our consultants stay ahead of market trends, regulations, and innovations to deliver accurate, relevant guidance at every step.</p>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="1.8"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        </div>
+        <h4>Personalized Plans</h4>
+        <p>Every client gets a custom strategy — we design plans around your risk appetite, capital size, and financial objectives.</p>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <h4>24/7 Automation</h4>
+        <p>Our algorithms trade around the clock with zero downtime — capturing every opportunity across global markets without manual intervention.</p>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="1.8"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <h4>Transparent Reporting</h4>
+        <p>Live dashboard access with real-time P&L tracking, trade history, and performance analytics — full visibility into your account at all times.</p>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h4>Capital Protection</h4>
+        <p>Advanced drawdown controls and smart stop-loss automation protect your capital even in volatile market conditions.</p>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h4>Dedicated Support</h4>
+        <p>Access our team Monday to Saturday, 9AM–6:30PM via WhatsApp, email, or phone. You're never trading alone.</p>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <h4>Competitive Pricing</h4>
+        <p>Flexible plans designed to suit every budget — from beginner traders to institutional investors seeking maximum performance.</p>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+        </div>
+        <h4>Online & Offline Access</h4>
+        <p>Manage your portfolio from anywhere — our platform works seamlessly across desktop, mobile, and tablet devices at any time.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-glow"></div>
+      <span class="section-tag" style="background:rgba(0,0,0,0.1);border-color:rgba(0,0,0,0.15);color:#000;">GET STARTED</span>
+      <h2 class="cta-title">Ready to Transform Your Trading?</h2>
+      <p class="cta-desc">Join 12,000+ traders already growing their wealth with Algostech AI.</p>
+      <div class="cta-actions">
+        <button class="btn dark" onclick="window.location.href='auth.html?tab=register'">Create Free Account</button>
+        <button class="btn ghost-dark" onclick="window.location.href='pricing.html'">View Pricing Plans</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="container footer-grid">
+
+      <div class="footer-col footer-brand-col">
+        <div class="logo footer-logo">
+          <div class="logo-mark">
+            <img src="Images/logo.png" alt="Algostech Logo" class="logo-img" />
+          </div>
+          <span>Algostech</span>
+        </div>
+        <p class="footer-brand-desc">Algostech offers investment opportunities in various global markets including FOREX, COMEX to help clients achieve financial freedom.</p>
+        <div class="footer-social">
+          <a href="#" class="social-icon" aria-label="Twitter"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="#" class="social-icon" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+          <a href="#" class="social-icon" aria-label="YouTube"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="#" class="social-icon telegram-icon" aria-label="Telegram"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Quick Links</div>
+        <ul class="footer-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="index.html#payment">Payment</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Policies</div>
+        <ul class="footer-list">
+          <li><a href="#">Terms and Conditions</a></li>
+          <li><a href="#">Disclaimer</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Refund Policy</a></li>
+          <li><a href="#">Benefits of Forex</a></li>
+          <li><a href="#">Benefits of Comex</a></li>
+          <li><a href="#">Live Accounts</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Contact Us</div>
+        <ul class="footer-contact-list">
+          <li>
+            <span class="footer-contact-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4d7d" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.91a16 16 0 006.59 6.59l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+            <a href="tel:+919371117790">+91 9371117790</a>
+          </li>
+          <li>
+            <span class="footer-contact-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e8edf8" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></span>
+            <a href="mailto:support@algostech.com">support@algostech.com</a>
+          </li>
+          <li>
+            <span class="footer-contact-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ff4d7d"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></span>
+            <span>Al Moosa Tower 2, Sheikh Zayed Road, Near Future Museum, Dubai, UAE</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>© 2018 Algostech · All Rights Reserved</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('active');
+}
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+setTimeout(() => { document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible')); }, 600);
+</script>
+</body>
+</html>
