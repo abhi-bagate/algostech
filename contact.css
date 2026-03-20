@@ -69,12 +69,21 @@ button { cursor: pointer; font-family: var(--font-body); }
 }
 
 /* ======================== NAV ======================== */
+
+
+.logo-mark img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
 nav {
   position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 5%; z-index: 1000;
   transition: var(--transition); border-bottom: 1px solid transparent;
 }
+
 
 nav.scrolled {
   background: rgba(5, 9, 20, 0.92);
