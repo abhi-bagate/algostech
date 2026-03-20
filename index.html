@@ -30,7 +30,7 @@
     <li><a href="pricing.html" class="nav-link">Pricing</a></li>
     <li><a href="#payment" class="nav-link">Payment</a></li>
     <li><a href="contact.html" class="nav-link">Contact</a></li>
-    <li><button class="nav-btn">Login →</button></li>
+    <button class="nav-btn" onclick="window.location.href='auth.html'">Login →</button>
   </ul>
 
   <button class="hamburger" id="hamburger" aria-label="Toggle menu" onclick="toggleMenu()">
@@ -79,10 +79,7 @@
       </div>
 
       <div class="hero-actions">
-        <button class="btn primary">Get Started Free</button>
-        <button class="btn ghost">
-          <span class="play-icon">▶</span> Watch Demo
-        </button>
+        <button class="btn primary" onclick="window.location.href='auth.html'">Get Started</button>
       </div>
     </div>
 
@@ -161,69 +158,42 @@
   <div class="container">
     <div class="section-header">
       <span class="section-tag">WHAT WE OFFER</span>
-      <h2 class="section-title">Our <span class="gradient-text">Services</span></h2>
-      <p class="section-desc">Precision-built tools to give you the ultimate trading edge.</p>
+      <h2 class="section-title" style="font-size:clamp(2.2rem,5vw,3.5rem);">Our All <span class="gradient-text">Services</span></h2>
     </div>
 
-    <div class="services-grid">
+    <div class="services-grid" style="grid-template-columns:repeat(3,1fr);align-items:start;">
+
       <div class="service-card">
-        <div class="service-icon">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <rect x="4" y="20" width="4" height="8" fill="#00ffcc" opacity="0.4"/>
-            <rect x="10" y="14" width="4" height="14" fill="#00ffcc" opacity="0.6"/>
-            <rect x="16" y="8" width="4" height="20" fill="#00ffcc" opacity="0.8"/>
-            <rect x="22" y="4" width="4" height="24" fill="#00ffcc"/>
-          </svg>
-        </div>
-        <div class="service-num">01</div>
-        <h3>Algo Trading</h3>
-        <p>Automated strategies for consistent and scalable profits with zero manual effort.</p>
-        <a href="#" class="service-link">Learn more →</a>
+        <div class="card-top-line"></div>
+        <h3>Route</h3>
+        <ul class="service-list">
+          <li><span class="s-check">✓</span>Embark on your trading journey with The Route, an entry-level service dedicated to providing high-quality Forex signals with a strong focus on risk management and profitability.</li>
+          <li><span class="s-check">✓</span>Gain access to expert trading advice, boasting a 1:2 risk and reward ratio.</li>
+          <li><span class="s-check">✓</span>Perfect for beginners seeking a structured and reliable trading system.</li>
+        </ul>
       </div>
 
       <div class="service-card featured">
-        <div class="service-icon">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <circle cx="16" cy="16" r="10" stroke="#00ffcc" stroke-width="1.5" fill="none"/>
-            <circle cx="16" cy="16" r="4" fill="#00ffcc"/>
-            <line x1="16" y1="2" x2="16" y2="8" stroke="#00ffcc" stroke-width="1.5"/>
-            <line x1="16" y1="24" x2="16" y2="30" stroke="#00ffcc" stroke-width="1.5"/>
-            <line x1="2" y1="16" x2="8" y2="16" stroke="#00ffcc" stroke-width="1.5"/>
-            <line x1="24" y1="16" x2="30" y2="16" stroke="#00ffcc" stroke-width="1.5"/>
-          </svg>
-        </div>
-        <div class="service-num">02</div>
-        <h3>AI Signals</h3>
-        <p>Real-time market signals powered by machine learning with 98%+ accuracy.</p>
-        <a href="#" class="service-link">Learn more →</a>
+        <div class="card-top-line"></div>
         <div class="featured-badge">Popular</div>
+        <h3>Detour</h3>
+        <ul class="service-list">
+          <li><span class="s-check">✓</span>Welcome to Detour, your ultimate trading destination for Forex, Comex, and US market trading.</li>
+          <li><span class="s-check">✓</span>Gain access to high-tech algorithm-generated advice seamlessly traded in your preferred segment.</li>
+          <li><span class="s-check">✓</span>Equipped with essential tools to thrive in the fast-paced world of modern trading.</li>
+        </ul>
       </div>
 
       <div class="service-card">
-        <div class="service-icon">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <polygon points="16,3 29,10 29,22 16,29 3,22 3,10" stroke="#00ffcc" stroke-width="1.5" fill="none"/>
-            <text x="12" y="20" font-size="12" fill="#00ffcc" font-weight="bold">Au</text>
-          </svg>
-        </div>
-        <div class="service-num">03</div>
-        <h3>Commodities</h3>
-        <p>Advanced trading in Gold, Silver & global commodities with deep market insights.</p>
-        <a href="#" class="service-link">Learn more →</a>
+        <div class="card-top-line"></div>
+        <h3>Destination</h3>
+        <ul class="service-list">
+          <li><span class="s-check">✓</span>Welcome to Destination, the premium service tailored for High Net Worth Individuals (HNIs) who prioritize accuracy and substantial trades.</li>
+          <li><span class="s-check">✓</span>Covers Forex, Comex, and US market trading with expert algorithmic automated trades.</li>
+          <li><span class="s-check">✓</span>Advice across all three major market segments for maximum portfolio growth.</li>
+        </ul>
       </div>
 
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path d="M4,28 L10,18 L16,22 L22,12 L28,4" stroke="#00ffcc" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <circle cx="28" cy="4" r="3" fill="#00ffcc"/>
-          </svg>
-        </div>
-        <div class="service-num">04</div>
-        <h3>Risk Management</h3>
-        <p>Smart capital protection with optimized drawdown control and stop-loss automation.</p>
-        <a href="#" class="service-link">Learn more →</a>
-      </div>
     </div>
   </div>
 </section>
@@ -334,7 +304,7 @@
       <h2 class="cta-title">Ready to Scale Your Trading?</h2>
       <p class="cta-desc">Join 12,000+ traders already profiting with Algostech AI.</p>
       <div class="cta-actions">
-        <button class="btn dark">Create Free Account</button>
+        <button class="btn dark" onclick="window.location.href='auth.html?tab=register'">Create Free Account</button>
         <button class="btn ghost-dark" onclick="window.location.href='pricing.html'">View Pricing Plans</button>
       </div>
     </div>
@@ -361,7 +331,7 @@
       <a href="#">Pricing</a>
       <a href="contact.html">Contact</a>
     </div>
-    <p class="footer-copy">© 2026 Algostech. All rights reserved.</p>
+    <p class="footer-copy">© 2018 Algostech. All rights reserved.</p>
   </div>
 </footer>
 

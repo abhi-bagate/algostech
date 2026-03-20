@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algostech — AI Powered Forex Trading</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="noise"></div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#hero" class="logo">
+    <div class="logo-mark">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="none" stroke="#00ffcc" stroke-width="1.5"/>
+        <polygon points="14,7 21,11 21,17 14,21 7,17 7,11" fill="#00ffcc" opacity="0.15"/>
+        <circle cx="14" cy="14" r="3" fill="#00ffcc"/>
+      </svg>
+    </div>
+    <span>Algostech</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#hero" class="nav-link">Home</a></li>
+    <li><a href="#about" class="nav-link">About</a></li>
+    <li><a href="#services" class="nav-link">Services</a></li>
+    <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+    <li><a href="#payment" class="nav-link">Payment</a></li>
+    <li><a href="contact.html" class="nav-link">Contact</a></li>
+    <li><button class="nav-btn" onclick="window.location.href='auth.html'">Login →</button></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-grid"></div>
+  <div class="container hero-container">
+    <div class="hero-left">
+      <div class="hero-badge"><span class="badge-dot"></span><span>Live AI Engine Active</span></div>
+      <h1 class="hero-title">
+        New-gen of<br/>
+        <span class="gold-text">digital currency</span>
+      </h1>
+      <p class="hero-desc">Algostech offers investment opportunities in various global markets including FOREX, COMEX, to help clients achieve financial freedom.</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">98.4<span class="stat-unit">%</span></span><span class="stat-label">Signal Accuracy</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">12k<span class="stat-unit">+</span></span><span class="stat-label">Active Traders</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">$2.4<span class="stat-unit">M</span></span><span class="stat-label">Daily Volume</span></div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn gold-btn" onclick="window.location.href='auth.html?tab=register'">Join Us</button>
+        <button class="btn ghost" onclick="window.location.href='auth.html'"><span class="play-icon">▶</span> Login</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual-wrap">
+        <!-- Crypto coins SVG illustration that blends with the dark bg -->
+        <div class="hero-visual-glow"></div>
+        <svg class="hero-coins-svg" viewBox="0 0 480 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Circular platform rings -->
+          <ellipse cx="280" cy="340" rx="170" ry="44" stroke="#c8922a" stroke-width="1.2" opacity="0.5"/>
+          <ellipse cx="280" cy="340" rx="140" ry="36" stroke="#c8922a" stroke-width="1" opacity="0.4"/>
+          <ellipse cx="280" cy="340" rx="110" ry="28" stroke="#c8922a" stroke-width="0.8" opacity="0.35"/>
+          <ellipse cx="280" cy="340" rx="82" ry="21" stroke="#c8922a" stroke-width="0.7" opacity="0.3"/>
+          <ellipse cx="280" cy="340" rx="56" ry="14" stroke="#c8922a" stroke-width="0.6" opacity="0.25"/>
+          <!-- Platform top surface -->
+          <ellipse cx="280" cy="310" rx="110" ry="28" fill="url(#platformGrad)" opacity="0.6"/>
+          <!-- Pillar/pedestal sides -->
+          <path d="M170,310 L170,355 Q280,375 390,355 L390,310 Q280,330 170,310Z" fill="url(#pillarGrad)" opacity="0.5"/>
+          <!-- Gold wave bottom-left -->
+          <path d="M-10,400 Q60,370 120,390 Q180,410 240,385 Q300,360 360,380 Q420,400 480,375" stroke="url(#waveGrad)" stroke-width="2.5" fill="none" opacity="0.6"/>
+          <path d="M-10,420 Q60,395 130,410 Q200,425 260,405 Q320,385 380,400 Q430,415 480,400" stroke="url(#waveGrad2)" stroke-width="1.5" fill="none" opacity="0.4"/>
+          <!-- Network lines top-right -->
+          <line x1="320" y1="20" x2="390" y2="60" stroke="#c8922a" stroke-width="0.7" opacity="0.5"/>
+          <line x1="390" y1="60" x2="440" y2="30" stroke="#c8922a" stroke-width="0.7" opacity="0.4"/>
+          <line x1="390" y1="60" x2="430" y2="100" stroke="#c8922a" stroke-width="0.7" opacity="0.4"/>
+          <line x1="350" y1="40" x2="390" y2="60" stroke="#c8922a" stroke-width="0.5" opacity="0.3"/>
+          <line x1="320" y1="20" x2="360" y2="10" stroke="#c8922a" stroke-width="0.5" opacity="0.3"/>
+          <line x1="440" y1="30" x2="470" y2="50" stroke="#c8922a" stroke-width="0.5" opacity="0.25"/>
+          <line x1="430" y1="100" x2="460" y2="130" stroke="#c8922a" stroke-width="0.5" opacity="0.25"/>
+          <!-- Node dots -->
+          <circle cx="320" cy="20" r="3.5" fill="#f5c16c" opacity="0.8"/>
+          <circle cx="390" cy="60" r="4" fill="#f5c16c" opacity="0.9"/>
+          <circle cx="440" cy="30" r="3" fill="#f5c16c" opacity="0.7"/>
+          <circle cx="430" cy="100" r="3.5" fill="#f5c16c" opacity="0.7"/>
+          <circle cx="360" cy="10" r="2.5" fill="#f5c16c" opacity="0.6"/>
+          <circle cx="470" cy="50" r="2.5" fill="#f5c16c" opacity="0.5"/>
+          <circle cx="460" cy="130" r="2.5" fill="#f5c16c" opacity="0.5"/>
+
+          <!-- BTC coin (largest, center-front) -->
+          <g transform="translate(230,190)" class="coin-float-0">
+            <circle cx="50" cy="50" r="50" fill="url(#btcGrad)"/>
+            <circle cx="50" cy="50" r="44" fill="none" stroke="#f5c16c" stroke-width="1.5" opacity="0.6"/>
+            <circle cx="50" cy="50" r="38" fill="url(#btcInner)"/>
+            <text x="50" y="58" text-anchor="middle" font-size="28" font-weight="bold" fill="#1a0e00" font-family="serif">₿</text>
+          </g>
+
+          <!-- Dollar coin (top-left of BTC) -->
+          <g transform="translate(155,100)" class="coin-float-1">
+            <circle cx="38" cy="38" r="38" fill="url(#dollarGrad)"/>
+            <circle cx="38" cy="38" r="32" fill="none" stroke="#f5c16c" stroke-width="1.2" opacity="0.5"/>
+            <circle cx="38" cy="38" r="26" fill="url(#dollarInner)"/>
+            <text x="38" y="46" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a0e00" font-family="serif">$</text>
+          </g>
+
+          <!-- Yen coin (top-right) -->
+          <g transform="translate(310,60)" class="coin-float-2">
+            <circle cx="36" cy="36" r="36" fill="url(#yenGrad)"/>
+            <circle cx="36" cy="36" r="30" fill="none" stroke="#f5c16c" stroke-width="1.2" opacity="0.5"/>
+            <circle cx="36" cy="36" r="24" fill="url(#yenInner)"/>
+            <text x="36" y="44" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a0e00" font-family="serif">¥</text>
+          </g>
+
+          <!-- Euro coin (right) -->
+          <g transform="translate(380,140)" class="coin-float-3">
+            <circle cx="34" cy="34" r="34" fill="url(#euroGrad)"/>
+            <circle cx="34" cy="34" r="28" fill="none" stroke="#f5c16c" stroke-width="1.2" opacity="0.5"/>
+            <circle cx="34" cy="34" r="22" fill="url(#euroInner)"/>
+            <text x="34" y="42" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a0e00" font-family="serif">€</text>
+          </g>
+
+          <defs>
+            <linearGradient id="platformGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c8922a" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#7a5010" stop-opacity="0.2"/>
+            </linearGradient>
+            <linearGradient id="pillarGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a07020" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#3d2808" stop-opacity="0.1"/>
+            </linearGradient>
+            <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#f5c16c" stop-opacity="0"/>
+              <stop offset="30%" stop-color="#f5c16c" stop-opacity="0.7"/>
+              <stop offset="70%" stop-color="#c8922a" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#c8922a" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="waveGrad2" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#f5c16c" stop-opacity="0"/>
+              <stop offset="50%" stop-color="#f5c16c" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#f5c16c" stop-opacity="0"/>
+            </linearGradient>
+            <radialGradient id="btcGrad" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#f5d070"/>
+              <stop offset="50%" stop-color="#e8952a"/>
+              <stop offset="100%" stop-color="#a05e10"/>
+            </radialGradient>
+            <radialGradient id="btcInner" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#f0c050"/>
+              <stop offset="100%" stop-color="#c07820"/>
+            </radialGradient>
+            <radialGradient id="dollarGrad" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#f5d070"/>
+              <stop offset="50%" stop-color="#e8952a"/>
+              <stop offset="100%" stop-color="#9a5810"/>
+            </radialGradient>
+            <radialGradient id="dollarInner" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#f0c050"/>
+              <stop offset="100%" stop-color="#b87018"/>
+            </radialGradient>
+            <radialGradient id="yenGrad" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#f8d880"/>
+              <stop offset="50%" stop-color="#e8952a"/>
+              <stop offset="100%" stop-color="#9a5810"/>
+            </radialGradient>
+            <radialGradient id="yenInner" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#f0c858"/>
+              <stop offset="100%" stop-color="#b87018"/>
+            </radialGradient>
+            <radialGradient id="euroGrad" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#f5d070"/>
+              <stop offset="50%" stop-color="#d88520"/>
+              <stop offset="100%" stop-color="#9a5810"/>
+            </radialGradient>
+            <radialGradient id="euroInner" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#f0c050"/>
+              <stop offset="100%" stop-color="#b07018"/>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- ===== TRUSTED BROKERS ===== -->
+<section class="brokers-section">
+  <div class="container">
+    <p class="brokers-title">Trusted Over 80k+ Companies in the World — <span class="gradient-text">Trusted Brokers</span></p>
+  </div>
+  <div class="brokers-track-wrap">
+    <div class="brokers-track">
+      <div class="broker-logo"><span class="bl-exness">✕ exness</span></div>
+      <div class="broker-logo"><span class="bl-binance">⬡ BINANCE</span></div>
+      <div class="broker-logo"><span class="bl-white">CMS PRIME</span></div>
+      <div class="broker-logo"><span class="bl-white">IG <small>Group</small></span></div>
+      <div class="broker-logo"><span class="bl-white">OANDA</span></div>
+      <div class="broker-logo"><span class="bl-cyan">XM Global</span></div>
+      <div class="broker-logo"><span class="bl-white">IC Markets</span></div>
+      <div class="broker-logo"><span class="bl-white">Pepperstone</span></div>
+      <!-- duplicate for seamless loop -->
+      <div class="broker-logo"><span class="bl-exness">✕ exness</span></div>
+      <div class="broker-logo"><span class="bl-binance">⬡ BINANCE</span></div>
+      <div class="broker-logo"><span class="bl-white">CMS PRIME</span></div>
+      <div class="broker-logo"><span class="bl-white">IG <small>Group</small></span></div>
+      <div class="broker-logo"><span class="bl-white">OANDA</span></div>
+      <div class="broker-logo"><span class="bl-cyan">XM Global</span></div>
+      <div class="broker-logo"><span class="bl-white">IC Markets</span></div>
+      <div class="broker-logo"><span class="bl-white">Pepperstone</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="about" id="about">
+  <div class="container about-container">
+    <div class="about-visual">
+      <div class="about-orb"></div>
+      <div class="about-devices-wrap">
+        <!-- Laptop with live trading dashboard screenshot -->
+        <div class="about-laptop-wrap">
+          <div class="about-laptop-frame">
+            <div class="about-laptop-screen">
+              <!-- Trading dashboard inside screen using SVG -->
+              <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                <!-- BG -->
+                <rect width="400" height="240" fill="#0d1117"/>
+                <!-- Sidebar -->
+                <rect width="48" height="240" fill="#161b22"/>
+                <circle cx="24" cy="28" r="10" fill="#f5c16c" opacity="0.9"/>
+                <rect x="8" y="55" width="32" height="5" rx="2" fill="#30363d"/>
+                <rect x="8" y="68" width="32" height="5" rx="2" fill="#30363d"/>
+                <rect x="8" y="81" width="32" height="5" rx="2" fill="#30363d"/>
+                <rect x="8" y="94" width="32" height="5" rx="2" fill="#00ffcc" opacity="0.6"/>
+                <rect x="8" y="107" width="32" height="5" rx="2" fill="#30363d"/>
+                <!-- Header -->
+                <rect x="48" y="0" width="352" height="28" fill="#161b22"/>
+                <rect x="56" y="8" width="60" height="12" rx="3" fill="#21262d"/>
+                <rect x="124" y="8" width="60" height="12" rx="3" fill="#21262d"/>
+                <rect x="192" y="8" width="60" height="12" rx="3" fill="#21262d"/>
+                <!-- Stat cards row -->
+                <rect x="56" y="36" width="80" height="44" rx="4" fill="#161b22"/>
+                <rect x="144" y="36" width="80" height="44" rx="4" fill="#161b22"/>
+                <rect x="232" y="36" width="80" height="44" rx="4" fill="#161b22"/>
+                <rect x="320" y="36" width="76" height="44" rx="4" fill="#161b22"/>
+                <!-- Stat labels -->
+                <text x="68" y="52" font-size="6" fill="#8b949e" font-family="monospace">PROFIT/LOSS</text>
+                <text x="68" y="66" font-size="9" font-weight="bold" fill="#00ffcc" font-family="monospace">+$54,010</text>
+                <text x="156" y="52" font-size="6" fill="#8b949e" font-family="monospace">OVERALL ROI</text>
+                <text x="156" y="66" font-size="9" font-weight="bold" fill="#00ffcc" font-family="monospace">1,800%</text>
+                <text x="244" y="52" font-size="6" fill="#8b949e" font-family="monospace">CAPITAL</text>
+                <text x="244" y="66" font-size="9" font-weight="bold" fill="#e8edf8" font-family="monospace">$3,000</text>
+                <text x="332" y="52" font-size="6" fill="#8b949e" font-family="monospace">TOTAL TRADES</text>
+                <text x="332" y="66" font-size="9" font-weight="bold" fill="#e8edf8" font-family="monospace">890</text>
+                <!-- Chart area -->
+                <rect x="56" y="88" width="340" height="110" rx="4" fill="#161b22"/>
+                <text x="68" y="102" font-size="7" fill="#8b949e" font-family="monospace">P/L OVER TIME</text>
+                <!-- Chart grid lines -->
+                <line x1="68" y1="186" x2="384" y2="186" stroke="#21262d" stroke-width="0.5"/>
+                <line x1="68" y1="170" x2="384" y2="170" stroke="#21262d" stroke-width="0.5"/>
+                <line x1="68" y1="154" x2="384" y2="154" stroke="#21262d" stroke-width="0.5"/>
+                <line x1="68" y1="138" x2="384" y2="138" stroke="#21262d" stroke-width="0.5"/>
+                <!-- Chart line -->
+                <defs>
+                  <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#00ffcc" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#00ffcc" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M68,182 C88,178 108,168 128,170 C148,172 168,160 188,152 C208,144 228,156 248,140 C268,124 288,134 308,112 C328,90 348,105 368,94 L384,90" stroke="#00ffcc" stroke-width="1.8" fill="none"/>
+                <path d="M68,182 C88,178 108,168 128,170 C148,172 168,160 188,152 C208,144 228,156 248,140 C268,124 288,134 308,112 C328,90 348,105 368,94 L384,90 L384,186 L68,186Z" fill="url(#cg)"/>
+                <circle cx="384" cy="90" r="3" fill="#00ffcc"/>
+                <!-- Table rows -->
+                <rect x="56" y="204" width="340" height="10" rx="2" fill="#161b22"/>
+                <rect x="56" y="218" width="340" height="10" rx="2" fill="#161b22"/>
+                <rect x="68" y="207" width="40" height="4" rx="1" fill="#21262d"/>
+                <rect x="116" y="207" width="30" height="4" rx="1" fill="#00ffcc" opacity="0.4"/>
+                <rect x="154" y="207" width="30" height="4" rx="1" fill="#21262d"/>
+                <rect x="68" y="221" width="40" height="4" rx="1" fill="#21262d"/>
+                <rect x="116" y="221" width="30" height="4" rx="1" fill="rgba(255,90,90,0.4)"/>
+                <rect x="154" y="221" width="30" height="4" rx="1" fill="#21262d"/>
+              </svg>
+            </div>
+            <div class="about-laptop-chin"></div>
+          </div>
+          <div class="about-laptop-base"></div>
+          <div class="about-laptop-stand"></div>
+        </div>
+
+        <!-- Phone overlapping bottom-left -->
+        <div class="about-phone-wrap">
+          <div class="about-phone-frame">
+            <div class="about-phone-screen">
+              <svg viewBox="0 0 100 190" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                <rect width="100" height="190" fill="#0d1117"/>
+                <!-- Status bar -->
+                <rect width="100" height="14" fill="#161b22"/>
+                <text x="8" y="10" font-size="5" fill="#8b949e" font-family="monospace">9:41</text>
+                <text x="70" y="10" font-size="5" fill="#8b949e" font-family="monospace">●●●</text>
+                <!-- Header -->
+                <text x="50" y="30" text-anchor="middle" font-size="7" font-weight="bold" fill="#e8edf8" font-family="monospace">Portfolio</text>
+                <!-- Big profit number -->
+                <text x="50" y="52" text-anchor="middle" font-size="14" font-weight="bold" fill="#00ffcc" font-family="monospace">+$4,218</text>
+                <text x="50" y="63" text-anchor="middle" font-size="6" fill="#8b949e" font-family="monospace">Today's Profit</text>
+                <!-- Donut chart area -->
+                <circle cx="50" cy="100" r="26" fill="none" stroke="#21262d" stroke-width="8"/>
+                <circle cx="50" cy="100" r="26" fill="none" stroke="#00ffcc" stroke-width="8" stroke-dasharray="100 64" stroke-dashoffset="25" stroke-linecap="round"/>
+                <circle cx="50" cy="100" r="26" fill="none" stroke="#f5c16c" stroke-width="8" stroke-dasharray="40 124" stroke-dashoffset="-75" stroke-linecap="round"/>
+                <text x="50" y="103" text-anchor="middle" font-size="8" font-weight="bold" fill="#e8edf8" font-family="monospace">61%</text>
+                <!-- Bar chart -->
+                <rect x="12" y="140" width="10" height="20" rx="2" fill="#00ffcc" opacity="0.7"/>
+                <rect x="26" y="132" width="10" height="28" rx="2" fill="#00ffcc" opacity="0.8"/>
+                <rect x="40" y="128" width="10" height="32" rx="2" fill="#00ffcc"/>
+                <rect x="54" y="135" width="10" height="25" rx="2" fill="#f5c16c" opacity="0.8"/>
+                <rect x="68" y="142" width="10" height="18" rx="2" fill="rgba(255,90,90,0.7)"/>
+                <rect x="82" y="138" width="10" height="22" rx="2" fill="#00ffcc" opacity="0.6"/>
+                <!-- Bottom tab bar -->
+                <rect x="0" y="172" width="100" height="18" fill="#161b22"/>
+                <text x="17" y="183" text-anchor="middle" font-size="8" fill="#00ffcc">⊞</text>
+                <text x="50" y="183" text-anchor="middle" font-size="8" fill="#8b949e">↗</text>
+                <text x="83" y="183" text-anchor="middle" font-size="8" fill="#8b949e">👤</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating stat chips -->
+        <div class="device-float df1"><div class="df-label">ROI</div><div class="df-val">+1,800%</div></div>
+        <div class="device-float df2"><div class="df-label">Accuracy</div><div class="df-val">98.4%</div></div>
+      </div>
+    </div>
+
+    <div class="about-content">
+      <span class="section-tag">ABOUT US</span>
+      <h2 class="section-title">About <span class="gradient-text">Algostech</span></h2>
+      <p class="about-p">At Algostech, we are dedicated to helping individuals and businesses achieve their financial goals. Our team of experienced financial consultants have a wealth of knowledge and expertise in various financial areas such as investment management, Forex, and Comex.</p>
+      <p class="about-p">We combine deep learning models with real-time data to power every trade — making algorithmic trading accessible, reliable, and profitable for every trader.</p>
+      <div class="about-features">
+        <div class="af-item"><div class="af-check">✓</div><span>No coding required — fully automated</span></div>
+        <div class="af-item"><div class="af-check">✓</div><span>24/7 market monitoring & execution</span></div>
+        <div class="af-item"><div class="af-check">✓</div><span>Institutional-grade risk controls</span></div>
+        <div class="af-item"><div class="af-check">✓</div><span>FOREX, COMEX & US markets covered</span></div>
+      </div>
+      <button class="btn primary" onclick="window.location.href='auth.html?tab=register'">Get Started →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">WHAT WE OFFER</span>
+      <h2 class="section-title" style="font-size:clamp(2.2rem,5vw,3.5rem);">Our All <span class="gradient-text">Services</span></h2>
+      <p class="section-desc">Precision-built tools to give you the ultimate trading edge.</p>
+    </div>
+    <div class="services-grid" style="grid-template-columns:repeat(3,1fr);align-items:start;">
+      <div class="service-card reveal">
+        <div class="card-top-line"></div>
+        <div class="service-num">01</div>
+        <h3>Route</h3>
+        <ul class="service-list">
+          <li><span class="s-check">✓</span>Embark on your trading journey with The Route, an entry-level service dedicated to providing high-quality Forex signals with a strong focus on risk management and profitability.</li>
+          <li><span class="s-check">✓</span>Gain access to expert trading advice, boasting a 1:2 risk and reward ratio.</li>
+          <li><span class="s-check">✓</span>Perfect for beginners seeking a structured and reliable trading system.</li>
+        </ul>
+        <a href="pricing.html" class="service-link">View Pricing →</a>
+      </div>
+      <div class="service-card featured reveal">
+        <div class="card-top-line"></div>
+        <div class="featured-badge">Popular</div>
+        <div class="service-num">02</div>
+        <h3>Detour</h3>
+        <ul class="service-list">
+          <li><span class="s-check">✓</span>Welcome to Detour, your ultimate trading destination for Forex, Comex, and US market trading.</li>
+          <li><span class="s-check">✓</span>Gain access to high-tech algorithm-generated advice seamlessly traded in your preferred segment.</li>
+          <li><span class="s-check">✓</span>Equipped with essential tools to thrive in the fast-paced world of modern trading.</li>
+        </ul>
+        <a href="pricing.html" class="service-link">View Pricing →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="card-top-line"></div>
+        <div class="service-num">03</div>
+        <h3>Destination</h3>
+        <ul class="service-list">
+          <li><span class="s-check">✓</span>Welcome to Destination, the premium service tailored for High Net Worth Individuals (HNIs) who prioritize accuracy and substantial trades.</li>
+          <li><span class="s-check">✓</span>Covers Forex, Comex, and US market trading with expert algorithmic automated trades.</li>
+          <li><span class="s-check">✓</span>Advice across all three major market segments for maximum portfolio growth.</li>
+        </ul>
+        <a href="pricing.html" class="service-link">View Pricing →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAYMENT ===== -->
+<section class="payment" id="payment">
+  <div class="container">
+    <div class="payment-inner">
+      <div class="payment-left">
+        <span class="section-tag">CRYPTO PAYMENTS</span>
+        <h2 class="section-title">Make a Secure <span class="gradient-text">Crypto Payment</span></h2>
+        <p>Lightning-fast, decentralized transactions. Pay via USDT, BTC, or any major crypto wallet.</p>
+        <div class="crypto-methods">
+          <div class="crypto-pill active"><span>₮</span> USDT</div>
+          <div class="crypto-pill"><span>₿</span> Bitcoin</div>
+          <div class="crypto-pill"><span>Ξ</span> Ethereum</div>
+        </div>
+      </div>
+      <div class="payment-right">
+        <div class="payment-card">
+          <div class="payment-card-header"><span>Payment Amount</span><span class="secure-badge">🔒 Secured</span></div>
+          <div class="payment-input-wrap"><span class="currency-prefix">$</span><input type="number" id="amount" placeholder="0.00" /></div>
+          <div class="payment-equiv">≈ <span id="cryptoEquiv">0.00</span> USDT</div>
+          <button class="btn primary full-width" onclick="goToPayment()">Pay with Crypto →</button>
+          <p class="payment-note">Transactions settle in under 60 seconds.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta" id="pricing">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-glow"></div>
+      <span class="section-tag" style="color:#000;background:rgba(0,0,0,0.1);border-color:rgba(0,0,0,0.15);">START TODAY</span>
+      <h2 class="cta-title">Ready to Scale Your Trading?</h2>
+      <p class="cta-desc">Join 12,000+ traders already profiting with Algostech AI.</p>
+      <div class="cta-actions">
+        <button class="btn dark" onclick="window.location.href='auth.html?tab=register'">Create Free Account</button>
+        <button class="btn ghost-dark" onclick="window.location.href='pricing.html'">View Pricing Plans</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-top">
+    <div class="container footer-grid">
+
+      <!-- Brand -->
+      <div class="footer-col footer-brand-col">
+        <div class="logo footer-logo">
+          <div class="logo-mark">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+              <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="none" stroke="#00ffcc" stroke-width="1.5"/>
+              <circle cx="14" cy="14" r="3" fill="#00ffcc"/>
+            </svg>
+          </div>
+          <span>Algostech</span>
+        </div>
+        <p class="footer-brand-desc">Algostech offers investment opportunities in various global markets including FOREX, COMEX to help clients achieve financial freedom.</p>
+        <button class="btn gold-btn sm" onclick="window.location.href='#'">LIVE MARKET</button>
+        <div class="footer-social">
+          <a href="#" class="social-icon" aria-label="Twitter">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Facebook">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Instagram">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="YouTube">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="#" class="social-icon telegram-icon" aria-label="Telegram">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-col">
+        <div class="footer-col-title">Quick Links</div>
+        <ul class="footer-list">
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="#payment">Payment</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Policies -->
+      <div class="footer-col">
+        <div class="footer-col-title">Policies</div>
+        <ul class="footer-list">
+          <li><a href="#">Terms and Conditions</a></li>
+          <li><a href="#">Disclaimer</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Refund Policy</a></li>
+          <li><a href="#">Benefits of Forex</a></li>
+          <li><a href="#">Benefits of Comex</a></li>
+          <li><a href="#">Live Accounts</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-col">
+        <div class="footer-col-title">Contact Us</div>
+        <ul class="footer-contact-list">
+          <li><span class="contact-icon">📞</span><a href="tel:+971525908185">+971-525908185</a></li>
+          <li><span class="contact-icon">📞</span><a href="tel:+442038074962">+44-2038074962</a></li>
+          <li><span class="contact-icon">✉️</span><a href="/cdn-cgi/l/email-protection#562523262639242216373a3139252233353e7835393b"><span class="__cf_email__" data-cfemail="75060005051a0701351419121a060110161d5b161a18">[email&#160;protected]</span></a></li>
+          <li><span class="contact-icon">📍</span><span>Al Moosa Tower 2, Sheikh Zayed Road, Near Future Museum, Dubai, UAE</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>© 2026 Algostech · All Rights Reserved</p>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('active');
+}
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+const amountInput = document.getElementById('amount');
+const cryptoEquiv = document.getElementById('cryptoEquiv');
+if (amountInput) {
+  amountInput.addEventListener('input', () => {
+    cryptoEquiv.textContent = (parseFloat(amountInput.value) || 0).toFixed(2);
+  });
+}
+document.querySelectorAll('.crypto-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.crypto-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+});
+function goToPayment() {
+  const amount = document.getElementById('amount').value;
+  if (!amount || amount <= 0) { alert('Please enter a valid amount'); return; }
+  window.location.href = `Payment.html?amount=${amount}`;
+}
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.

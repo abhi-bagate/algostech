@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel — Algostech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #00ffcc;
+      --primary-dim: rgba(0,255,204,0.1);
+      --primary-glow: rgba(0,255,204,0.3);
+      --accent: #00c2ff;
+      --bg: #050914;
+      --bg-2: #080e1f;
+      --bg-card: rgba(255,255,255,0.04);
+      --sidebar-bg: #060b18;
+      --border: rgba(255,255,255,0.08);
+      --border-bright: rgba(0,255,204,0.25);
+      --text: #e8edf8;
+      --text-muted: #6b7a99;
+      --text-dim: #9aa5be;
+      --red: #ff5a5a;
+      --yellow: #ffc100;
+      --green: #4ade80;
+      --font: 'Inter', sans-serif;
+      --sidebar-w: 240px;
+      --topbar-h: 60px;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-pill: 999px;
+      --ease: cubic-bezier(0.4,0,0.2,1);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{font-size:15px;}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);display:flex;min-height:100vh;overflow-x:hidden;}
+    a{text-decoration:none;color:inherit;cursor:pointer;}
+    button{cursor:pointer;font-family:var(--font);}
+    input,select,textarea{font-family:var(--font);}
+    .hidden{display:none!important;}
+
+    /* ===== SIDEBAR ===== */
+    .sidebar{width:var(--sidebar-w);background:var(--sidebar-bg);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;}
+    .sidebar-brand{display:flex;align-items:center;gap:10px;padding:0 20px;height:var(--topbar-h);border-bottom:1px solid var(--border);font-size:1rem;font-weight:700;}
+    .brand-dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);}
+    .admin-badge{font-size:0.6rem;background:rgba(255,90,90,0.15);border:1px solid rgba(255,90,90,0.3);color:var(--red);padding:2px 8px;border-radius:var(--radius-pill);letter-spacing:0.08em;}
+
+    .sidebar-nav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:2px;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:0.85rem;color:var(--text-muted);transition:0.2s var(--ease);cursor:pointer;}
+    .nav-item:hover{color:var(--text);background:var(--bg-card);}
+    .nav-item.active{background:var(--primary-dim);border:1px solid var(--border-bright);color:var(--primary);}
+    .nav-item svg{flex-shrink:0;width:16px;height:16px;}
+    .nav-section-label{font-size:0.6rem;letter-spacing:0.14em;color:var(--text-muted);text-transform:uppercase;padding:14px 12px 6px;opacity:0.6;}
+
+    .sidebar-bottom{padding:12px;border-top:1px solid var(--border);}
+    .logout-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:0.85rem;color:var(--red);width:100%;background:none;border:none;transition:0.2s;}
+    .logout-btn:hover{background:rgba(255,90,90,0.08);}
+
+    /* ===== MAIN ===== */
+    .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+    .topbar{height:var(--topbar-h);display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(5,9,20,0.8);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
+    .topbar-title{font-size:1rem;font-weight:600;}
+    .topbar-right{display:flex;align-items:center;gap:12px;}
+    .admin-chip{display:flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--border);padding:5px 14px 5px 8px;border-radius:var(--radius-pill);font-size:0.82rem;}
+    .admin-avatar{width:28px;height:28px;border-radius:50%;background:rgba(255,90,90,0.15);border:1px solid rgba(255,90,90,0.3);color:var(--red);font-size:0.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+    /* ===== SECTIONS ===== */
+    .section{display:none;padding:28px;flex-direction:column;gap:24px;}
+    .section.active{display:flex;}
+    .page-title{font-size:1.2rem;font-weight:700;margin-bottom:4px;}
+    .page-sub{font-size:0.82rem;color:var(--text-muted);}
+
+    /* ===== CARDS ===== */
+    .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden;}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary),transparent);opacity:0.4;}
+    .card-title{font-size:0.9rem;font-weight:600;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;}
+
+    /* ===== STATS ROW ===== */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+    .stat-mini{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 18px;}
+    .stat-mini-label{font-size:0.68rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;}
+    .stat-mini-val{font-size:1.4rem;font-weight:700;color:var(--primary);}
+
+    /* ===== USERS TABLE ===== */
+    .table-wrap{overflow-x:auto;}
+    .data-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+    .data-table th{font-size:0.62rem;letter-spacing:0.1em;color:var(--text-muted);text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;}
+    .data-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-dim);vertical-align:middle;}
+    .data-table tr:hover td{background:rgba(255,255,255,0.02);}
+    .data-table tr:last-child td{border-bottom:none;}
+
+    .status-pill{display:inline-block;padding:2px 10px;border-radius:var(--radius-pill);font-size:0.68rem;font-weight:600;letter-spacing:0.04em;}
+    .status-pill.active{background:rgba(0,255,204,0.1);border:1px solid rgba(0,255,204,0.2);color:var(--primary);}
+    .status-pill.pending{background:rgba(255,193,0,0.1);border:1px solid rgba(255,193,0,0.2);color:var(--yellow);}
+    .status-pill.inactive{background:rgba(255,90,90,0.1);border:1px solid rgba(255,90,90,0.2);color:var(--red);}
+
+    .action-btn{background:none;border:1px solid var(--border);color:var(--text-dim);padding:4px 12px;border-radius:var(--radius-pill);font-size:0.72rem;transition:0.2s;margin-right:6px;}
+    .action-btn:hover{border-color:var(--border-bright);color:var(--primary);background:var(--primary-dim);}
+    .action-btn.danger:hover{border-color:rgba(255,90,90,0.3);color:var(--red);background:rgba(255,90,90,0.08);}
+
+    /* ===== FORMS ===== */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+    .field{display:flex;flex-direction:column;gap:6px;}
+    .field.full{grid-column:1/-1;}
+    label{font-size:0.62rem;letter-spacing:0.1em;color:var(--primary);text-transform:uppercase;font-weight:500;}
+    input,select,textarea{width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);padding:10px 14px;font-size:0.85rem;outline:none;transition:0.2s var(--ease);}
+    input::placeholder,textarea::placeholder{color:var(--text-muted);}
+    input:focus,select:focus,textarea:focus{border-color:var(--border-bright);box-shadow:0 0 0 3px rgba(0,255,204,0.06);background:rgba(0,255,204,0.02);}
+    select option{background:#0a0f20;}
+    textarea{resize:vertical;min-height:80px;line-height:1.5;}
+
+    .form-actions{display:flex;gap:10px;margin-top:6px;align-items:center;flex-wrap:wrap;}
+
+    /* ===== BUTTONS ===== */
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:var(--radius-pill);font-size:0.82rem;font-weight:600;border:none;transition:0.2s var(--ease);cursor:pointer;white-space:nowrap;}
+    .btn-primary{background:var(--primary);color:#000;box-shadow:0 0 16px rgba(0,255,204,0.2);}
+    .btn-primary:hover{background:#fff;transform:translateY(-1px);}
+    .btn-secondary{background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);}
+    .btn-secondary:hover{border-color:var(--border-bright);color:var(--primary);}
+    .btn-danger{background:rgba(255,90,90,0.1);border:1px solid rgba(255,90,90,0.25);color:var(--red);}
+    .btn-danger:hover{background:rgba(255,90,90,0.2);}
+    .btn-sm{padding:6px 14px;font-size:0.75rem;}
+
+    /* ===== USER SELECTOR ===== */
+    .user-selector-wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+    .user-selector-wrap label{margin-bottom:0;}
+    .user-select{min-width:220px;}
+
+    /* ===== TRADE ENTRIES LIST ===== */
+    .trade-entries{display:flex;flex-direction:column;gap:8px;max-height:400px;overflow-y:auto;margin-top:12px;}
+    .trade-entry{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .trade-entry-info{display:flex;gap:20px;flex-wrap:wrap;}
+    .trade-entry-field{display:flex;flex-direction:column;gap:2px;}
+    .tef-label{font-size:0.58rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;}
+    .tef-val{font-size:0.82rem;font-weight:500;}
+    .tef-val.buy{color:var(--primary);}
+    .tef-val.sell{color:var(--red);}
+    .tef-val.profit{color:var(--primary);}
+    .tef-val.loss{color:var(--red);}
+
+    /* ===== INSIGHTS FORM ===== */
+    .insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+    /* ===== TOAST ===== */
+    .toast{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;align-items:center;gap:10px;background:var(--bg-2);border:1px solid var(--border-bright);border-radius:var(--radius);padding:14px 20px;font-size:0.82rem;box-shadow:0 4px 24px rgba(0,0,0,0.4);transform:translateY(80px);opacity:0;transition:0.35s var(--ease);pointer-events:none;}
+    .toast.show{transform:translateY(0);opacity:1;}
+    .toast.success{border-color:rgba(0,255,204,0.35);color:var(--primary);}
+    .toast.error{border-color:rgba(255,90,90,0.35);color:var(--red);}
+
+    /* ===== MODAL ===== */
+    .modal-overlay{position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;}
+    .modal-box{background:var(--bg-2);border:1px solid var(--border-bright);border-radius:var(--radius);padding:32px;width:100%;max-width:480px;position:relative;max-height:90vh;overflow-y:auto;}
+    .modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-muted);font-size:1rem;padding:4px 8px;transition:0.2s;}
+    .modal-close:hover{color:var(--text);}
+    .modal-title{font-size:1.1rem;font-weight:700;margin-bottom:20px;}
+
+    /* ===== EMPTY ===== */
+    .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px;gap:8px;color:var(--text-muted);}
+    .empty-icon{font-size:2rem;margin-bottom:4px;}
+    .empty-text{font-size:0.85rem;}
+
+    /* ===== DIVIDER ===== */
+    .divider{height:1px;background:var(--border);margin:20px 0;}
+
+    /* ===== NOISE ===== */
+    .noise{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px;}
+
+    @media(max-width:900px){
+      .sidebar{transform:translateX(-100%);}
+      .main{margin-left:0;}
+      .stats-row{grid-template-columns:1fr 1fr;}
+      .form-grid,.form-grid-3,.insight-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+<div class="noise"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-dot"></div>
+    <span>Algostech</span>
+    <span class="admin-badge">ADMIN</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Management</div>
+    <div class="nav-item active" onclick="showSection('users')" id="nav-users">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Users
+    </div>
+    <div class="nav-item" onclick="showSection('trades')" id="nav-trades">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Trade Data
+    </div>
+    <div class="nav-item" onclick="showSection('insights')" id="nav-insights">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      Dashboard Stats
+    </div>
+    <div class="nav-section-label">System</div>
+    <div class="nav-item" onclick="showSection('settings')" id="nav-settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      Settings
+    </div>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <button class="logout-btn" onclick="adminLogout()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <header class="topbar">
+    <div class="topbar-title" id="topbarTitle">User Management</div>
+    <div class="topbar-right">
+      <div class="admin-chip">
+        <div class="admin-avatar">AD</div>
+        <span>Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== USERS ===== -->
+  <section class="section active" id="section-users">
+    <div>
+      <div class="page-title">User Management</div>
+      <div class="page-sub">Add and manage client accounts.</div>
+    </div>
+
+    <div class="stats-row" id="statsRow">
+      <div class="stat-mini"><div class="stat-mini-label">Total Users</div><div class="stat-mini-val" id="statTotal">0</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">Active</div><div class="stat-mini-val" id="statActive" style="color:#00ffcc">0</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">Pending KYC</div><div class="stat-mini-val" id="statPending" style="color:#ffc100">0</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">Plans</div><div class="stat-mini-val" id="statPlans" style="color:#b464ff">3</div></div>
+    </div>
+
+    <!-- ADD USER FORM -->
+    <div class="card">
+      <div class="card-title">Add New User</div>
+      <div class="form-grid">
+        <div class="field"><label>Full Name</label><input type="text" id="uName" placeholder="Ravi Sharma"/></div>
+        <div class="field"><label>Email</label><input type="email" id="uEmail" placeholder="user@example.com"/></div>
+        <div class="field"><label>Password</label><input type="password" id="uPass" placeholder="Set login password"/></div>
+        <div class="field"><label>Mobile</label><input type="tel" id="uMobile" placeholder="+91 00000 00000"/></div>
+        <div class="field"><label>City</label><input type="text" id="uCity" placeholder="Mumbai"/></div>
+        <div class="field"><label>Date of Birth</label><input type="date" id="uDOB"/></div>
+        <div class="field"><label>Service Plan</label>
+          <select id="uPlan">
+            <option value="Alpha">Alpha — $250/month</option>
+            <option value="Quantum">Quantum — $500/month</option>
+            <option value="Infinity">Infinity — $1,000/month</option>
+          </select>
+        </div>
+        <div class="field"><label>MT5 Account ID</label><input type="text" id="uMT5" placeholder="12345678"/></div>
+        <div class="field"><label>MT5 Server</label><input type="text" id="uServer" placeholder="xm global mt5 2"/></div>
+        <div class="field"><label>KYC Status</label>
+          <select id="uKYC">
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+        <div class="field"><label>Capital (USD)</label><input type="number" id="uCapital" placeholder="3000"/></div>
+        <div class="field"><label>Status</label>
+          <select id="uStatus">
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="addUser()">Add User</button>
+        <button class="btn btn-secondary" onclick="clearUserForm()">Clear</button>
+      </div>
+    </div>
+
+    <!-- USERS TABLE -->
+    <div class="card">
+      <div class="card-title">
+        All Users
+        <input type="text" placeholder="Search users..." style="width:200px;padding:6px 12px;font-size:0.78rem;" oninput="searchUsers(this.value)"/>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="usersTable">
+          <thead>
+            <tr>
+              <th>Name</th><th>Email</th><th>Plan</th><th>Capital</th><th>KYC</th><th>Status</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+        <div class="empty-state" id="usersEmpty">
+          <div class="empty-icon">👥</div>
+          <div class="empty-text">No users yet. Add your first user above.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRADES ===== -->
+  <section class="section" id="section-trades">
+    <div>
+      <div class="page-title">Trade Data</div>
+      <div class="page-sub">Add trade history entries for any user.</div>
+    </div>
+
+    <!-- USER SELECTOR -->
+    <div class="card">
+      <div class="card-title">Select User</div>
+      <div class="user-selector-wrap">
+        <select class="user-select" id="tradeUserSelect" onchange="loadUserTrades()">
+          <option value="">— Select a user —</option>
+        </select>
+        <span id="tradeUserInfo" style="font-size:0.78rem;color:var(--text-muted);"></span>
+      </div>
+
+      <!-- ADD TRADE FORM -->
+      <div id="tradeFormWrap" class="hidden">
+        <div class="divider"></div>
+        <div style="font-size:0.82rem;font-weight:600;margin-bottom:14px;">Add Trade Entry</div>
+        <div class="form-grid-3">
+          <div class="field"><label>Date</label><input type="date" id="tDate"/></div>
+          <div class="field"><label>Symbol</label><input type="text" id="tSymbol" placeholder="EUR/USD"/></div>
+          <div class="field"><label>Type</label>
+            <select id="tType"><option value="BUY">BUY</option><option value="SELL">SELL</option></select>
+          </div>
+          <div class="field"><label>Lots</label><input type="number" id="tLots" placeholder="0.1" step="0.01"/></div>
+          <div class="field"><label>Open Price</label><input type="number" id="tOpen" placeholder="1.0850" step="0.0001"/></div>
+          <div class="field"><label>Close Price</label><input type="number" id="tClose" placeholder="1.0900" step="0.0001"/></div>
+          <div class="field"><label>Profit / Loss (USD)</label><input type="number" id="tPL" placeholder="250.00" step="0.01"/></div>
+          <div class="field"><label>Comment (optional)</label><input type="text" id="tComment" placeholder="Signal trade"/></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" onclick="addTrade()">Add Trade</button>
+          <button class="btn btn-secondary" onclick="clearTradeForm()">Clear</button>
+        </div>
+
+        <div class="divider"></div>
+        <div style="font-size:0.82rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+          Trade Entries for this user
+          <button class="btn btn-danger btn-sm" onclick="clearAllTrades()">Clear All Trades</button>
+        </div>
+        <div class="trade-entries" id="tradeEntriesList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INSIGHTS / STATS ===== -->
+  <section class="section" id="section-insights">
+    <div>
+      <div class="page-title">Dashboard Stats</div>
+      <div class="page-sub">Set the overview stats shown on each user's dashboard.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Select User</div>
+      <div class="user-selector-wrap">
+        <select class="user-select" id="insightUserSelect" onchange="loadUserInsights()">
+          <option value="">— Select a user —</option>
+        </select>
+      </div>
+
+      <div id="insightFormWrap" class="hidden">
+        <div class="divider"></div>
+        <div style="font-size:0.82rem;font-weight:600;margin-bottom:14px;">Overview Stats</div>
+        <div class="insight-grid">
+          <div class="field"><label>Total Profit/Loss (USD)</label><input type="number" id="iPL" placeholder="54010.66" step="0.01"/></div>
+          <div class="field"><label>Overall ROI (%)</label><input type="number" id="iROI" placeholder="1800.36" step="0.01"/></div>
+          <div class="field"><label>Capital (USD)</label><input type="number" id="iCapital" placeholder="3000.00" step="0.01"/></div>
+          <div class="field"><label>Total Trades</label><input type="number" id="iTrades" placeholder="890"/></div>
+        </div>
+
+        <div class="divider"></div>
+        <div style="font-size:0.82rem;font-weight:600;margin-bottom:14px;">Monthly P/L Chart Data</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:14px;">Enter comma-separated values for Aug 2024 → Jan 2026 (18 months)</div>
+        <div class="field">
+          <label>Monthly P/L Values</label>
+          <textarea id="iChartData" placeholder="2800, 4400, 4500, 2000, 3600, 1200, 1100, 1100, 1200, 5000, 2800, 2500, 2600, 2200, 12000, 6500, 1200, 900"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" onclick="saveInsights()">Save Stats</button>
+          <button class="btn btn-secondary" onclick="resetInsights()">Reset to Default</button>
+        </div>
+
+        <!-- PREVIEW -->
+        <div class="divider"></div>
+        <div style="font-size:0.78rem;color:var(--text-muted);">Current saved stats for this user:</div>
+        <div id="insightPreview" style="margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SETTINGS ===== -->
+  <section class="section" id="section-settings">
+    <div>
+      <div class="page-title">Settings</div>
+      <div class="page-sub">Admin account and system settings.</div>
+    </div>
+
+    <div class="card" style="max-width:480px;">
+      <div class="card-title">Change Admin Password</div>
+      <div class="field" style="margin-bottom:14px;"><label>Current Password</label><input type="password" id="oldPass" placeholder="••••••••"/></div>
+      <div class="field" style="margin-bottom:14px;"><label>New Password</label><input type="password" id="newPass" placeholder="••••••••"/></div>
+      <div class="field" style="margin-bottom:18px;"><label>Confirm Password</label><input type="password" id="confirmPass" placeholder="••••••••"/></div>
+      <button class="btn btn-primary" onclick="changeAdminPass()">Update Password</button>
+    </div>
+
+    <div class="card" style="max-width:480px;">
+      <div class="card-title">Data Management</div>
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">Export all user and trade data as a JSON file, or reset all data.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-secondary" onclick="exportData()">📥 Export All Data</button>
+        <button class="btn btn-danger" onclick="confirmReset()">🗑 Reset All Data</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- EDIT USER MODAL -->
+<div class="modal-overlay hidden" id="editUserModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('editUserModal')">✕</button>
+    <div class="modal-title">Edit User</div>
+    <input type="hidden" id="editUserId"/>
+    <div class="form-grid">
+      <div class="field"><label>Full Name</label><input type="text" id="euName"/></div>
+      <div class="field"><label>Email</label><input type="email" id="euEmail"/></div>
+      <div class="field"><label>Mobile</label><input type="tel" id="euMobile"/></div>
+      <div class="field"><label>City</label><input type="text" id="euCity"/></div>
+      <div class="field"><label>Service Plan</label>
+        <select id="euPlan">
+          <option value="Alpha">Alpha</option>
+          <option value="Quantum">Quantum</option>
+          <option value="Infinity">Infinity</option>
+        </select>
+      </div>
+      <div class="field"><label>MT5 Account ID</label><input type="text" id="euMT5"/></div>
+      <div class="field"><label>MT5 Server</label><input type="text" id="euServer"/></div>
+      <div class="field"><label>Capital (USD)</label><input type="number" id="euCapital"/></div>
+      <div class="field"><label>KYC Status</label>
+        <select id="euKYC"><option value="Pending">Pending</option><option value="Completed">Completed</option></select>
+      </div>
+      <div class="field"><label>Status</label>
+        <select id="euStatus"><option value="active">Active</option><option value="pending">Pending</option><option value="inactive">Inactive</option></select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="saveEditUser()">Save Changes</button>
+      <button class="btn btn-secondary" onclick="closeModal('editUserModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// STORAGE HELPERS
+// ============================================================
+const ADMIN_PASS_KEY = 'algo_admin_pass';
+const USERS_KEY = 'algo_users';
+const TRADES_KEY = 'algo_trades';
+const INSIGHTS_KEY = 'algo_insights';
+
+function getUsers() { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
+function saveUsers(u) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+function getTrades(uid) { const all = JSON.parse(localStorage.getItem(TRADES_KEY)||'{}'); return all[uid] || []; }
+function saveTrades(uid, trades) { const all = JSON.parse(localStorage.getItem(TRADES_KEY)||'{}'); all[uid]=trades; localStorage.setItem(TRADES_KEY,JSON.stringify(all)); }
+function getInsights(uid) { const all = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'); return all[uid] || null; }
+function saveInsights_s(uid, data) { const all = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'); all[uid]=data; localStorage.setItem(INSIGHTS_KEY,JSON.stringify(all)); }
+function getAdminPass() { return localStorage.getItem(ADMIN_PASS_KEY) || 'Admin@1234'; }
+
+// ============================================================
+// NAV
+// ============================================================
+const sectionNames = { users:'User Management', trades:'Trade Data', insights:'Dashboard Stats', settings:'Settings' };
+function showSection(name) {
+  ['users','trades','insights','settings'].forEach(s => {
+    document.getElementById('section-'+s).classList.toggle('active', s===name);
+    document.getElementById('nav-'+s).classList.toggle('active', s===name);
+  });
+  document.getElementById('topbarTitle').textContent = sectionNames[name];
+  if (name==='trades') populateUserDropdown('tradeUserSelect');
+  if (name==='insights') populateUserDropdown('insightUserSelect');
+}
+
+// ============================================================
+// USER MANAGEMENT
+// ============================================================
+function addUser() {
+  const name    = document.getElementById('uName').value.trim();
+  const email   = document.getElementById('uEmail').value.trim().toLowerCase();
+  const pass    = document.getElementById('uPass').value;
+  const mobile  = document.getElementById('uMobile').value.trim();
+  const city    = document.getElementById('uCity').value.trim();
+  const dob     = document.getElementById('uDOB').value;
+  const plan    = document.getElementById('uPlan').value;
+  const mt5     = document.getElementById('uMT5').value.trim();
+  const server  = document.getElementById('uServer').value.trim();
+  const kyc     = document.getElementById('uKYC').value;
+  const capital = document.getElementById('uCapital').value;
+  const status  = document.getElementById('uStatus').value;
+
+  if (!name || !email || !pass) { showToast('Name, email and password are required.','error'); return; }
+
+  const users = getUsers();
+  if (users.find(u => u.email === email)) { showToast('A user with this email already exists.','error'); return; }
+
+  const user = { id: Date.now().toString(), name, email, pass, mobile, city, dob, plan, mt5, server, kyc, capital: parseFloat(capital)||0, status, createdAt: new Date().toISOString() };
+  users.push(user);
+  saveUsers(users);
+  renderUsersTable(users);
+  updateStats(users);
+  clearUserForm();
+  showToast(`User "${name}" added successfully.`,'success');
+}
+
+function clearUserForm() {
+  ['uName','uEmail','uPass','uMobile','uCity','uDOB','uMT5','uServer','uCapital'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('uPlan').value='Alpha';
+  document.getElementById('uKYC').value='Pending';
+  document.getElementById('uStatus').value='active';
+}
+
+function renderUsersTable(users) {
+  const tbody = document.getElementById('usersBody');
+  const empty = document.getElementById('usersEmpty');
+  const table = document.getElementById('usersTable');
+  if (!users.length) { table.style.display='none'; empty.style.display='flex'; return; }
+  table.style.display='table'; empty.style.display='none';
+  tbody.innerHTML = users.map(u => `
+    <tr>
+      <td><strong style="color:var(--text)">${u.name}</strong></td>
+      <td>${u.email}</td>
+      <td><span class="status-pill active">${u.plan}</span></td>
+      <td>$${(u.capital||0).toLocaleString()}</td>
+      <td><span class="status-pill ${u.kyc==='Completed'?'active':'pending'}">${u.kyc}</span></td>
+      <td><span class="status-pill ${u.status}">${u.status}</span></td>
+      <td>
+        <button class="action-btn" onclick="editUser('${u.id}')">Edit</button>
+        <button class="action-btn danger" onclick="deleteUser('${u.id}')">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function updateStats(users) {
+  document.getElementById('statTotal').textContent = users.length;
+  document.getElementById('statActive').textContent = users.filter(u=>u.status==='active').length;
+  document.getElementById('statPending').textContent = users.filter(u=>u.kyc==='Pending').length;
+}
+
+function searchUsers(q) {
+  const users = getUsers().filter(u => u.name.toLowerCase().includes(q.toLowerCase()) || u.email.toLowerCase().includes(q.toLowerCase()));
+  renderUsersTable(users);
+}
+
+function deleteUser(id) {
+  if (!confirm('Delete this user and all their data?')) return;
+  const users = getUsers().filter(u => u.id !== id);
+  saveUsers(users);
+  // Remove trades and insights
+  const trades = JSON.parse(localStorage.getItem(TRADES_KEY)||'{}');
+  const insights = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}');
+  delete trades[id]; delete insights[id];
+  localStorage.setItem(TRADES_KEY, JSON.stringify(trades));
+  localStorage.setItem(INSIGHTS_KEY, JSON.stringify(insights));
+  renderUsersTable(users); updateStats(users);
+  showToast('User deleted.','success');
+}
+
+function editUser(id) {
+  const user = getUsers().find(u=>u.id===id);
+  if (!user) return;
+  document.getElementById('editUserId').value = id;
+  document.getElementById('euName').value = user.name;
+  document.getElementById('euEmail').value = user.email;
+  document.getElementById('euMobile').value = user.mobile||'';
+  document.getElementById('euCity').value = user.city||'';
+  document.getElementById('euPlan').value = user.plan;
+  document.getElementById('euMT5').value = user.mt5||'';
+  document.getElementById('euServer').value = user.server||'';
+  document.getElementById('euCapital').value = user.capital||'';
+  document.getElementById('euKYC').value = user.kyc;
+  document.getElementById('euStatus').value = user.status;
+  document.getElementById('editUserModal').classList.remove('hidden');
+}
+
+function saveEditUser() {
+  const id = document.getElementById('editUserId').value;
+  const users = getUsers();
+  const idx = users.findIndex(u=>u.id===id);
+  if (idx<0) return;
+  users[idx] = { ...users[idx],
+    name: document.getElementById('euName').value,
+    email: document.getElementById('euEmail').value.toLowerCase(),
+    mobile: document.getElementById('euMobile').value,
+    city: document.getElementById('euCity').value,
+    plan: document.getElementById('euPlan').value,
+    mt5: document.getElementById('euMT5').value,
+    server: document.getElementById('euServer').value,
+    capital: parseFloat(document.getElementById('euCapital').value)||0,
+    kyc: document.getElementById('euKYC').value,
+    status: document.getElementById('euStatus').value,
+  };
+  saveUsers(users); renderUsersTable(users); updateStats(users);
+  closeModal('editUserModal');
+  showToast('User updated.','success');
+}
+
+// ============================================================
+// TRADE DATA
+// ============================================================
+function populateUserDropdown(selectId) {
+  const sel = document.getElementById(selectId);
+  const cur = sel.value;
+  const users = getUsers();
+  sel.innerHTML = '<option value="">— Select a user —</option>' + users.map(u=>`<option value="${u.id}" ${u.id===cur?'selected':''}>${u.name} (${u.email})</option>`).join('');
+}
+
+function loadUserTrades() {
+  const uid = document.getElementById('tradeUserSelect').value;
+  const wrap = document.getElementById('tradeFormWrap');
+  if (!uid) { wrap.classList.add('hidden'); return; }
+  wrap.classList.remove('hidden');
+  const user = getUsers().find(u=>u.id===uid);
+  document.getElementById('tradeUserInfo').textContent = user ? `Plan: ${user.plan} · Capital: $${user.capital}` : '';
+  renderTradeEntries(uid);
+}
+
+function addTrade() {
+  const uid = document.getElementById('tradeUserSelect').value;
+  if (!uid) return;
+  const date   = document.getElementById('tDate').value;
+  const symbol = document.getElementById('tSymbol').value.trim().toUpperCase();
+  const type   = document.getElementById('tType').value;
+  const lots   = parseFloat(document.getElementById('tLots').value)||0;
+  const open   = parseFloat(document.getElementById('tOpen').value)||0;
+  const close  = parseFloat(document.getElementById('tClose').value)||0;
+  const pl     = parseFloat(document.getElementById('tPL').value)||0;
+  const comment= document.getElementById('tComment').value.trim();
+
+  if (!date || !symbol) { showToast('Date and symbol are required.','error'); return; }
+
+  const trades = getTrades(uid);
+  trades.unshift({ id: Date.now().toString(), date, symbol, type, lots, open, close, pl, comment });
+  saveTrades(uid, trades);
+  renderTradeEntries(uid);
+  clearTradeForm();
+  showToast(`Trade added: ${type} ${symbol} ${pl>=0?'+':''}$${pl}`,'success');
+}
+
+function clearTradeForm() {
+  ['tDate','tSymbol','tLots','tOpen','tClose','tPL','tComment'].forEach(id=>document.getElementById(id).value='');
+}
+
+function deleteTrade(uid, tid) {
+  const trades = getTrades(uid).filter(t=>t.id!==tid);
+  saveTrades(uid, trades);
+  renderTradeEntries(uid);
+  showToast('Trade deleted.','success');
+}
+
+function clearAllTrades() {
+  const uid = document.getElementById('tradeUserSelect').value;
+  if (!uid || !confirm('Delete ALL trades for this user?')) return;
+  saveTrades(uid, []);
+  renderTradeEntries(uid);
+  showToast('All trades cleared.','success');
+}
+
+function renderTradeEntries(uid) {
+  const trades = getTrades(uid);
+  const list = document.getElementById('tradeEntriesList');
+  if (!trades.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">No trades yet for this user.</div></div>';
+    return;
+  }
+  list.innerHTML = trades.map(t => `
+    <div class="trade-entry">
+      <div class="trade-entry-info">
+        <div class="trade-entry-field"><div class="tef-label">Date</div><div class="tef-val">${t.date}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">Symbol</div><div class="tef-val">${t.symbol}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">Type</div><div class="tef-val ${t.type.toLowerCase()}">${t.type}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">Lots</div><div class="tef-val">${t.lots}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">Open</div><div class="tef-val">${t.open}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">Close</div><div class="tef-val">${t.close}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">P/L</div><div class="tef-val ${t.pl>=0?'profit':'loss'}">${t.pl>=0?'+':''}$${parseFloat(t.pl).toFixed(2)}</div></div>
+        ${t.comment?`<div class="trade-entry-field"><div class="tef-label">Note</div><div class="tef-val">${t.comment}</div></div>`:''}
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteTrade('${uid}','${t.id}')">✕</button>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// INSIGHTS
+// ============================================================
+function loadUserInsights() {
+  const uid = document.getElementById('insightUserSelect').value;
+  const wrap = document.getElementById('insightFormWrap');
+  if (!uid) { wrap.classList.add('hidden'); return; }
+  wrap.classList.remove('hidden');
+  const data = getInsights(uid);
+  if (data) {
+    document.getElementById('iPL').value = data.totalPL||'';
+    document.getElementById('iROI').value = data.roi||'';
+    document.getElementById('iCapital').value = data.capital||'';
+    document.getElementById('iTrades').value = data.totalTrades||'';
+    document.getElementById('iChartData').value = (data.chartData||[]).join(', ');
+    renderInsightPreview(data);
+  } else {
+    ['iPL','iROI','iCapital','iTrades','iChartData'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('insightPreview').innerHTML='';
+  }
+}
+
+function saveInsights() {
+  const uid = document.getElementById('insightUserSelect').value;
+  if (!uid) return;
+  const chartRaw = document.getElementById('iChartData').value;
+  const chartData = chartRaw.split(',').map(v=>parseFloat(v.trim())).filter(v=>!isNaN(v));
+  const data = {
+    totalPL: parseFloat(document.getElementById('iPL').value)||0,
+    roi: parseFloat(document.getElementById('iROI').value)||0,
+    capital: parseFloat(document.getElementById('iCapital').value)||0,
+    totalTrades: parseInt(document.getElementById('iTrades').value)||0,
+    chartData
+  };
+  saveInsights_s(uid, data);
+  renderInsightPreview(data);
+  showToast('Dashboard stats saved successfully.','success');
+}
+
+function resetInsights() {
+  const defaults = { totalPL:54010.66, roi:1800.36, capital:3000, totalTrades:890, chartData:[2800,4400,4500,2000,3600,1200,1100,1100,1200,5000,2800,2500,2600,2200,12000,6500,1200,900] };
+  document.getElementById('iPL').value = defaults.totalPL;
+  document.getElementById('iROI').value = defaults.roi;
+  document.getElementById('iCapital').value = defaults.capital;
+  document.getElementById('iTrades').value = defaults.totalTrades;
+  document.getElementById('iChartData').value = defaults.chartData.join(', ');
+}
+
+function renderInsightPreview(data) {
+  document.getElementById('insightPreview').innerHTML = [
+    ['Total P/L', '$'+data.totalPL.toLocaleString()],
+    ['ROI', data.roi+'%'],
+    ['Capital', '$'+data.capital.toLocaleString()],
+    ['Total Trades', data.totalTrades],
+  ].map(([l,v])=>`<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;min-width:120px;"><div style="font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">${l}</div><div style="font-size:1rem;font-weight:700;color:var(--primary);">${v}</div></div>`).join('');
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function changeAdminPass() {
+  const old = document.getElementById('oldPass').value;
+  const nw  = document.getElementById('newPass').value;
+  const cf  = document.getElementById('confirmPass').value;
+  if (old !== getAdminPass()) { showToast('Current password incorrect.','error'); return; }
+  if (nw !== cf) { showToast('Passwords do not match.','error'); return; }
+  if (nw.length < 6) { showToast('Password must be at least 6 characters.','error'); return; }
+  localStorage.setItem(ADMIN_PASS_KEY, nw);
+  showToast('Admin password updated.','success');
+  ['oldPass','newPass','confirmPass'].forEach(id=>document.getElementById(id).value='');
+}
+
+function exportData() {
+  const data = { users: getUsers(), trades: JSON.parse(localStorage.getItem(TRADES_KEY)||'{}'), insights: JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'), exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `algostech-data-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  showToast('Data exported successfully.','success');
+}
+
+function confirmReset() {
+  if (!confirm('⚠️ This will delete ALL users, trades, and stats. Are you absolutely sure?')) return;
+  [USERS_KEY, TRADES_KEY, INSIGHTS_KEY].forEach(k=>localStorage.removeItem(k));
+  init(); showToast('All data reset.','success');
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===e.currentTarget) m.classList.add('hidden'); }));
+
+function adminLogout() { window.location.href='admin-login.html'; }
+
+let toastTimer;
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = (type==='success'?'✓  ':'✕  ') + msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  const users = getUsers();
+  renderUsersTable(users);
+  updateStats(users);
+}
+init();
+</script>
+</body>
+</html>
