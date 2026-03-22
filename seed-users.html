@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Algostech — Seed 500 Users</title>
+  <style>
+    body { background:#050914; color:#e8edf8; font-family:'Space Mono',monospace; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; gap:20px; }
+    h2 { color:#00ffcc; font-size:1.4rem; }
+    p { color:#9aa5be; font-size:0.85rem; text-align:center; max-width:500px; line-height:1.7; }
+    .btn { background:#00ffcc; color:#000; border:none; padding:14px 36px; border-radius:999px; font-size:1rem; font-weight:700; cursor:pointer; font-family:inherit; }
+    .btn:hover { background:#fff; }
+    .btn.danger { background:#ff4d7d; color:#fff; }
+    .log { background:rgba(255,255,255,0.04); border:1px solid rgba(0,255,204,0.2); border-radius:12px; padding:20px 28px; max-width:500px; width:100%; font-size:0.75rem; color:#6b7a99; line-height:1.8; max-height:200px; overflow-y:auto; }
+    .progress { width:100%; max-width:500px; height:6px; background:rgba(255,255,255,0.08); border-radius:3px; }
+    .progress-bar { height:100%; background:#00ffcc; border-radius:3px; transition:width 0.1s; }
+    .actions { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+  </style>
+</head>
+<body>
+
+<h2>🚀 Algostech — Dummy Data Seeder</h2>
+<p>Click <strong>Seed 500 Users</strong> to inject 500 dummy traders (Indian + Foreign mix) into your localStorage. All existing real users are preserved.</p>
+
+<div class="actions">
+  <button class="btn" onclick="seedUsers()">Seed 500 Users</button>
+  <button class="btn danger" onclick="clearDummy()">Remove Dummy Users</button>
+</div>
+
+<div class="progress"><div class="progress-bar" id="bar" style="width:0%"></div></div>
+<div class="log" id="log">Ready to seed...</div>
+
+<script>
+// ─── NAME POOLS ───────────────────────────────────────────────
+const indianFirst = [
+  'Aarav','Aadhya','Abhinav','Abhishek','Aditi','Aditya','Akash','Akshay','Amit',
+  'Amrita','Ananya','Anil','Anjali','Ankita','Ankit','Anuj','Anushka','Arjun',
+  'Aryan','Ashish','Ashok','Avni','Ayush','Bhavna','Bhavesh','Chirag','Deepak',
+  'Deepika','Dev','Dhruv','Divya','Gaurav','Gauri','Geeta','Harsh','Harsha',
+  'Hemant','Ishaan','Isha','Jatin','Jay','Jyoti','Kabir','Karan','Kavya',
+  'Komal','Kritika','Kumar','Lakshmi','Manish','Manisha','Meera','Mihir','Mohit',
+  'Monika','Mukesh','Naman','Nandini','Naveen','Neha','Nikhil','Nikita','Nilesh',
+  'Nisha','Pallavi','Parth','Payal','Pooja','Poonam','Pradeep','Pranav','Prashant',
+  'Pratik','Preethi','Priya','Rahul','Raj','Rajat','Rajesh','Rakesh','Raman',
+  'Ramesh','Ranjit','Ravi','Reema','Ritu','Rohit','Rohan','Roshan','Sachin',
+  'Sahil','Sanjay','Sangeeta','Sanket','Sapna','Saurabh','Shivam','Shilpa','Shreya',
+  'Shruti','Simran','Sneha','Soham','Sourav','Suresh','Swati','Tanvi','Tarun',
+  'Tejas','Uday','Uma','Varun','Vibha','Vijay','Vikas','Vimal','Vinay','Vishal'
+];
+
+const indianLast = [
+  'Agarwal','Arora','Bajaj','Banerjee','Bhat','Bhattacharya','Bose','Chakraborty',
+  'Chandra','Chatterjee','Chaudhary','Chopra','Das','Desai','Deshpande','Dubey',
+  'Dutta','Ghosh','Goswami','Gupta','Iyer','Jain','Jha','Joshi','Kapoor',
+  'Kaur','Khan','Khanna','Kumar','Lal','Malhotra','Mehta','Mishra','Modi',
+  'Mukherjee','Nair','Pande','Pandey','Patel','Patil','Pillai','Prasad','Rao',
+  'Reddy','Roy','Saha','Saxena','Shah','Sharma','Singh','Sinha','Srivastava',
+  'Thakur','Tiwari','Tripathi','Varma','Verma','Yadav','Bansode','Bhosale',
+  'Chavan','Gaikwad','Jadhav','Kamble','Kulkarni','Mane','Nimkar','Pawar','Shinde'
+];
+
+const foreignFirst = [
+  'Aaron','Alex','Alice','Amanda','Andrew','Angela','Benjamin','Brandon','Brian',
+  'Charlotte','Chris','Christopher','Daniel','David','Elizabeth','Emma','Eric',
+  'Ethan','George','Grace','Hannah','Henry','Jack','Jacob','James','Jason',
+  'Jennifer','Jessica','John','Jonathan','Joseph','Joshua','Julia','Justin',
+  'Karen','Kevin','Laura','Lauren','Leo','Linda','Lucas','Mark','Matthew',
+  'Michael','Michelle','Nathan','Nicholas','Nicole','Noah','Oliver','Patricia',
+  'Patrick','Paul','Peter','Rachel','Robert','Ryan','Samuel','Sarah','Scott',
+  'Sophia','Stephanie','Steven','Thomas','Tyler','Victoria','William','Zoe',
+  // Arabic / Middle East
+  'Ahmed','Ali','Hassan','Khalid','Mohammed','Omar','Yusuf','Fatima','Layla','Nour',
+  // Chinese
+  'Wei','Fang','Ming','Lin','Jing','Hao','Xin','Ling','Tao','Yan',
+  // Russian
+  'Alexei','Dmitri','Ivan','Mikhail','Natasha','Olga','Sergei','Viktor','Yuri','Elena'
+];
+
+const foreignLast = [
+  'Anderson','Baker','Brown','Campbell','Carter','Clark','Collins','Cooper',
+  'Davis','Edwards','Evans','Foster','Garcia','Hall','Harris','Hill','Jackson',
+  'Johnson','Jones','King','Lee','Lewis','Martin','Martinez','Miller','Mitchell',
+  'Moore','Morgan','Nelson','Parker','Patel','Phillips','Roberts','Robinson',
+  'Rodriguez','Scott','Smith','Taylor','Thomas','Thompson','Turner','Walker',
+  'White','Williams','Wilson','Wright','Young',
+  // Arabic
+  'Al-Rashid','Al-Farsi','Al-Mansouri','Hassan','Ibrahim','Khalil','Nasser',
+  // Asian
+  'Chen','Kim','Li','Liu','Park','Tanaka','Wang','Wu','Yang','Zhang',
+  // Russian / European
+  'Ivanov','Kozlov','Petrov','Sidorov','Müller','Schmidt','Fischer','Weber'
+];
+
+const cities = [
+  // Indian
+  'Mumbai','Delhi','Bangalore','Hyderabad','Chennai','Kolkata','Pune','Ahmedabad',
+  'Jaipur','Lucknow','Surat','Nagpur','Indore','Bhopal','Patna','Vadodara',
+  'Ludhiana','Agra','Nashik','Faridabad','Meerut','Rajkot','Varanasi','Srinagar',
+  // International
+  'Dubai','Abu Dhabi','London','New York','Singapore','Sydney','Toronto','Berlin',
+  'Paris','Tokyo','Shanghai','Hong Kong','Kuala Lumpur','Bangkok','Riyadh',
+  'Doha','Auckland','Cape Town','Amsterdam','Stockholm'
+];
+
+const servers = ['Exness-Real','Exness-Demo','ICMarkets-Live','XM-Real4','Pepperstone-Live','Binance-MT5','OANDAReal'];
+const plans = ['Alpha','Quantum','Infinity'];
+const kycStatuses = ['Pending','Completed'];
+const userStatuses = ['active','active','active','pending','inactive'];
+const pairs = ['EUR/USD','GBP/USD','USD/JPY','XAU/USD','USD/CHF','AUD/USD','NZD/USD','USD/CAD','EUR/GBP','BTC/USD'];
+const tradeTypes = ['BUY','SELL'];
+
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function randFloat(min, max, dec=2) { return parseFloat((Math.random() * (max - min) + min).toFixed(dec)); }
+
+function randomDate(start, end) {
+  const d = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  return d.toISOString().split('T')[0];
+}
+
+function generateUser(index, isIndian) {
+  const firstName = isIndian ? rand(indianFirst) : rand(foreignFirst);
+  const lastName  = isIndian ? rand(indianLast)  : rand(foreignLast);
+  const name = `${firstName} ${lastName}`;
+  const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${randInt(10,999)}@${rand(['gmail','yahoo','outlook','hotmail','icloud'])}.com`;
+  const mobile = isIndian
+    ? `+91${randInt(7000000000,9999999999)}`
+    : `+${randInt(1,971)}${randInt(100000000,999999999)}`;
+  const city = rand(cities);
+  const plan = rand(plans);
+  const capital = plan === 'Alpha' ? randInt(250,1500) : plan === 'Quantum' ? randInt(500,5000) : randInt(1000,20000);
+  const roi = randFloat(50, 2200);
+  const totalPL = parseFloat((capital * roi / 100).toFixed(2));
+  const totalTrades = randInt(80, 1200);
+  const mt5 = `${randInt(10000000,99999999)}`;
+  const dob = randomDate(new Date(1975,0,1), new Date(2000,11,31));
+  const createdAt = new Date(randomDate(new Date(2022,0,1), new Date(2026,2,1))).toISOString();
+
+  // 18-point chart data
+  const chartData = [];
+  let val = capital;
+  for (let i = 0; i < 18; i++) {
+    val += randFloat(-val*0.1, val*0.18);
+    val = Math.max(100, parseFloat(val.toFixed(2)));
+    chartData.push(val);
+  }
+
+  // 5–15 trades
+  const tradeCount = randInt(5, 15);
+  const trades = [];
+  for (let t = 0; t < tradeCount; t++) {
+    const open = randFloat(0.8, 2100, 4);
+    const pl = randFloat(-200, 800);
+    const close = parseFloat((open + pl/10000).toFixed(4));
+    trades.push({
+      id: `dummy_${index}_${t}_${Date.now()}`,
+      date: randomDate(new Date(2024,0,1), new Date(2026,2,15)),
+      symbol: rand(pairs),
+      type: rand(tradeTypes),
+      lots: randFloat(0.01, 5.0, 2),
+      open,
+      close,
+      pl: parseFloat(pl.toFixed(2)),
+      comment: rand(['','Signal trade','Algo entry','Manual override','News trade',''])
+    });
+  }
+
+  return {
+    user: {
+      id: `dummy_${index}_${Date.now()}`,
+      name,
+      email,
+      pass: 'Dummy@123',
+      mobile,
+      city,
+      dob,
+      plan,
+      mt5,
+      server: rand(servers),
+      kyc: rand(kycStatuses),
+      capital,
+      status: rand(userStatuses),
+      createdAt,
+      isDummy: true
+    },
+    insights: { totalPL, roi, capital, totalTrades, chartData },
+    trades
+  };
+}
+
+async function seedUsers() {
+  const logEl = document.getElementById('log');
+  const bar = document.getElementById('bar');
+  logEl.textContent = '';
+
+  const existing = JSON.parse(localStorage.getItem('algo_users') || '[]');
+  const existingTrades = JSON.parse(localStorage.getItem('algo_trades') || '{}');
+  const existingInsights = JSON.parse(localStorage.getItem('algo_insights') || '{}');
+
+  const newUsers = [...existing];
+  const newTrades = { ...existingTrades };
+  const newInsights = { ...existingInsights };
+
+  const TOTAL = 500;
+
+  for (let i = 0; i < TOTAL; i++) {
+    const isIndian = i < 300; // 300 Indian, 200 foreign
+    const data = generateUser(i, isIndian);
+
+    newUsers.push(data.user);
+    newTrades[data.user.id] = data.trades;
+    newInsights[data.user.id] = data.insights;
+
+    // Update progress every 50
+    if (i % 50 === 0 || i === TOTAL - 1) {
+      const pct = Math.round(((i + 1) / TOTAL) * 100);
+      bar.style.width = pct + '%';
+      logEl.textContent += `✓ Created ${Math.min(i+1, TOTAL)} users...\n`;
+      logEl.scrollTop = logEl.scrollHeight;
+      await new Promise(r => setTimeout(r, 10)); // yield to DOM
+    }
+  }
+
+  localStorage.setItem('algo_users', JSON.stringify(newUsers));
+  localStorage.setItem('algo_trades', JSON.stringify(newTrades));
+  localStorage.setItem('algo_insights', JSON.stringify(newInsights));
+
+  logEl.textContent += `\n✅ Done! ${TOTAL} dummy users added.\n`;
+  logEl.textContent += `📊 Total users in system: ${newUsers.length}\n`;
+  logEl.textContent += `🇮🇳 Indian: 300  |  🌍 Foreign: 200\n`;
+  logEl.textContent += `\nYou can now open admin.html to view them.`;
+  bar.style.width = '100%';
+}
+
+function clearDummy() {
+  const logEl = document.getElementById('log');
+  const bar = document.getElementById('bar');
+
+  let users = JSON.parse(localStorage.getItem('algo_users') || '[]');
+  let trades = JSON.parse(localStorage.getItem('algo_trades') || '{}');
+  let insights = JSON.parse(localStorage.getItem('algo_insights') || '{}');
+
+  const before = users.length;
+  const dummyIds = users.filter(u => u.isDummy).map(u => u.id);
+
+  users = users.filter(u => !u.isDummy);
+  dummyIds.forEach(id => { delete trades[id]; delete insights[id]; });
+
+  localStorage.setItem('algo_users', JSON.stringify(users));
+  localStorage.setItem('algo_trades', JSON.stringify(trades));
+  localStorage.setItem('algo_insights', JSON.stringify(insights));
+
+  bar.style.width = '100%';
+  logEl.textContent = `🗑️ Removed ${before - users.length} dummy users.\n✅ ${users.length} real users remain.`;
+}
+</script>
+</body>
+</html>
