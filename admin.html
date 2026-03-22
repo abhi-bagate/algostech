@@ -330,7 +330,7 @@ function getTrades(uid) { const all = JSON.parse(localStorage.getItem(TRADES_KEY
 function saveTrades(uid, trades) { const all = JSON.parse(localStorage.getItem(TRADES_KEY)||'{}'); all[uid]=trades; localStorage.setItem(TRADES_KEY,JSON.stringify(all)); }
 function getInsights(uid) { const all = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'); return all[uid] || null; }
 function saveInsights_s(uid, data) { const all = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'); all[uid]=data; localStorage.setItem(INSIGHTS_KEY,JSON.stringify(all)); }
-function getAdminPass() { return localStorage.getItem(ADMIN_PASS_KEY) || 'Admin@1234'; }
+function getAdminPass() { return localStorage.getItem(ADMIN_PASS_KEY) || 'Amit@123'; }
 
 // ============================================================
 // NAV
