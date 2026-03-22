@@ -961,66 +961,17 @@ select option { background:#0f1423; }
 .pf-val.white { color: #e8edf8; }
 .pf-val.green { color: #00e676; }
 
-/* ── Trade History — full font override to match Portfolio (Inter) ── */
-.th-topbar, .th-page-title, .th-sort-btn, .th-days-btn,
-.th-stat, .th-stat-label, .th-stat-val, .th-stat-pct, .th-stat-val-row,
-.th-icon, .th-filter-bar, .th-date-wrap, .th-date-input, .th-arrow,
-.th-select, .th-search, .th-search-wrap, .th-export-btn,
-.th-table, .th-table th, .th-td, .th-tr,
-.th-symbol, .th-type, .th-profit, .th-loss, .th-status-btn,
-.th-empty, .th-empty-title, .th-empty-sub,
-.th-pagination, .th-pag-btn, .th-pag-dots {
+/* ── Readability override for Trade History ── */
+.th-table, .th-td, .th-stat-label,
+.th-filter-bar, .th-select, .th-search,
+.th-date-input, .th-export-btn,
+.th-pag-btn, .th-pag-dots {
   font-family: 'Inter', 'DM Sans', sans-serif !important;
-  letter-spacing: 0 !important;
 }
-/* Stat card numbers — match portfolio bold style */
-.th-stat-val {
-  font-size: 1.55rem !important;
-  font-weight: 700 !important;
-  letter-spacing: -0.02em !important;
-}
-.th-stat-label {
-  font-size: 0.72rem !important;
-  font-weight: 500 !important;
-  text-transform: uppercase;
-  letter-spacing: 0.04em !important;
-  color: var(--text-dim);
-}
-/* Table headers */
-.th-table th {
-  font-size: 0.72rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.04em !important;
-  text-transform: uppercase;
-}
-/* Table cells */
-.th-td {
-  font-size: 0.88rem !important;
-  font-weight: 400 !important;
-}
-.th-profit, .th-loss {
-  font-weight: 700 !important;
-  font-size: 0.88rem !important;
-}
-.th-symbol {
-  font-weight: 600 !important;
-}
-/* Filter elements */
-.th-select, .th-date-input, .th-search {
-  font-size: 0.82rem !important;
-}
-/* Pagination */
-.th-pag-btn {
-  font-size: 0.82rem !important;
-  font-weight: 500 !important;
-}
-/* Page title */
-.th-page-title {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1.35rem !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.02em !important;
-}
+.th-symbol { font-family: 'Inter', 'DM Sans', sans-serif !important; }
+.th-type   { font-family: 'Inter', 'DM Sans', sans-serif !important; }
+.th-profit, .th-loss { font-family: 'Inter', 'DM Sans', sans-serif !important; }
+.th-status-btn { font-family: 'Inter', 'DM Sans', sans-serif !important; }
 
 /* Responsive */
 @media (max-width: 900px) {
