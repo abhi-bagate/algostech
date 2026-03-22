@@ -628,177 +628,160 @@
 
 <script>
 // ───── AUTH CHECK ─────
-const _stored = JSON.parse(localStorage.getItem('algo_logged_user') || 'null');
-if (!_stored) { window.location.href = 'auth.html'; throw 0; }
-
-// Re-read fresh user from algo_users (picks up any admin edits)
-const _users = JSON.parse(localStorage.getItem('algo_users') || '[]');
-const user   = _users.find(u => u.email === _stored.email) || _stored;
-localStorage.setItem('algo_logged_user', JSON.stringify(user));
-
-// ───── HELPERS ─────
-function $id(id) { return document.getElementById(id); }
-function setText(id, val) { const el = $id(id); if (el) el.textContent = val; }
-function fmt(n, dec=2) { return '$' + Number(n||0).toLocaleString('en',{minimumFractionDigits:dec,maximumFractionDigits:dec}); }
+const user = JSON.parse(localStorage.getItem('algo_logged_user') || 'null');
+if (!user) { window.location.href = 'auth.html'; }
 
 // ───── LOAD USER DATA ─────
 function loadUserData() {
-  // ── Topbar ──
+  if (!user) return;
+
+  // Initials for avatars
   const initials = user.name ? user.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) : '--';
-  setText('userAvatarTop',    initials);
-  setText('userNameTop',      user.name || 'User');
+  document.getElementById('userAvatarTop').textContent     = initials;
+  document.getElementById('userNameTop').textContent       = user.name || 'User';
+  document.getElementById('prAvatarInitials').textContent  = initials;
 
-  // ── Profile hero ──
-  setText('prAvatarInitials', initials);
-  setText('prHeroName',       user.name || '—');
+  // ── Profile: new design IDs ──
+  document.getElementById('prHeroName').textContent  = user.name || '—';
+  document.getElementById('prName').textContent      = user.name || '—';
+  document.getElementById('prMobile').textContent    = user.mobile || '+91 XXXXXXXXXX';
+  document.getElementById('prEmail').textContent     = user.email || '—';
+  document.getElementById('prDOB').textContent       = user.dob ? new Date(user.dob).toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}) : '—';
+  document.getElementById('prCity').textContent      = user.city || '—';
+  document.getElementById('prMT5').textContent       = user.mt5 || '—';
+  document.getElementById('prServer').textContent    = user.server || '—';
+  document.getElementById('prMT5Pass').textContent   = user.pass || '—';
+  document.getElementById('prAPICode').textContent   = user.mt5 ? (user.mt5 + 'ABX').toUpperCase() : 'Not Set';
+  document.getElementById('prPlan').textContent      = user.plan || '—';
+  document.getElementById('prJoinDate').textContent  = user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
 
-  // ── CLIENT DETAILS ──
-  setText('prName',    user.name   || '—');
-  setText('prMobile',  user.mobile || '+91 XXXXXXXXXX');
-  setText('prEmail',   user.email  || '—');
-  setText('prDOB',     user.dob ? new Date(user.dob).toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}) : '—');
-  setText('prCity',    user.city   || '—');
-
-  // ── MT5 DETAILS ──
-  setText('prMT5',     user.mt5    || '—');
-  setText('prServer',  user.server || '—');
-  setText('prMT5Pass', user.pass   || '—');
-  setText('prAPICode', user.mt5 ? String(user.mt5).toUpperCase() + 'ABX' : 'Not Set');
-
-  // ── BROKER DETAILS ──
   if (user.brokerEmail) {
-    setText('prBrokerEmail', user.brokerEmail);
-    const el = $id('prBrokerEmail');
-    if (el) el.classList.remove('pr-not-connected');
-    const ic = $id('prBrokerEmailWrap');
-    if (ic) { const svg = ic.querySelector('svg'); if (svg) svg.style.display='none'; }
+    document.getElementById('prBrokerEmail').textContent = user.brokerEmail;
+    document.getElementById('prBrokerEmail').classList.remove('pr-not-connected');
+    const warnIcon = document.getElementById('prBrokerEmailWrap').querySelector('svg');
+    if (warnIcon) warnIcon.style.display = 'none';
   }
-  setText('prBrokerPass', user.brokerPass || '—');
+  document.getElementById('prBrokerPass').textContent = user.brokerPass || '—';
 
-  // ── SERVICE DETAILS ──
-  setText('prPlan',     user.plan || '—');
-  setText('prJoinDate', user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—');
-
-  // Account status chip
   const isActive = user.status === 'active';
-  setText('prStatusText', isActive ? 'Active' : (user.status || 'Inactive'));
-  const chip = $id('prStatusChip');
-  if (chip) chip.className = 'pr-status-chip ' + (isActive ? 'active' : 'inactive');
+  document.getElementById('prStatusText').textContent = isActive ? 'Active' : (user.status || 'Inactive');
+  document.getElementById('prStatusChip').className = 'pr-status-chip ' + (isActive ? 'active' : 'inactive');
 
-  // KYC
+  // KYC badge
   if (user.kyc === 'Completed') {
-    const b = $id('kycBadge');
+    const b = document.getElementById('kycBadge');
     if (b) { b.className = 'kyc-status-badge verified'; b.textContent = '✅ KYC Verified'; }
   }
 
-  // Edit modal backing fields
-  setText('pEmail',   user.email  || '—');
-  setText('pMT5',     user.mt5    || '—');
-  setText('pServer',  user.server || '—');
-  setText('pName',    user.name   || '—');
-  setText('pMobile',  user.mobile || 'N/A');
-  setText('pDOB',     user.dob    || '—');
-  setText('pCity',    user.city   || '—');
-  setText('pPlan',    user.plan   || '—');
-  setText('pCapitalDisplay', user.capital ? fmt(user.capital,0) : '—');
-  setText('pJoined',  user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—');
-  const kycEl = $id('pKYC');
+  // ── Profile: old IDs (still used by edit modal) ──
+  document.getElementById('pEmail').textContent         = user.email || '—';
+  document.getElementById('pMT5').textContent           = user.mt5 || '—';
+  document.getElementById('pServer').textContent        = user.server || '—';
+  document.getElementById('pName').textContent          = user.name || '—';
+  document.getElementById('pMobile').textContent        = user.mobile || 'N/A';
+  document.getElementById('pDOB').textContent           = user.dob || '—';
+  document.getElementById('pCity').textContent          = user.city || '—';
+  document.getElementById('pPlan').textContent          = user.plan || '—';
+  document.getElementById('pCapitalDisplay').textContent = user.capital ? `$${Number(user.capital).toLocaleString()}` : '—';
+  document.getElementById('pJoined').textContent        = user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+  const kycEl = document.getElementById('pKYC');
   if (kycEl) { kycEl.textContent = user.kyc || 'Pending'; kycEl.className = 'status-chip ' + (user.kyc === 'Completed' ? 'completed' : 'pending'); }
 
-  // ── INSIGHTS ──
-  const allInsights = JSON.parse(localStorage.getItem('algo_insights') || '{}');
-  let ins = allInsights[user.id];
+  // ── Insights — use real data or seed realistic demo on first load ──
+  const insights = JSON.parse(localStorage.getItem('algo_insights') || '{}');
+  let ins = insights[user.id];
 
-  // Seed demo only if nothing exists
+  // If no insights exist for this user, generate and save demo data
   if (!ins) {
-    const demoCap   = Number(user.capital) > 0 ? Number(user.capital) : 3000;
-    const demoPL    = parseFloat((demoCap * (8 + Math.random() * 12)).toFixed(2));
-    const demoROI   = parseFloat(((demoPL / demoCap) * 100).toFixed(2));
-    ins = {
-      totalPL: demoPL, roi: demoROI, capital: demoCap,
-      totalTrades: Math.floor(350 + Math.random() * 600),
-      chartData: [2800,4400,4500,2000,3600,1200,1800,2100,1900,5200,3800,2900,3100,2800,13500,7200,1800,1100]
-    };
-    allInsights[user.id] = ins;
-    localStorage.setItem('algo_insights', JSON.stringify(allInsights));
+    const demoCap     = user.capital && user.capital > 0 ? user.capital : 3000;
+    const demoPL      = parseFloat((demoCap * (8 + Math.random() * 12)).toFixed(2));
+    const demoROI     = parseFloat(((demoPL / demoCap) * 100).toFixed(2));
+    const demoTrades  = Math.floor(350 + Math.random() * 600);
+    const demoChart   = [2800,4400,4500,2000,3600,1200,1800,2100,1900,5200,3800,2900,3100,2800,13500,7200,1800,1100];
+    ins = { totalPL: demoPL, roi: demoROI, capital: demoCap, totalTrades: demoTrades, chartData: demoChart };
+    insights[user.id] = ins;
+    localStorage.setItem('algo_insights', JSON.stringify(insights));
   }
 
-  const pl      = Number(ins.totalPL)     || 0;
-  const roi     = Number(ins.roi)         || 0;
-  const cap     = Number(ins.capital)     || Number(user.capital) || 3000;
-  const trades  = Number(ins.totalTrades) || 0;
+  const pl      = ins.totalPL      || 0;
+  const roi     = ins.roi          || 0;
+  const cap     = ins.capital      || user.capital || 3000;
+  const trades  = ins.totalTrades  || 0;
   const balance = cap + pl;
 
-  // ── OVERVIEW ──
-  setText('ovBalance',      fmt(balance));
-  setText('ovTotalProfit',  fmt(pl));
-  setText('ovTodayProfit',  fmt(pl * 0.004));
-  setText('ovROI',          roi.toFixed(1) + '%');
-  setText('ovActiveTrades', '5');
+  // ── Overview stats ──
+  document.getElementById('ovBalance').textContent      = `$${balance.toLocaleString('en',{minimumFractionDigits:2})}`;
+  document.getElementById('ovTotalProfit').textContent  = `$${pl.toLocaleString('en',{minimumFractionDigits:2})}`;
+  document.getElementById('ovTodayProfit').textContent  = `$${(pl * 0.004).toLocaleString('en',{minimumFractionDigits:2})}`;
+  document.getElementById('ovROI').textContent          = roi.toLocaleString('en',{minimumFractionDigits:1,maximumFractionDigits:1}) + '%';
+  document.getElementById('ovActiveTrades').textContent = '5';
 
-  // ── TRADES ──
-  const allTradesRaw = JSON.parse(localStorage.getItem('algo_trades') || '{}');
-  let myTrades = allTradesRaw[user.id] || [];
+  // ── Trade data — use real or generate demo ──
+  const allTradesObj = JSON.parse(localStorage.getItem('algo_trades') || '{}');
+  let myTrades = allTradesObj[user.id] || [];
 
-  // Seed demo trades only if admin hasn't added any
+  // Generate demo trades if none exist
   if (!myTrades.length) {
-    const syms = ['EUR/USD','GBP/USD','XAU/USD','USD/JPY','BTC/USD','AUD/USD','USD/CAD','GBP/JPY'];
-    const now  = new Date();
+    const symbols = ['EUR/USD','GBP/USD','XAU/USD','USD/JPY','BTC/USD','AUD/USD','USD/CAD','GBP/JPY'];
+    const now = new Date();
     for (let i = 0; i < 25; i++) {
-      const sym    = syms[i % syms.length];
-      const gold   = sym === 'XAU/USD', crypto = sym.includes('BTC');
-      const base   = gold ? 2340 : crypto ? 65000 : 1.08;
-      const open   = base + Math.random() * base * 0.02;
-      const win    = (i % 4 !== 0);
-      const plVal  = win ? +(50  + Math.random()*400).toFixed(2) : -(20 + Math.random()*200).toFixed(2);
-      const d      = new Date(now - i * 2 * 86400000);
+      const d = new Date(now - i * 2 * 24 * 3600000);
+      const sym = symbols[i % symbols.length];
+      const type = i % 3 === 0 ? 'SELL' : 'BUY';
+      const isGold = sym === 'XAU/USD', isCrypto = sym.includes('BTC');
+      const open = isGold ? 2340 + Math.random()*40 : isCrypto ? 65000 + Math.random()*2000 : 1.05 + Math.random()*0.15;
+      const win = i % 4 !== 0;
+      const close = win ? open * 1.003 : open * 0.997;
+      const plVal = win ? parseFloat((50 + Math.random()*400).toFixed(2)) : parseFloat((-20 - Math.random()*200).toFixed(2));
       myTrades.push({
-        id: String(Date.now() + i), date: d.toISOString().slice(0,10),
-        symbol: sym, type: i % 3 === 0 ? 'SELL' : 'BUY',
-        lots:  +(0.01 + Math.random()*0.19).toFixed(2),
-        open:  +open.toFixed(gold||crypto?2:4),
-        close: +(win ? open*1.003 : open*0.997).toFixed(gold||crypto?2:4),
+        id: Date.now().toString() + i,
+        date: d.toISOString().slice(0,10),
+        symbol: sym, type,
+        lots: parseFloat((0.01 + Math.random()*0.19).toFixed(2)),
+        open: parseFloat(open.toFixed(isGold||isCrypto ? 2 : 4)),
+        close: parseFloat(close.toFixed(isGold||isCrypto ? 2 : 4)),
         pl: plVal, comment: ''
       });
     }
     myTrades.sort((a,b) => b.date.localeCompare(a.date));
-    allTradesRaw[user.id] = myTrades;
-    localStorage.setItem('algo_trades', JSON.stringify(allTradesRaw));
+    allTradesObj[user.id] = myTrades;
+    localStorage.setItem('algo_trades', JSON.stringify(allTradesObj));
   }
 
-  const winning = myTrades.filter(t => Number(t.pl) > 0);
-  const losing  = myTrades.filter(t => Number(t.pl) <= 0);
-  const netPL   = myTrades.reduce((s,t) => s + Number(t.pl||0), 0);
-  const winPct  = myTrades.length ? ((winning.length / myTrades.length)*100).toFixed(1) : '94.0';
+  const winning = myTrades.filter(t => t.pl > 0);
+  const losing  = myTrades.filter(t => t.pl <= 0);
+  const netPL   = myTrades.reduce((a,t) => a + (t.pl||0), 0);
+  const winPct  = myTrades.length ? ((winning.length / myTrades.length) * 100).toFixed(1) : 94;
 
-  // ── AI PANEL ──
-  setText('ovWinRate',  winPct + '%');
-  setText('ovAccuracy', Math.min(99, Math.round(Number(winPct)*1.02)) + '%');
+  // ── AI panel ──
+  document.getElementById('ovWinRate').textContent   = winPct + '%';
+  document.getElementById('ovAccuracy').textContent  = Math.min(99, Math.round(Number(winPct) * 1.02)) + '%';
   const aiPairs = ['EUR/USD','GBP/USD','XAU/USD','USD/JPY','AUD/USD'];
-  setText('ovAiPair', aiPairs[Math.floor(Date.now()/3600000) % aiPairs.length] + ' @' + (1.08+Math.random()*0.06).toFixed(4));
+  const aiPair  = aiPairs[Math.floor(Date.now()/3600000) % aiPairs.length];
+  document.getElementById('ovAiPair').textContent    = aiPair + ' @' + (1.08 + Math.random()*0.06).toFixed(4);
 
-  // ── PORTFOLIO ──
-  setText('pCapital',      fmt(cap));
-  setText('pBalance',      fmt(balance));
-  setText('pUnrealized',   fmt(pl * 0.3));
-  setText('pWithdrawable', fmt(pl * 0.65));
-  setText('pfTrades',      trades.toLocaleString());
-  setText('pfROI',         roi.toFixed(2) + '%');
-  setText('pfCapital',     fmt(cap));
-  setText('pfNetPL',       fmt(pl));
+  // ── Portfolio ──
+  document.getElementById('pCapital').textContent       = `$${Number(cap).toLocaleString('en',{minimumFractionDigits:2})}`;
+  document.getElementById('pBalance').textContent       = `$${balance.toLocaleString('en',{minimumFractionDigits:2})}`;
+  document.getElementById('pUnrealized').textContent    = `$${(pl * 0.3).toLocaleString('en',{minimumFractionDigits:2})}`;
+  document.getElementById('pWithdrawable').textContent  = `$${(pl * 0.65).toLocaleString('en',{minimumFractionDigits:2})}`;
+  document.getElementById('pfTrades').textContent       = trades.toLocaleString();
+  document.getElementById('pfROI').textContent          = roi.toLocaleString('en',{minimumFractionDigits:2}) + '%';
+  document.getElementById('pfCapital').textContent      = `$${Number(cap).toLocaleString('en',{minimumFractionDigits:2})}`;
+  document.getElementById('pfNetPL').textContent        = `$${pl.toLocaleString('en',{minimumFractionDigits:2})}`;
 
-  // ── TRADE HISTORY SUMMARY ──
-  setText('thTotal',   String(myTrades.length || trades));
-  setText('thWin',     String(winning.length));
-  setText('thWinPct',  winPct + '% win rate');
-  setText('thLoss',    String(losing.length));
-  setText('thNetPL',   fmt(netPL));
+  // ── Trade history summary ──
+  document.getElementById('thTotal').textContent   = myTrades.length || trades;
+  document.getElementById('thWin').textContent     = winning.length;
+  document.getElementById('thWinPct').textContent  = winPct + '% win rate';
+  document.getElementById('thLoss').textContent    = losing.length;
+  document.getElementById('thNetPL').textContent   = `$${netPL.toLocaleString('en',{minimumFractionDigits:2})}`;
 
   allTradeData = myTrades;
   currentFilteredTrades = myTrades;
   renderTrades(allTradeData, 1);
 
-  // ── CHARTS ──
+  // ── Charts ──
   buildChart(ins.chartData, cap);
   buildPortfolioChart(ins.chartData, cap);
 }

@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel — Algostech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="admin.css"/>
+</head>
+<body>
+<div class="noise"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-dot"></div>
+    <span>Algostech</span>
+    <span class="admin-badge">ADMIN</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Management</div>
+    <div class="nav-item active" onclick="showSection('users')" id="nav-users">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Users
+    </div>
+    <div class="nav-item" onclick="showSection('trades')" id="nav-trades">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Trade Data
+    </div>
+    <div class="nav-item" onclick="showSection('insights')" id="nav-insights">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      Dashboard Stats
+    </div>
+    <div class="nav-section-label">System</div>
+    <div class="nav-item" onclick="showSection('settings')" id="nav-settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      Settings
+    </div>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <button class="logout-btn" onclick="adminLogout()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <header class="topbar">
+    <div class="topbar-title" id="topbarTitle">User Management</div>
+    <div class="topbar-right">
+      <div class="admin-chip">
+        <div class="admin-avatar">AD</div>
+        <span>Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== USERS ===== -->
+  <section class="section active" id="section-users">
+    <div>
+      <div class="page-title">User Management</div>
+      <div class="page-sub">Add and manage client accounts.</div>
+    </div>
+
+    <div class="stats-row" id="statsRow">
+      <div class="stat-mini"><div class="stat-mini-label">Total Users</div><div class="stat-mini-val" id="statTotal">0</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">Active</div><div class="stat-mini-val" id="statActive" style="color:#00ffcc">0</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">Pending KYC</div><div class="stat-mini-val" id="statPending" style="color:#ffc100">0</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">Plans</div><div class="stat-mini-val" id="statPlans" style="color:#b464ff">3</div></div>
+    </div>
+
+    <!-- ADD USER FORM -->
+    <div class="card">
+      <div class="card-title">Add New User</div>
+      <div class="form-grid">
+        <div class="field"><label>Full Name</label><input type="text" id="uName" placeholder="Ravi Sharma"/></div>
+        <div class="field"><label>Email</label><input type="email" id="uEmail" placeholder="user@example.com"/></div>
+        <div class="field"><label>Password</label><input type="password" id="uPass" placeholder="Set login password"/></div>
+        <div class="field"><label>Mobile</label><input type="tel" id="uMobile" placeholder="+91 00000 00000"/></div>
+        <div class="field"><label>City</label><input type="text" id="uCity" placeholder="Mumbai"/></div>
+        <div class="field"><label>Date of Birth</label><input type="date" id="uDOB"/></div>
+        <div class="field"><label>Service Plan</label>
+          <select id="uPlan">
+            <option value="Alpha">Alpha — $250/month</option>
+            <option value="Quantum">Quantum — $500/month</option>
+            <option value="Infinity">Infinity — $1,000/month</option>
+          </select>
+        </div>
+        <div class="field"><label>MT5 Account ID</label><input type="text" id="uMT5" placeholder="12345678"/></div>
+        <div class="field"><label>MT5 Server</label><input type="text" id="uServer" placeholder="xm global mt5 2"/></div>
+        <div class="field"><label>KYC Status</label>
+          <select id="uKYC">
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+        <div class="field"><label>Capital (USD)</label><input type="number" id="uCapital" placeholder="3000"/></div>
+        <div class="field"><label>Status</label>
+          <select id="uStatus">
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="addUser()">Add User</button>
+        <button class="btn btn-secondary" onclick="clearUserForm()">Clear</button>
+      </div>
+    </div>
+
+    <!-- USERS TABLE -->
+    <div class="card">
+      <div class="card-title">
+        All Users
+        <input type="text" class="table-search" placeholder="🔍  Search by name or email…" oninput="searchUsers(this.value)"/>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="usersTable">
+          <thead>
+            <tr>
+              <th>Name</th><th>Email</th><th>Plan</th><th>Capital</th><th>KYC</th><th>Status</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+        <div class="empty-state" id="usersEmpty">
+          <div class="empty-icon">👥</div>
+          <div class="empty-text">No users yet. Add your first user above.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRADES ===== -->
+  <section class="section" id="section-trades">
+    <div>
+      <div class="page-title">Trade Data</div>
+      <div class="page-sub">Add trade history entries for any user.</div>
+    </div>
+
+    <!-- USER SELECTOR -->
+    <div class="card">
+      <div class="card-title">Select User</div>
+      <div class="user-selector-wrap">
+        <select class="user-select" id="tradeUserSelect" onchange="loadUserTrades()">
+          <option value="">— Select a user —</option>
+        </select>
+        <span id="tradeUserInfo" style="font-size:0.78rem;color:var(--text-muted);"></span>
+      </div>
+
+      <!-- ADD TRADE FORM -->
+      <div id="tradeFormWrap" class="hidden">
+        <div class="divider"></div>
+        <div style="font-size:0.82rem;font-weight:600;margin-bottom:14px;">Add Trade Entry</div>
+        <div class="form-grid-3">
+          <div class="field"><label>Date</label><input type="date" id="tDate"/></div>
+          <div class="field"><label>Symbol</label><input type="text" id="tSymbol" placeholder="EUR/USD"/></div>
+          <div class="field"><label>Type</label>
+            <select id="tType"><option value="BUY">BUY</option><option value="SELL">SELL</option></select>
+          </div>
+          <div class="field"><label>Lots</label><input type="number" id="tLots" placeholder="0.1" step="0.01"/></div>
+          <div class="field"><label>Open Price</label><input type="number" id="tOpen" placeholder="1.0850" step="0.0001"/></div>
+          <div class="field"><label>Close Price</label><input type="number" id="tClose" placeholder="1.0900" step="0.0001"/></div>
+          <div class="field"><label>Profit / Loss (USD)</label><input type="number" id="tPL" placeholder="250.00" step="0.01"/></div>
+          <div class="field"><label>Comment (optional)</label><input type="text" id="tComment" placeholder="Signal trade"/></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" onclick="addTrade()">Add Trade</button>
+          <button class="btn btn-secondary" onclick="clearTradeForm()">Clear</button>
+        </div>
+
+        <div class="divider"></div>
+        <div style="font-size:0.82rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+          Trade Entries for this user
+          <button class="btn btn-danger btn-sm" onclick="clearAllTrades()">Clear All Trades</button>
+        </div>
+        <div class="trade-entries" id="tradeEntriesList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INSIGHTS / STATS ===== -->
+  <section class="section" id="section-insights">
+    <div>
+      <div class="page-title">Dashboard Stats</div>
+      <div class="page-sub">Set the overview stats shown on each user's dashboard.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Select User</div>
+      <div class="user-selector-wrap">
+        <select class="user-select" id="insightUserSelect" onchange="loadUserInsights()">
+          <option value="">— Select a user —</option>
+        </select>
+      </div>
+
+      <div id="insightFormWrap" class="hidden">
+        <div class="divider"></div>
+        <div style="font-size:0.82rem;font-weight:600;margin-bottom:14px;">Overview Stats</div>
+        <div class="insight-grid">
+          <div class="field"><label>Total Profit/Loss (USD)</label><input type="number" id="iPL" placeholder="54010.66" step="0.01"/></div>
+          <div class="field"><label>Overall ROI (%)</label><input type="number" id="iROI" placeholder="1800.36" step="0.01"/></div>
+          <div class="field"><label>Capital (USD)</label><input type="number" id="iCapital" placeholder="3000.00" step="0.01"/></div>
+          <div class="field"><label>Total Trades</label><input type="number" id="iTrades" placeholder="890"/></div>
+        </div>
+
+        <div class="divider"></div>
+        <div style="font-size:0.82rem;font-weight:600;margin-bottom:14px;">Monthly P/L Chart Data</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:14px;">Enter comma-separated values for Aug 2024 → Jan 2026 (18 months)</div>
+        <div class="field">
+          <label>Monthly P/L Values</label>
+          <textarea id="iChartData" placeholder="2800, 4400, 4500, 2000, 3600, 1200, 1100, 1100, 1200, 5000, 2800, 2500, 2600, 2200, 12000, 6500, 1200, 900"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" onclick="saveInsights()">Save Stats</button>
+          <button class="btn btn-secondary" onclick="resetInsights()">Reset to Default</button>
+        </div>
+
+        <!-- PREVIEW -->
+        <div class="divider"></div>
+        <div style="font-size:0.78rem;color:var(--text-muted);">Current saved stats for this user:</div>
+        <div id="insightPreview" style="margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SETTINGS ===== -->
+  <section class="section" id="section-settings">
+    <div>
+      <div class="page-title">Settings</div>
+      <div class="page-sub">Admin account and system settings.</div>
+    </div>
+
+    <div class="card" style="max-width:480px;">
+      <div class="card-title">Change Admin Password</div>
+      <div class="field" style="margin-bottom:14px;"><label>Current Password</label><input type="password" id="oldPass" placeholder="••••••••"/></div>
+      <div class="field" style="margin-bottom:14px;"><label>New Password</label><input type="password" id="newPass" placeholder="••••••••"/></div>
+      <div class="field" style="margin-bottom:18px;"><label>Confirm Password</label><input type="password" id="confirmPass" placeholder="••••••••"/></div>
+      <button class="btn btn-primary" onclick="changeAdminPass()">Update Password</button>
+    </div>
+
+    <div class="card" style="max-width:480px;">
+      <div class="card-title">Data Management</div>
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">Export all user and trade data as a JSON file, or reset all data.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-secondary" onclick="exportData()">📥 Export All Data</button>
+        <button class="btn btn-danger" onclick="confirmReset()">🗑 Reset All Data</button>
+      </div>
+    </div>
+
+    <div class="card" style="max-width:540px;">
+      <div class="card-title">Demo Data Generator</div>
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px;line-height:1.7;">
+        Instantly seed <strong style="color:var(--text)">500 realistic demo users</strong> — complete with trades, P/L stats, ROI, and monthly chart data. Perfect for testing the full platform.
+      </div>
+      <div style="font-size:0.75rem;background:rgba(255,193,0,0.07);border:1px solid rgba(255,193,0,0.2);border-radius:8px;color:#ffc100;padding:10px 14px;margin-bottom:16px;">
+        ⚠️ This adds users to existing data. Click "Reset All Data" first if you want a clean start.
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <button class="btn btn-primary" id="seedBtn" onclick="seedDemoUsers()">🌱 Seed 500 Demo Users</button>
+        <button class="btn btn-secondary" onclick="removeDemoUsers()">🧹 Remove Demo Users</button>
+      </div>
+      <div id="seedProgress" style="display:none;margin-top:16px;">
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;" id="seedProgressText">Generating users…</div>
+        <div style="background:rgba(255,255,255,0.05);border-radius:999px;height:6px;overflow:hidden;">
+          <div id="seedProgressBar" style="height:100%;background:linear-gradient(90deg,#00ffcc,#00c2ff);border-radius:999px;width:0%;transition:width 0.3s;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- EDIT USER MODAL -->
+<div class="modal-overlay hidden" id="editUserModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('editUserModal')">✕</button>
+    <div class="modal-title">Edit User</div>
+    <input type="hidden" id="editUserId"/>
+    <div class="form-grid">
+      <div class="field"><label>Full Name</label><input type="text" id="euName"/></div>
+      <div class="field"><label>Email</label><input type="email" id="euEmail"/></div>
+      <div class="field"><label>Mobile</label><input type="tel" id="euMobile"/></div>
+      <div class="field"><label>City</label><input type="text" id="euCity"/></div>
+      <div class="field"><label>Service Plan</label>
+        <select id="euPlan">
+          <option value="Alpha">Alpha</option>
+          <option value="Quantum">Quantum</option>
+          <option value="Infinity">Infinity</option>
+        </select>
+      </div>
+      <div class="field"><label>MT5 Account ID</label><input type="text" id="euMT5"/></div>
+      <div class="field"><label>MT5 Server</label><input type="text" id="euServer"/></div>
+      <div class="field"><label>Capital (USD)</label><input type="number" id="euCapital"/></div>
+      <div class="field"><label>KYC Status</label>
+        <select id="euKYC"><option value="Pending">Pending</option><option value="Completed">Completed</option></select>
+      </div>
+      <div class="field"><label>Status</label>
+        <select id="euStatus"><option value="active">Active</option><option value="pending">Pending</option><option value="inactive">Inactive</option></select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="saveEditUser()">Save Changes</button>
+      <button class="btn btn-secondary" onclick="closeModal('editUserModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// STORAGE HELPERS
+// ============================================================
+const ADMIN_PASS_KEY = 'algo_admin_pass';
+const USERS_KEY = 'algo_users';
+const TRADES_KEY = 'algo_trades';
+const INSIGHTS_KEY = 'algo_insights';
+
+function getUsers() { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
+function saveUsers(u) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+function getTrades(uid) { const all = JSON.parse(localStorage.getItem(TRADES_KEY)||'{}'); return all[uid] || []; }
+function saveTrades(uid, trades) { const all = JSON.parse(localStorage.getItem(TRADES_KEY)||'{}'); all[uid]=trades; localStorage.setItem(TRADES_KEY,JSON.stringify(all)); }
+function getInsights(uid) { const all = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'); return all[uid] || null; }
+function saveInsights_s(uid, data) { const all = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'); all[uid]=data; localStorage.setItem(INSIGHTS_KEY,JSON.stringify(all)); }
+function getAdminPass() { return localStorage.getItem(ADMIN_PASS_KEY) || 'Admin@1234'; }
+
+// ============================================================
+// NAV
+// ============================================================
+const sectionNames = { users:'User Management', trades:'Trade Data', insights:'Dashboard Stats', settings:'Settings' };
+function showSection(name) {
+  ['users','trades','insights','settings'].forEach(s => {
+    document.getElementById('section-'+s).classList.toggle('active', s===name);
+    document.getElementById('nav-'+s).classList.toggle('active', s===name);
+  });
+  document.getElementById('topbarTitle').textContent = sectionNames[name];
+  if (name==='trades') populateUserDropdown('tradeUserSelect');
+  if (name==='insights') populateUserDropdown('insightUserSelect');
+}
+
+// ============================================================
+// USER MANAGEMENT
+// ============================================================
+function addUser() {
+  const name    = document.getElementById('uName').value.trim();
+  const email   = document.getElementById('uEmail').value.trim().toLowerCase();
+  const pass    = document.getElementById('uPass').value;
+  const mobile  = document.getElementById('uMobile').value.trim();
+  const city    = document.getElementById('uCity').value.trim();
+  const dob     = document.getElementById('uDOB').value;
+  const plan    = document.getElementById('uPlan').value;
+  const mt5     = document.getElementById('uMT5').value.trim();
+  const server  = document.getElementById('uServer').value.trim();
+  const kyc     = document.getElementById('uKYC').value;
+  const capital = document.getElementById('uCapital').value;
+  const status  = document.getElementById('uStatus').value;
+
+  if (!name || !email || !pass) { showToast('Name, email and password are required.','error'); return; }
+
+  const users = getUsers();
+  if (users.find(u => u.email === email)) { showToast('A user with this email already exists.','error'); return; }
+
+  const user = { id: Date.now().toString(), name, email, pass, mobile, city, dob, plan, mt5, server, kyc, capital: parseFloat(capital)||0, status, createdAt: new Date().toISOString() };
+  users.push(user);
+  saveUsers(users);
+  renderUsersTable(users);
+  updateStats(users);
+  clearUserForm();
+  showToast(`User "${name}" added successfully.`,'success');
+}
+
+function clearUserForm() {
+  ['uName','uEmail','uPass','uMobile','uCity','uDOB','uMT5','uServer','uCapital'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('uPlan').value='Alpha';
+  document.getElementById('uKYC').value='Pending';
+  document.getElementById('uStatus').value='active';
+}
+
+let usersPage = 1;
+const USERS_PER_PAGE = 20;
+let currentUsersData = [];
+
+function renderUsersTable(users) {
+  currentUsersData = users;
+  const tbody = document.getElementById('usersBody');
+  const empty = document.getElementById('usersEmpty');
+  const table = document.getElementById('usersTable');
+  if (!users.length) { table.style.display='none'; empty.style.display='flex'; renderUsersPagination(0); return; }
+  table.style.display='table'; empty.style.display='none';
+
+  const totalPages = Math.ceil(users.length / USERS_PER_PAGE);
+  usersPage = Math.min(Math.max(usersPage, 1), totalPages);
+  const sliced = users.slice((usersPage-1)*USERS_PER_PAGE, usersPage*USERS_PER_PAGE);
+
+  tbody.innerHTML = sliced.map(u => `
+    <tr>
+      <td><strong style="color:var(--text)">${u.name}</strong>${u.isDummy ? ' <span style="font-size:0.6rem;color:var(--text-muted);background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">demo</span>' : ''}</td>
+      <td>${u.email}</td>
+      <td><span class="status-pill active">${u.plan}</span></td>
+      <td>$${(u.capital||0).toLocaleString()}</td>
+      <td><span class="status-pill ${u.kyc==='Completed'?'active':'pending'}">${u.kyc}</span></td>
+      <td><span class="status-pill ${u.status}">${u.status}</span></td>
+      <td>
+        <button class="action-btn" onclick="editUser('${u.id}')">Edit</button>
+        <button class="action-btn danger" onclick="deleteUser('${u.id}')">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+  renderUsersPagination(totalPages);
+}
+
+function renderUsersPagination(totalPages) {
+  let pag = document.getElementById('usersPagination');
+  if (!pag) {
+    pag = document.createElement('div');
+    pag.id = 'usersPagination';
+    pag.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding-top:16px;flex-wrap:wrap;gap:10px;';
+    document.getElementById('usersTable').parentElement.appendChild(pag);
+  }
+  if (totalPages <= 1) { pag.innerHTML=''; return; }
+  const showing = Math.min(usersPage * USERS_PER_PAGE, currentUsersData.length);
+  const from = (usersPage-1)*USERS_PER_PAGE + 1;
+  pag.innerHTML = `
+    <span style="font-size:0.75rem;color:var(--text-muted);">Showing ${from}–${showing} of ${currentUsersData.length} users</span>
+    <div style="display:flex;gap:6px;">
+      <button onclick="goUsersPage(${usersPage-1})" ${usersPage===1?'disabled':''} style="background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);padding:5px 12px;border-radius:6px;font-size:0.75rem;cursor:pointer;">← Prev</button>
+      <span style="background:var(--primary-dim);border:1px solid var(--border-bright);color:var(--primary);padding:5px 12px;border-radius:6px;font-size:0.75rem;">${usersPage} / ${totalPages}</span>
+      <button onclick="goUsersPage(${usersPage+1})" ${usersPage===totalPages?'disabled':''} style="background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);padding:5px 12px;border-radius:6px;font-size:0.75rem;cursor:pointer;">Next →</button>
+    </div>
+  `;
+}
+
+function goUsersPage(p) {
+  usersPage = p;
+  renderUsersTable(currentUsersData);
+}
+
+
+function updateStats(users) {
+  document.getElementById('statTotal').textContent = users.length;
+  document.getElementById('statActive').textContent = users.filter(u=>u.status==='active').length;
+  document.getElementById('statPending').textContent = users.filter(u=>u.kyc==='Pending').length;
+}
+
+function searchUsers(q) {
+  usersPage = 1;
+  const users = getUsers().filter(u => u.name.toLowerCase().includes(q.toLowerCase()) || u.email.toLowerCase().includes(q.toLowerCase()));
+  renderUsersTable(users);
+}
+
+function deleteUser(id) {
+  if (!confirm('Delete this user and all their data?')) return;
+  const users = getUsers().filter(u => u.id !== id);
+  saveUsers(users);
+  // Remove trades and insights
+  const trades = JSON.parse(localStorage.getItem(TRADES_KEY)||'{}');
+  const insights = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}');
+  delete trades[id]; delete insights[id];
+  localStorage.setItem(TRADES_KEY, JSON.stringify(trades));
+  localStorage.setItem(INSIGHTS_KEY, JSON.stringify(insights));
+  renderUsersTable(users); updateStats(users);
+  showToast('User deleted.','success');
+}
+
+function editUser(id) {
+  const user = getUsers().find(u=>u.id===id);
+  if (!user) return;
+  document.getElementById('editUserId').value = id;
+  document.getElementById('euName').value = user.name;
+  document.getElementById('euEmail').value = user.email;
+  document.getElementById('euMobile').value = user.mobile||'';
+  document.getElementById('euCity').value = user.city||'';
+  document.getElementById('euPlan').value = user.plan;
+  document.getElementById('euMT5').value = user.mt5||'';
+  document.getElementById('euServer').value = user.server||'';
+  document.getElementById('euCapital').value = user.capital||'';
+  document.getElementById('euKYC').value = user.kyc;
+  document.getElementById('euStatus').value = user.status;
+  document.getElementById('editUserModal').classList.remove('hidden');
+}
+
+function saveEditUser() {
+  const id = document.getElementById('editUserId').value;
+  const users = getUsers();
+  const idx = users.findIndex(u=>u.id===id);
+  if (idx<0) return;
+  users[idx] = { ...users[idx],
+    name: document.getElementById('euName').value,
+    email: document.getElementById('euEmail').value.toLowerCase(),
+    mobile: document.getElementById('euMobile').value,
+    city: document.getElementById('euCity').value,
+    plan: document.getElementById('euPlan').value,
+    mt5: document.getElementById('euMT5').value,
+    server: document.getElementById('euServer').value,
+    capital: parseFloat(document.getElementById('euCapital').value)||0,
+    kyc: document.getElementById('euKYC').value,
+    status: document.getElementById('euStatus').value,
+  };
+  saveUsers(users); renderUsersTable(users); updateStats(users);
+  closeModal('editUserModal');
+  showToast('User updated.','success');
+}
+
+// ============================================================
+// TRADE DATA
+// ============================================================
+function populateUserDropdown(selectId) {
+  const sel = document.getElementById(selectId);
+  const cur = sel.value;
+  const users = getUsers();
+  sel.innerHTML = '<option value="">— Select a user —</option>' + users.map(u=>`<option value="${u.id}" ${u.id===cur?'selected':''}>${u.name} (${u.email})</option>`).join('');
+}
+
+function loadUserTrades() {
+  const uid = document.getElementById('tradeUserSelect').value;
+  const wrap = document.getElementById('tradeFormWrap');
+  if (!uid) { wrap.classList.add('hidden'); return; }
+  wrap.classList.remove('hidden');
+  const user = getUsers().find(u=>u.id===uid);
+  document.getElementById('tradeUserInfo').textContent = user ? `Plan: ${user.plan} · Capital: $${user.capital}` : '';
+  renderTradeEntries(uid);
+}
+
+function addTrade() {
+  const uid = document.getElementById('tradeUserSelect').value;
+  if (!uid) return;
+  const date   = document.getElementById('tDate').value;
+  const symbol = document.getElementById('tSymbol').value.trim().toUpperCase();
+  const type   = document.getElementById('tType').value;
+  const lots   = parseFloat(document.getElementById('tLots').value)||0;
+  const open   = parseFloat(document.getElementById('tOpen').value)||0;
+  const close  = parseFloat(document.getElementById('tClose').value)||0;
+  const pl     = parseFloat(document.getElementById('tPL').value)||0;
+  const comment= document.getElementById('tComment').value.trim();
+
+  if (!date || !symbol) { showToast('Date and symbol are required.','error'); return; }
+
+  const trades = getTrades(uid);
+  trades.unshift({ id: Date.now().toString(), date, symbol, type, lots, open, close, pl, comment });
+  saveTrades(uid, trades);
+  renderTradeEntries(uid);
+  clearTradeForm();
+  showToast(`Trade added: ${type} ${symbol} ${pl>=0?'+':''}$${pl}`,'success');
+}
+
+function clearTradeForm() {
+  ['tDate','tSymbol','tLots','tOpen','tClose','tPL','tComment'].forEach(id=>document.getElementById(id).value='');
+}
+
+function deleteTrade(uid, tid) {
+  const trades = getTrades(uid).filter(t=>t.id!==tid);
+  saveTrades(uid, trades);
+  renderTradeEntries(uid);
+  showToast('Trade deleted.','success');
+}
+
+function clearAllTrades() {
+  const uid = document.getElementById('tradeUserSelect').value;
+  if (!uid || !confirm('Delete ALL trades for this user?')) return;
+  saveTrades(uid, []);
+  renderTradeEntries(uid);
+  showToast('All trades cleared.','success');
+}
+
+function renderTradeEntries(uid) {
+  const trades = getTrades(uid);
+  const list = document.getElementById('tradeEntriesList');
+  if (!trades.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">No trades yet for this user.</div></div>';
+    return;
+  }
+  list.innerHTML = trades.map(t => `
+    <div class="trade-entry">
+      <div class="trade-entry-info">
+        <div class="trade-entry-field"><div class="tef-label">Date</div><div class="tef-val">${t.date}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">Symbol</div><div class="tef-val">${t.symbol}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">Type</div><div class="tef-val ${t.type.toLowerCase()}">${t.type}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">Lots</div><div class="tef-val">${t.lots}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">Open</div><div class="tef-val">${t.open}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">Close</div><div class="tef-val">${t.close}</div></div>
+        <div class="trade-entry-field"><div class="tef-label">P/L</div><div class="tef-val ${t.pl>=0?'profit':'loss'}">${t.pl>=0?'+':''}$${parseFloat(t.pl).toFixed(2)}</div></div>
+        ${t.comment?`<div class="trade-entry-field"><div class="tef-label">Note</div><div class="tef-val">${t.comment}</div></div>`:''}
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteTrade('${uid}','${t.id}')">✕</button>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// INSIGHTS
+// ============================================================
+function loadUserInsights() {
+  const uid = document.getElementById('insightUserSelect').value;
+  const wrap = document.getElementById('insightFormWrap');
+  if (!uid) { wrap.classList.add('hidden'); return; }
+  wrap.classList.remove('hidden');
+  const data = getInsights(uid);
+  if (data) {
+    document.getElementById('iPL').value = data.totalPL||'';
+    document.getElementById('iROI').value = data.roi||'';
+    document.getElementById('iCapital').value = data.capital||'';
+    document.getElementById('iTrades').value = data.totalTrades||'';
+    document.getElementById('iChartData').value = (data.chartData||[]).join(', ');
+    renderInsightPreview(data);
+  } else {
+    ['iPL','iROI','iCapital','iTrades','iChartData'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('insightPreview').innerHTML='';
+  }
+}
+
+function saveInsights() {
+  const uid = document.getElementById('insightUserSelect').value;
+  if (!uid) return;
+  const chartRaw = document.getElementById('iChartData').value;
+  const chartData = chartRaw.split(',').map(v=>parseFloat(v.trim())).filter(v=>!isNaN(v));
+  const data = {
+    totalPL: parseFloat(document.getElementById('iPL').value)||0,
+    roi: parseFloat(document.getElementById('iROI').value)||0,
+    capital: parseFloat(document.getElementById('iCapital').value)||0,
+    totalTrades: parseInt(document.getElementById('iTrades').value)||0,
+    chartData
+  };
+  saveInsights_s(uid, data);
+  renderInsightPreview(data);
+  showToast('Dashboard stats saved successfully.','success');
+}
+
+function resetInsights() {
+  const defaults = { totalPL:54010.66, roi:1800.36, capital:3000, totalTrades:890, chartData:[2800,4400,4500,2000,3600,1200,1100,1100,1200,5000,2800,2500,2600,2200,12000,6500,1200,900] };
+  document.getElementById('iPL').value = defaults.totalPL;
+  document.getElementById('iROI').value = defaults.roi;
+  document.getElementById('iCapital').value = defaults.capital;
+  document.getElementById('iTrades').value = defaults.totalTrades;
+  document.getElementById('iChartData').value = defaults.chartData.join(', ');
+}
+
+function renderInsightPreview(data) {
+  document.getElementById('insightPreview').innerHTML = [
+    ['Total P/L', '$'+data.totalPL.toLocaleString()],
+    ['ROI', data.roi+'%'],
+    ['Capital', '$'+data.capital.toLocaleString()],
+    ['Total Trades', data.totalTrades],
+  ].map(([l,v])=>`<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;min-width:120px;"><div style="font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">${l}</div><div style="font-size:1rem;font-weight:700;color:var(--primary);">${v}</div></div>`).join('');
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function changeAdminPass() {
+  const old = document.getElementById('oldPass').value;
+  const nw  = document.getElementById('newPass').value;
+  const cf  = document.getElementById('confirmPass').value;
+  if (old !== getAdminPass()) { showToast('Current password incorrect.','error'); return; }
+  if (nw !== cf) { showToast('Passwords do not match.','error'); return; }
+  if (nw.length < 6) { showToast('Password must be at least 6 characters.','error'); return; }
+  localStorage.setItem(ADMIN_PASS_KEY, nw);
+  showToast('Admin password updated.','success');
+  ['oldPass','newPass','confirmPass'].forEach(id=>document.getElementById(id).value='');
+}
+
+function exportData() {
+  const data = { users: getUsers(), trades: JSON.parse(localStorage.getItem(TRADES_KEY)||'{}'), insights: JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'), exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `algostech-data-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  showToast('Data exported successfully.','success');
+}
+
+function confirmReset() {
+  if (!confirm('⚠️ This will delete ALL users, trades, and stats. Are you absolutely sure?')) return;
+  [USERS_KEY, TRADES_KEY, INSIGHTS_KEY].forEach(k=>localStorage.removeItem(k));
+  init(); showToast('All data reset.','success');
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===e.currentTarget) m.classList.add('hidden'); }));
+
+function adminLogout() { window.location.href='admin-login.html'; }
+
+let toastTimer;
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = (type==='success'?'✓  ':'✕  ') + msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  const users = getUsers();
+  renderUsersTable(users);
+  updateStats(users);
+}
+init();
+
+// ============================================================
+// DEMO DATA SEED — 500 USERS
+// ============================================================
+async function seedDemoUsers() {
+  const btn = document.getElementById('seedBtn');
+  const progress = document.getElementById('seedProgress');
+  const progressText = document.getElementById('seedProgressText');
+  const progressBar = document.getElementById('seedProgressBar');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Seeding…';
+  progress.style.display = 'block';
+
+  const indianFirst = ['Aarav','Arjun','Rohan','Rahul','Vikram','Amit','Nikhil','Karan','Sanjay','Ravi','Deepak','Suresh','Rajesh','Pradeep','Manish','Aditya','Vivek','Gaurav','Ankit','Mohit','Sachin','Arun','Dinesh','Manoj','Pankaj','Vinay','Tushar','Harsh','Yash','Dev','Akash','Shubham','Abhishek','Varun','Nitin','Rishabh','Siddharth','Kartik','Aman','Ishaan','Pooja','Priya','Neha','Anjali','Kavya','Sneha','Divya','Ritika','Simran','Megha','Tanya','Nisha','Isha','Preeti','Swati','Ruchi','Shruti','Pallavi','Nidhi','Komal','Gauri'];
+  const indianLast  = ['Sharma','Verma','Singh','Patel','Kumar','Joshi','Gupta','Yadav','Mehta','Shah','Agarwal','Nair','Reddy','Mishra','Pandey','Chaudhary','Sinha','Chopra','Malhotra','Saxena','Kapoor','Bose','Das','Roy','Chatterjee','Mukherjee','Pillai','Menon','Iyer','Rao','Desai','Jain','Garg','Bansal','Arora','Walia','Sethi','Bhatia','Kohli','Anand'];
+  const foreignFirst= ['James','John','Michael','David','Robert','William','Richard','Thomas','Daniel','Matthew','Andrew','Joshua','Ryan','Kevin','Brian','Jason','Eric','Adam','Mark','Paul','Emma','Olivia','Ava','Sophia','Isabella','Mia','Charlotte','Amelia','Harper','Evelyn','Carlos','Luis','Miguel','Juan','Diego','Ahmed','Omar','Yusuf','Ali','Hassan','Wang','Wei','Lei','Chen','Jing','Kim','Jun','Min','Soo','Hyun'];
+  const foreignLast = ['Smith','Johnson','Williams','Brown','Jones','Miller','Davis','Wilson','Moore','Taylor','Anderson','Thomas','Jackson','White','Harris','Martin','Thompson','Garcia','Martinez','Robinson','Clark','Lewis','Lee','Walker','Hall','Allen','Young','King','Wright','Scott','Nguyen','Chen','Wang','Kim','Park','Liu','Zhang','Santos','Silva','Oliveira'];
+  const indianCities= ['Mumbai','Delhi','Bangalore','Hyderabad','Chennai','Kolkata','Pune','Ahmedabad','Jaipur','Surat','Lucknow','Kanpur','Nagpur','Indore','Bhopal','Patna','Vadodara','Coimbatore','Ludhiana','Agra','Nashik','Thane','Meerut','Rajkot','Amritsar','Varanasi','Aurangabad','Visakhapatnam','Madurai','Raipur'];
+  const foreignCities=['New York','London','Dubai','Singapore','Sydney','Toronto','Tokyo','Frankfurt','Paris','Amsterdam','Zurich','Hong Kong','Seoul','Melbourne','Kuala Lumpur','Bangkok','Cape Town','Nairobi','Lagos','Riyadh'];
+  const plans   = ['Alpha','Quantum','Infinity'];
+  const planW   = [0.45, 0.35, 0.20];
+  const servers = ['Exness-Real','XM-Global-MT5','ICMarkets-Live','Pepperstone-MT5','Vantage-Real','Binance-Pro','OANDA-Live','FXTM-Real','HotForex-Live','FBS-MT5'];
+  const symbols = ['EUR/USD','GBP/USD','XAU/USD','USD/JPY','BTC/USD','ETH/USD','AUD/USD','USD/CAD','GBP/JPY','NZD/USD','USD/CHF','EUR/GBP','XAG/USD','OIL/USD','US30','NAS100'];
+
+  function rnd(min, max) { return Math.random() * (max - min) + min; }
+  function rndInt(min, max) { return Math.floor(rnd(min, max + 1)); }
+  function pick(arr) { return arr[rndInt(0, arr.length - 1)]; }
+  function pickWeighted(arr, weights) {
+    const r = Math.random();
+    let cum = 0;
+    for (let i = 0; i < arr.length; i++) { cum += weights[i]; if (r < cum) return arr[i]; }
+    return arr[arr.length - 1];
+  }
+  function randDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  }
+  function fmt(d) { return d.toISOString().slice(0,10); }
+  function randPhone(indian) {
+    if (indian) return '+91 ' + rndInt(6,9) + Array.from({length:9}, ()=>rndInt(0,9)).join('');
+    const codes = ['+1','+44','+971','+65','+61','+81','+49'];
+    return pick(codes) + ' ' + Array.from({length:10}, ()=>rndInt(0,9)).join('');
+  }
+  function genChart(capital, totalPL) {
+    const months = 18;
+    const data = [];
+    let remaining = totalPL;
+    for (let i = 0; i < months - 1; i++) {
+      const share = rnd(0.02, 0.12);
+      const val = Math.round(totalPL * share * (Math.random() > 0.15 ? 1 : -0.3));
+      data.push(val);
+      remaining -= val;
+    }
+    data.push(Math.round(remaining));
+    return data;
+  }
+  function genTrades(uid, numTrades, symbols) {
+    const trades = {};
+    const tradeList = [];
+    const start = new Date('2024-08-01');
+    const end   = new Date('2026-01-31');
+    for (let i = 0; i < numTrades; i++) {
+      const sym    = pick(symbols);
+      const type   = Math.random() > 0.5 ? 'BUY' : 'SELL';
+      const lots   = parseFloat(rnd(0.01, 2).toFixed(2));
+      const isGold = sym === 'XAU/USD';
+      const isCrypto = sym.includes('BTC') || sym.includes('ETH');
+      let basePrice;
+      if (isGold) basePrice = rnd(1800, 2400);
+      else if (isCrypto) basePrice = sym.includes('BTC') ? rnd(25000, 70000) : rnd(1500, 4000);
+      else basePrice = rnd(0.8, 1.8);
+      const move   = rnd(0.0005, 0.008) * basePrice;
+      const win    = Math.random() > 0.28;
+      const open   = parseFloat(basePrice.toFixed(isGold||isCrypto ? 2 : 4));
+      const close  = parseFloat((win ? open + move : open - move).toFixed(isGold||isCrypto ? 2 : 4));
+      const pl     = parseFloat((win ? rnd(10, 800) : -rnd(10, 400)).toFixed(2));
+      tradeList.push({
+        id: (Date.now() - i * 1000).toString(),
+        date: fmt(randDate(start, end)),
+        symbol: sym, type, lots, open, close, pl, comment: ''
+      });
+    }
+    tradeList.sort((a,b) => b.date.localeCompare(a.date));
+    trades[uid] = tradeList;
+    return trades;
+  }
+
+  const BATCH = 25;
+  const TOTAL = 500;
+  let allUsers = getUsers();
+  let allTrades = JSON.parse(localStorage.getItem(TRADES_KEY) || '{}');
+  let allInsights = JSON.parse(localStorage.getItem(INSIGHTS_KEY) || '{}');
+  const existingEmails = new Set(allUsers.map(u => u.email));
+
+  let generated = 0;
+
+  async function processBatch(batchIndex) {
+    const start = batchIndex * BATCH;
+    const end   = Math.min(start + BATCH, TOTAL);
+
+    for (let i = start; i < end; i++) {
+      const isIndian = i < 320;
+      const firstName = isIndian ? pick(indianFirst) : pick(foreignFirst);
+      const lastName  = isIndian ? pick(indianLast)  : pick(foreignLast);
+      const name = firstName + ' ' + lastName;
+
+      let email;
+      let attempts = 0;
+      do {
+        const tag = rndInt(10, 9999);
+        email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${tag}@${pick(['gmail.com','yahoo.com','outlook.com','hotmail.com','icloud.com','proton.me'])}`;
+        attempts++;
+      } while (existingEmails.has(email) && attempts < 10);
+      existingEmails.add(email);
+
+      const plan    = pickWeighted(plans, planW);
+      const capital = plan === 'Alpha' ? rndInt(250,3000) : plan === 'Quantum' ? rndInt(500,8000) : rndInt(1000,25000);
+      const totalPL = parseFloat((capital * rnd(0.3, 25)).toFixed(2));
+      const roi     = parseFloat(((totalPL / capital) * 100).toFixed(2));
+      const totalTrades = rndInt(50, 1200);
+      const kyc     = Math.random() > 0.3 ? 'Completed' : 'Pending';
+      const status  = Math.random() > 0.1 ? 'active' : (Math.random() > 0.5 ? 'pending' : 'inactive');
+      const city    = isIndian ? pick(indianCities) : pick(foreignCities);
+      const server  = pick(servers);
+      const mt5     = rndInt(10000000, 99999999).toString();
+
+      const birthYear = rndInt(1975, 2001);
+      const birthMonth = rndInt(1,12).toString().padStart(2,'0');
+      const birthDay   = rndInt(1,28).toString().padStart(2,'0');
+      const dob = `${birthYear}-${birthMonth}-${birthDay}`;
+
+      const createdAt = randDate(new Date('2023-01-01'), new Date('2026-01-01')).toISOString();
+      const uid = (Date.now() + i + Math.random() * 10000).toString().replace('.','');
+
+      const user = {
+        id: uid, name, email,
+        pass: 'Demo@1234',
+        mobile: randPhone(isIndian),
+        city, dob, plan, mt5, server, kyc, capital, status, createdAt,
+        isDummy: true
+      };
+
+      allUsers.push(user);
+
+      // Insights
+      const chartData = genChart(capital, totalPL);
+      allInsights[uid] = { totalPL, roi, capital, totalTrades, chartData };
+
+      // Trades (5–15 per user to keep localStorage manageable)
+      const numTrades = rndInt(5, 15);
+      const tradeBatch = genTrades(uid, numTrades, symbols);
+      allTrades[uid] = tradeBatch[uid];
+
+      generated++;
+    }
+
+    // Save after each batch
+    saveUsers(allUsers);
+    localStorage.setItem(TRADES_KEY, JSON.stringify(allTrades));
+    localStorage.setItem(INSIGHTS_KEY, JSON.stringify(allInsights));
+
+    const pct = Math.round((generated / TOTAL) * 100);
+    progressBar.style.width = pct + '%';
+    progressText.textContent = `Generated ${generated} / ${TOTAL} users…`;
+
+    // Yield to browser
+    await new Promise(r => setTimeout(r, 10));
+  }
+
+  const totalBatches = Math.ceil(TOTAL / BATCH);
+  for (let b = 0; b < totalBatches; b++) {
+    await processBatch(b);
+  }
+
+  renderUsersTable(getUsers());
+  updateStats(getUsers());
+  btn.disabled = false;
+  btn.textContent = '🌱 Seed 500 Demo Users';
+  progressText.textContent = `✅ Done! ${TOTAL} demo users seeded.`;
+  progressBar.style.width = '100%';
+  showToast(`500 demo users seeded successfully!`, 'success');
+  setTimeout(() => { progress.style.display = 'none'; }, 5000);
+}
+
+function removeDemoUsers() {
+  if (!confirm('Remove all demo/dummy users and their data?')) return;
+  let users = getUsers().filter(u => !u.isDummy);
+  const dummyIds = getUsers().filter(u => u.isDummy).map(u => u.id);
+  saveUsers(users);
+  const trades   = JSON.parse(localStorage.getItem(TRADES_KEY) || '{}');
+  const insights = JSON.parse(localStorage.getItem(INSIGHTS_KEY) || '{}');
+  dummyIds.forEach(id => { delete trades[id]; delete insights[id]; });
+  localStorage.setItem(TRADES_KEY, JSON.stringify(trades));
+  localStorage.setItem(INSIGHTS_KEY, JSON.stringify(insights));
+  renderUsersTable(users);
+  updateStats(users);
+  showToast(`Removed ${dummyIds.length} demo users.`, 'success');
+}
+</script>
+</body>
+</html>
