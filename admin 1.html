@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://*.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com;">
   <title>Admin Panel — Algostech</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="admin.css"/>
@@ -375,22 +375,25 @@ async function sbUpsert(table, body) {
   } catch(e) { console.error(`sbUpsert ${table} exception:`, e); return null; }
 }
 
+// Cache for users list
 let _usersCache = [];
 async function getUsers() {
   try {
-    const r = await fetch(`${SB_URL}/rest/v1/users?select=*`, { headers: SB_H });
+    const url = new URL(`${SB_URL}/rest/v1/users`);
+    url.searchParams.set('select', '*');
+    url.searchParams.set('order', 'created_at.desc');
+    const r = await fetch(url, { headers: SB_H });
     if (!r.ok) {
       const err = await r.text();
       console.error('getUsers error:', r.status, err);
-      showToast('Failed to load users: ' + r.status + ' — ' + err, 'error');
+      showToast('Failed to load users: ' + r.status, 'error');
       return [];
     }
     _usersCache = await r.json();
-    console.log('Users loaded:', _usersCache.length);
     return _usersCache;
   } catch(e) {
     console.error('getUsers exception:', e);
-    showToast('Connection error: ' + e.message, 'error');
+    showToast('Connection error loading users.', 'error');
     return [];
   }
 }
@@ -777,28 +780,16 @@ function showToast(msg, type='success') {
 // INIT
 // ============================================================
 async function init() {
-  // Show loading state in table
-  const tbody = document.getElementById('usersBody');
-  if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-muted);">Loading users...</td></tr>';
-
   const users = await getUsers();
   renderUsersTable(users);
   updateStats(users);
-
-  // Nav listeners
   const navMap = { 'nav-users':'users', 'nav-trades':'trades', 'nav-insights':'insights', 'nav-settings':'settings' };
   Object.entries(navMap).forEach(([id, section]) => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('click', () => showSection(section));
   });
 }
-
-// Run after DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
+init();
 
 // Demo seed removed — use Supabase dashboard to import data instead
 
