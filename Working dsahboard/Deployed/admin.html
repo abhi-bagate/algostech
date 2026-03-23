@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com;">
   <title>Admin Panel — Algostech</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="admin.css"/>
@@ -21,23 +20,23 @@
 
   <nav class="sidebar-nav">
     <div class="nav-section-label">Management</div>
-    <button class="nav-item active" id="nav-users">
+    <div class="nav-item active" onclick="showSection('users')" id="nav-users">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       Users
-    </button>
-    <button class="nav-item" id="nav-trades">
+    </div>
+    <div class="nav-item" onclick="showSection('trades')" id="nav-trades">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       Trade Data
-    </button>
-    <button class="nav-item" id="nav-insights">
+    </div>
+    <div class="nav-item" onclick="showSection('insights')" id="nav-insights">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
       Dashboard Stats
-    </button>
+    </div>
     <div class="nav-section-label">System</div>
-    <button class="nav-item" id="nav-settings">
+    <div class="nav-item" onclick="showSection('settings')" id="nav-settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
       Settings
-    </button>
+    </div>
   </nav>
 
   <div class="sidebar-bottom">
@@ -51,12 +50,7 @@
 <!-- MAIN -->
 <main class="main">
   <header class="topbar">
-    <div style="display:flex;align-items:center;gap:14px;">
-      <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleAdminSidebar()" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="topbar-title" id="topbarTitle">User Management</div>
-    </div>
+    <div class="topbar-title" id="topbarTitle">User Management</div>
     <div class="topbar-right">
       <div class="admin-chip">
         <div class="admin-avatar">AD</div>
@@ -323,57 +317,20 @@
 
 <script>
 // ============================================================
-// SUPABASE CONFIG
+// STORAGE HELPERS
 // ============================================================
-const SB_URL = 'https://biwmzoipryqdbkfutvfb.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpd216b2lwcnlxZGJrZnV0dmZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyMDA1NDgsImV4cCI6MjA4OTc3NjU0OH0.9wPiQVpSZqjeRYh1JoVqfbXpryKNtP7kCco7Q4tZzqo';
-const SB_H = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+const ADMIN_PASS_KEY = 'algo_admin_pass';
+const USERS_KEY = 'algo_users';
+const TRADES_KEY = 'algo_trades';
+const INSIGHTS_KEY = 'algo_insights';
 
-async function sbGet(table, params) {
-  const url = new URL(`${SB_URL}/rest/v1/${table}`);
-  if (params) Object.entries(params).forEach(([k,v]) => url.searchParams.set(k,v));
-  const r = await fetch(url, { headers: SB_H });
-  return r.ok ? r.json() : [];
-}
-async function sbPost(table, body) {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
-    method: 'POST', headers: { ...SB_H, 'Prefer': 'return=representation' }, body: JSON.stringify(body)
-  });
-  return r.ok ? r.json() : null;
-}
-async function sbPatch(table, params, body) {
-  const url = new URL(`${SB_URL}/rest/v1/${table}`);
-  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k,v));
-  const r = await fetch(url, { method: 'PATCH', headers: { ...SB_H, 'Prefer': 'return=representation' }, body: JSON.stringify(body) });
-  return r.ok ? r.json() : null;
-}
-async function sbDelete(table, params) {
-  const url = new URL(`${SB_URL}/rest/v1/${table}`);
-  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k,v));
-  const r = await fetch(url, { method: 'DELETE', headers: SB_H });
-  return r.ok;
-}
-async function sbUpsert(table, body) {
-  const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
-    method: 'POST', headers: { ...SB_H, 'Prefer': 'return=representation,resolution=merge-duplicates' }, body: JSON.stringify(body)
-  });
-  return r.ok ? r.json() : null;
-}
-
-// Cache for users list
-let _usersCache = [];
-async function getUsers() {
-  _usersCache = await sbGet('users', { select: '*', order: 'created_at.desc' });
-  return _usersCache;
-}
-async function getTrades(uid) {
-  return sbGet('trades', { user_id: `eq.${uid}`, select: '*', order: 'date.desc' });
-}
-async function getInsights(uid) {
-  const rows = await sbGet('insights', { user_id: `eq.${uid}`, select: '*' });
-  return rows.length ? rows[0] : null;
-}
-function getAdminPass() { return localStorage.getItem('algo_admin_pass') || 'Admin@1234'; }
+function getUsers() { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
+function saveUsers(u) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+function getTrades(uid) { const all = JSON.parse(localStorage.getItem(TRADES_KEY)||'{}'); return all[uid] || []; }
+function saveTrades(uid, trades) { const all = JSON.parse(localStorage.getItem(TRADES_KEY)||'{}'); all[uid]=trades; localStorage.setItem(TRADES_KEY,JSON.stringify(all)); }
+function getInsights(uid) { const all = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'); return all[uid] || null; }
+function saveInsights_s(uid, data) { const all = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'); all[uid]=data; localStorage.setItem(INSIGHTS_KEY,JSON.stringify(all)); }
+function getAdminPass() { return localStorage.getItem(ADMIN_PASS_KEY) || 'Amit@123'; }
 
 // ============================================================
 // NAV
@@ -385,14 +342,14 @@ function showSection(name) {
     document.getElementById('nav-'+s).classList.toggle('active', s===name);
   });
   document.getElementById('topbarTitle').textContent = sectionNames[name];
-  if (name==='trades')   populateUserDropdown('tradeUserSelect');
+  if (name==='trades') populateUserDropdown('tradeUserSelect');
   if (name==='insights') populateUserDropdown('insightUserSelect');
 }
 
 // ============================================================
 // USER MANAGEMENT
 // ============================================================
-async function addUser() {
+function addUser() {
   const name    = document.getElementById('uName').value.trim();
   const email   = document.getElementById('uEmail').value.trim().toLowerCase();
   const pass    = document.getElementById('uPass').value;
@@ -403,15 +360,17 @@ async function addUser() {
   const mt5     = document.getElementById('uMT5').value.trim();
   const server  = document.getElementById('uServer').value.trim();
   const kyc     = document.getElementById('uKYC').value;
-  const capital = parseFloat(document.getElementById('uCapital').value)||0;
+  const capital = document.getElementById('uCapital').value;
   const status  = document.getElementById('uStatus').value;
 
   if (!name || !email || !pass) { showToast('Name, email and password are required.','error'); return; }
 
-  const result = await sbPost('users', { name, email, pass, mobile, city, dob, plan, mt5, server, kyc, capital, status });
-  if (!result) { showToast('Failed to add user. Email may already exist.','error'); return; }
+  const users = getUsers();
+  if (users.find(u => u.email === email)) { showToast('A user with this email already exists.','error'); return; }
 
-  const users = await getUsers();
+  const user = { id: Date.now().toString(), name, email, pass, mobile, city, dob, plan, mt5, server, kyc, capital: parseFloat(capital)||0, status, createdAt: new Date().toISOString() };
+  users.push(user);
+  saveUsers(users);
   renderUsersTable(users);
   updateStats(users);
   clearUserForm();
@@ -443,23 +402,18 @@ function renderUsersTable(users) {
 
   tbody.innerHTML = sliced.map(u => `
     <tr>
-      <td><strong style="color:var(--text)">${u.name}</strong>${u.is_dummy ? ' <span style="font-size:0.6rem;color:var(--text-muted);background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">demo</span>' : ''}</td>
+      <td><strong style="color:var(--text)">${u.name}</strong>${u.isDummy ? ' <span style="font-size:0.6rem;color:var(--text-muted);background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">demo</span>' : ''}</td>
       <td>${u.email}</td>
       <td><span class="status-pill active">${u.plan}</span></td>
       <td>$${(u.capital||0).toLocaleString()}</td>
       <td><span class="status-pill ${u.kyc==='Completed'?'active':'pending'}">${u.kyc}</span></td>
       <td><span class="status-pill ${u.status}">${u.status}</span></td>
       <td>
-        <button class="action-btn" data-edit="${u.id}">Edit</button>
-        <button class="action-btn danger" data-delete="${u.id}">Delete</button>
+        <button class="action-btn" onclick="editUser('${u.id}')">Edit</button>
+        <button class="action-btn danger" onclick="deleteUser('${u.id}')">Delete</button>
       </td>
     </tr>
   `).join('');
-
-  // Attach button listeners
-  tbody.querySelectorAll('[data-edit]').forEach(btn => btn.addEventListener('click', () => editUser(btn.dataset.edit)));
-  tbody.querySelectorAll('[data-delete]').forEach(btn => btn.addEventListener('click', () => deleteUser(btn.dataset.delete)));
-
   renderUsersPagination(totalPages);
 }
 
@@ -477,73 +431,80 @@ function renderUsersPagination(totalPages) {
   pag.innerHTML = `
     <span style="font-size:0.75rem;color:var(--text-muted);">Showing ${from}–${showing} of ${currentUsersData.length} users</span>
     <div style="display:flex;gap:6px;">
-      <button id="pagPrev" style="background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);padding:5px 12px;border-radius:6px;font-size:0.75rem;cursor:pointer;" ${usersPage===1?'disabled':''}>← Prev</button>
+      <button onclick="goUsersPage(${usersPage-1})" ${usersPage===1?'disabled':''} style="background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);padding:5px 12px;border-radius:6px;font-size:0.75rem;cursor:pointer;">← Prev</button>
       <span style="background:var(--primary-dim);border:1px solid var(--border-bright);color:var(--primary);padding:5px 12px;border-radius:6px;font-size:0.75rem;">${usersPage} / ${totalPages}</span>
-      <button id="pagNext" style="background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);padding:5px 12px;border-radius:6px;font-size:0.75rem;cursor:pointer;" ${usersPage===totalPages?'disabled':''}>Next →</button>
-    </div>`;
-  document.getElementById('pagPrev').addEventListener('click', () => { usersPage--; renderUsersTable(currentUsersData); });
-  document.getElementById('pagNext').addEventListener('click', () => { usersPage++; renderUsersTable(currentUsersData); });
+      <button onclick="goUsersPage(${usersPage+1})" ${usersPage===totalPages?'disabled':''} style="background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);padding:5px 12px;border-radius:6px;font-size:0.75rem;cursor:pointer;">Next →</button>
+    </div>
+  `;
 }
 
+function goUsersPage(p) {
+  usersPage = p;
+  renderUsersTable(currentUsersData);
+}
+
+
 function updateStats(users) {
-  document.getElementById('statTotal').textContent   = users.length;
-  document.getElementById('statActive').textContent  = users.filter(u=>u.status==='active').length;
+  document.getElementById('statTotal').textContent = users.length;
+  document.getElementById('statActive').textContent = users.filter(u=>u.status==='active').length;
   document.getElementById('statPending').textContent = users.filter(u=>u.kyc==='Pending').length;
 }
 
-async function searchUsers(q) {
+function searchUsers(q) {
   usersPage = 1;
-  const users = _usersCache.filter(u =>
-    u.name.toLowerCase().includes(q.toLowerCase()) ||
-    u.email.toLowerCase().includes(q.toLowerCase())
-  );
+  const users = getUsers().filter(u => u.name.toLowerCase().includes(q.toLowerCase()) || u.email.toLowerCase().includes(q.toLowerCase()));
   renderUsersTable(users);
 }
 
-async function deleteUser(id) {
+function deleteUser(id) {
   if (!confirm('Delete this user and all their data?')) return;
-  await sbDelete('trades',   { user_id:`eq.${id}` });
-  await sbDelete('insights', { user_id:`eq.${id}` });
-  await sbDelete('users',    { id:`eq.${id}` });
-  const users = await getUsers();
+  const users = getUsers().filter(u => u.id !== id);
+  saveUsers(users);
+  // Remove trades and insights
+  const trades = JSON.parse(localStorage.getItem(TRADES_KEY)||'{}');
+  const insights = JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}');
+  delete trades[id]; delete insights[id];
+  localStorage.setItem(TRADES_KEY, JSON.stringify(trades));
+  localStorage.setItem(INSIGHTS_KEY, JSON.stringify(insights));
   renderUsersTable(users); updateStats(users);
   showToast('User deleted.','success');
 }
 
-async function editUser(id) {
-  const user = _usersCache.find(u=>u.id===id);
+function editUser(id) {
+  const user = getUsers().find(u=>u.id===id);
   if (!user) return;
-  document.getElementById('editUserId').value  = id;
-  document.getElementById('euName').value      = user.name;
-  document.getElementById('euEmail').value     = user.email;
-  document.getElementById('euMobile').value    = user.mobile||'';
-  document.getElementById('euCity').value      = user.city||'';
-  document.getElementById('euPlan').value      = user.plan;
-  document.getElementById('euMT5').value       = user.mt5||'';
-  document.getElementById('euServer').value    = user.server||'';
-  document.getElementById('euCapital').value   = user.capital||'';
-  document.getElementById('euKYC').value       = user.kyc;
-  document.getElementById('euStatus').value    = user.status;
+  document.getElementById('editUserId').value = id;
+  document.getElementById('euName').value = user.name;
+  document.getElementById('euEmail').value = user.email;
+  document.getElementById('euMobile').value = user.mobile||'';
+  document.getElementById('euCity').value = user.city||'';
+  document.getElementById('euPlan').value = user.plan;
+  document.getElementById('euMT5').value = user.mt5||'';
+  document.getElementById('euServer').value = user.server||'';
+  document.getElementById('euCapital').value = user.capital||'';
+  document.getElementById('euKYC').value = user.kyc;
+  document.getElementById('euStatus').value = user.status;
   document.getElementById('editUserModal').classList.remove('hidden');
 }
 
-async function saveEditUser() {
+function saveEditUser() {
   const id = document.getElementById('editUserId').value;
-  const patch = {
-    name:    document.getElementById('euName').value,
-    email:   document.getElementById('euEmail').value.toLowerCase(),
-    mobile:  document.getElementById('euMobile').value,
-    city:    document.getElementById('euCity').value,
-    plan:    document.getElementById('euPlan').value,
-    mt5:     document.getElementById('euMT5').value,
-    server:  document.getElementById('euServer').value,
+  const users = getUsers();
+  const idx = users.findIndex(u=>u.id===id);
+  if (idx<0) return;
+  users[idx] = { ...users[idx],
+    name: document.getElementById('euName').value,
+    email: document.getElementById('euEmail').value.toLowerCase(),
+    mobile: document.getElementById('euMobile').value,
+    city: document.getElementById('euCity').value,
+    plan: document.getElementById('euPlan').value,
+    mt5: document.getElementById('euMT5').value,
+    server: document.getElementById('euServer').value,
     capital: parseFloat(document.getElementById('euCapital').value)||0,
-    kyc:     document.getElementById('euKYC').value,
-    status:  document.getElementById('euStatus').value,
+    kyc: document.getElementById('euKYC').value,
+    status: document.getElementById('euStatus').value,
   };
-  await sbPatch('users', { id:`eq.${id}` }, patch);
-  const users = await getUsers();
-  renderUsersTable(users); updateStats(users);
+  saveUsers(users); renderUsersTable(users); updateStats(users);
   closeModal('editUserModal');
   showToast('User updated.','success');
 }
@@ -551,27 +512,25 @@ async function saveEditUser() {
 // ============================================================
 // TRADE DATA
 // ============================================================
-async function populateUserDropdown(selectId) {
+function populateUserDropdown(selectId) {
   const sel = document.getElementById(selectId);
   const cur = sel.value;
-  const users = _usersCache.length ? _usersCache : await getUsers();
-  sel.innerHTML = '<option value="">— Select a user —</option>' +
-    users.map(u=>`<option value="${u.id}" ${u.id===cur?'selected':''}>${u.name} (${u.email})</option>`).join('');
+  const users = getUsers();
+  sel.innerHTML = '<option value="">— Select a user —</option>' + users.map(u=>`<option value="${u.id}" ${u.id===cur?'selected':''}>${u.name} (${u.email})</option>`).join('');
 }
 
-async function loadUserTrades() {
-  const uid  = document.getElementById('tradeUserSelect').value;
+function loadUserTrades() {
+  const uid = document.getElementById('tradeUserSelect').value;
   const wrap = document.getElementById('tradeFormWrap');
   if (!uid) { wrap.classList.add('hidden'); return; }
   wrap.classList.remove('hidden');
-  const user = _usersCache.find(u=>u.id===uid);
+  const user = getUsers().find(u=>u.id===uid);
   document.getElementById('tradeUserInfo').textContent = user ? `Plan: ${user.plan} · Capital: $${user.capital}` : '';
-  const trades = await getTrades(uid);
-  renderTradeEntries(uid, trades);
+  renderTradeEntries(uid);
 }
 
-async function addTrade() {
-  const uid    = document.getElementById('tradeUserSelect').value;
+function addTrade() {
+  const uid = document.getElementById('tradeUserSelect').value;
   if (!uid) return;
   const date   = document.getElementById('tDate').value;
   const symbol = document.getElementById('tSymbol').value.trim().toUpperCase();
@@ -584,9 +543,10 @@ async function addTrade() {
 
   if (!date || !symbol) { showToast('Date and symbol are required.','error'); return; }
 
-  await sbPost('trades', { user_id:uid, date, symbol, type, lots, open, close, pl, comment });
-  const trades = await getTrades(uid);
-  renderTradeEntries(uid, trades);
+  const trades = getTrades(uid);
+  trades.unshift({ id: Date.now().toString(), date, symbol, type, lots, open, close, pl, comment });
+  saveTrades(uid, trades);
+  renderTradeEntries(uid);
   clearTradeForm();
   showToast(`Trade added: ${type} ${symbol} ${pl>=0?'+':''}$${pl}`,'success');
 }
@@ -595,23 +555,23 @@ function clearTradeForm() {
   ['tDate','tSymbol','tLots','tOpen','tClose','tPL','tComment'].forEach(id=>document.getElementById(id).value='');
 }
 
-async function deleteTrade(tid) {
-  const uid = document.getElementById('tradeUserSelect').value;
-  await sbDelete('trades', { id:`eq.${tid}` });
-  const trades = await getTrades(uid);
-  renderTradeEntries(uid, trades);
+function deleteTrade(uid, tid) {
+  const trades = getTrades(uid).filter(t=>t.id!==tid);
+  saveTrades(uid, trades);
+  renderTradeEntries(uid);
   showToast('Trade deleted.','success');
 }
 
-async function clearAllTrades() {
+function clearAllTrades() {
   const uid = document.getElementById('tradeUserSelect').value;
   if (!uid || !confirm('Delete ALL trades for this user?')) return;
-  await sbDelete('trades', { user_id:`eq.${uid}` });
-  renderTradeEntries(uid, []);
+  saveTrades(uid, []);
+  renderTradeEntries(uid);
   showToast('All trades cleared.','success');
 }
 
-function renderTradeEntries(uid, trades) {
+function renderTradeEntries(uid) {
+  const trades = getTrades(uid);
   const list = document.getElementById('tradeEntriesList');
   if (!trades.length) {
     list.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">No trades yet for this user.</div></div>';
@@ -629,66 +589,65 @@ function renderTradeEntries(uid, trades) {
         <div class="trade-entry-field"><div class="tef-label">P/L</div><div class="tef-val ${t.pl>=0?'profit':'loss'}">${t.pl>=0?'+':''}$${parseFloat(t.pl).toFixed(2)}</div></div>
         ${t.comment?`<div class="trade-entry-field"><div class="tef-label">Note</div><div class="tef-val">${t.comment}</div></div>`:''}
       </div>
-      <button class="btn btn-danger btn-sm" data-tid="${t.id}">✕</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteTrade('${uid}','${t.id}')">✕</button>
     </div>
   `).join('');
-  list.querySelectorAll('[data-tid]').forEach(btn => btn.addEventListener('click', () => deleteTrade(btn.dataset.tid)));
 }
 
 // ============================================================
 // INSIGHTS
 // ============================================================
-async function loadUserInsights() {
-  const uid  = document.getElementById('insightUserSelect').value;
+function loadUserInsights() {
+  const uid = document.getElementById('insightUserSelect').value;
   const wrap = document.getElementById('insightFormWrap');
   if (!uid) { wrap.classList.add('hidden'); return; }
   wrap.classList.remove('hidden');
-  const data = await getInsights(uid);
+  const data = getInsights(uid);
   if (data) {
-    document.getElementById('iPL').value       = data.total_pl||'';
-    document.getElementById('iROI').value      = data.roi||'';
-    document.getElementById('iCapital').value  = data.capital||'';
-    document.getElementById('iTrades').value   = data.total_trades||'';
-    document.getElementById('iChartData').value= data.chart_data||'';
-    renderInsightPreview({ totalPL:data.total_pl, roi:data.roi, capital:data.capital, totalTrades:data.total_trades });
+    document.getElementById('iPL').value = data.totalPL||'';
+    document.getElementById('iROI').value = data.roi||'';
+    document.getElementById('iCapital').value = data.capital||'';
+    document.getElementById('iTrades').value = data.totalTrades||'';
+    document.getElementById('iChartData').value = (data.chartData||[]).join(', ');
+    renderInsightPreview(data);
   } else {
     ['iPL','iROI','iCapital','iTrades','iChartData'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('insightPreview').innerHTML='';
   }
 }
 
-async function saveInsights() {
+function saveInsights() {
   const uid = document.getElementById('insightUserSelect').value;
   if (!uid) return;
-  const chartData = document.getElementById('iChartData').value.trim();
-  const body = {
-    user_id:      uid,
-    total_pl:     parseFloat(document.getElementById('iPL').value)||0,
-    roi:          parseFloat(document.getElementById('iROI').value)||0,
-    capital:      parseFloat(document.getElementById('iCapital').value)||0,
-    total_trades: parseInt(document.getElementById('iTrades').value)||0,
-    chart_data:   chartData
+  const chartRaw = document.getElementById('iChartData').value;
+  const chartData = chartRaw.split(',').map(v=>parseFloat(v.trim())).filter(v=>!isNaN(v));
+  const data = {
+    totalPL: parseFloat(document.getElementById('iPL').value)||0,
+    roi: parseFloat(document.getElementById('iROI').value)||0,
+    capital: parseFloat(document.getElementById('iCapital').value)||0,
+    totalTrades: parseInt(document.getElementById('iTrades').value)||0,
+    chartData
   };
-  await sbUpsert('insights', body);
-  renderInsightPreview({ totalPL:body.total_pl, roi:body.roi, capital:body.capital, totalTrades:body.total_trades });
+  saveInsights_s(uid, data);
+  renderInsightPreview(data);
   showToast('Dashboard stats saved successfully.','success');
 }
 
 function resetInsights() {
-  const d = { totalPL:54010.66, roi:1800.36, capital:3000, totalTrades:890 };
-  document.getElementById('iPL').value      = d.totalPL;
-  document.getElementById('iROI').value     = d.roi;
-  document.getElementById('iCapital').value = d.capital;
-  document.getElementById('iTrades').value  = d.totalTrades;
-  document.getElementById('iChartData').value = '2800,4400,4500,2000,3600,1200,1100,1100,1200,5000,2800,2500,2600,2200,12000,6500,1200,900';
+  const defaults = { totalPL:54010.66, roi:1800.36, capital:3000, totalTrades:890, chartData:[2800,4400,4500,2000,3600,1200,1100,1100,1200,5000,2800,2500,2600,2200,12000,6500,1200,900] };
+  document.getElementById('iPL').value = defaults.totalPL;
+  document.getElementById('iROI').value = defaults.roi;
+  document.getElementById('iCapital').value = defaults.capital;
+  document.getElementById('iTrades').value = defaults.totalTrades;
+  document.getElementById('iChartData').value = defaults.chartData.join(', ');
 }
 
 function renderInsightPreview(data) {
   document.getElementById('insightPreview').innerHTML = [
-    ['Total P/L', '$'+(data.totalPL||0).toLocaleString()],
-    ['ROI', (data.roi||0)+'%'],
-    ['Capital', '$'+(data.capital||0).toLocaleString()],
-    ['Total Trades', data.totalTrades||0],
+    ['Total P/L', '$'+data.totalPL.toLocaleString()],
+    ['ROI', data.roi+'%'],
+    ['Capital', '$'+data.capital.toLocaleString()],
+    ['Total Trades', data.totalTrades],
   ].map(([l,v])=>`<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;min-width:120px;"><div style="font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">${l}</div><div style="font-size:1rem;font-weight:700;color:var(--primary);">${v}</div></div>`).join('');
 }
 
@@ -702,31 +661,24 @@ function changeAdminPass() {
   if (old !== getAdminPass()) { showToast('Current password incorrect.','error'); return; }
   if (nw !== cf) { showToast('Passwords do not match.','error'); return; }
   if (nw.length < 6) { showToast('Password must be at least 6 characters.','error'); return; }
-  localStorage.setItem('algo_admin_pass', nw);
+  localStorage.setItem(ADMIN_PASS_KEY, nw);
   showToast('Admin password updated.','success');
   ['oldPass','newPass','confirmPass'].forEach(id=>document.getElementById(id).value='');
 }
 
-async function exportData() {
-  const users    = await sbGet('users',    { select:'*' });
-  const trades   = await sbGet('trades',   { select:'*' });
-  const insights = await sbGet('insights', { select:'*' });
-  const data = { users, trades, insights, exportedAt: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
+function exportData() {
+  const data = { users: getUsers(), trades: JSON.parse(localStorage.getItem(TRADES_KEY)||'{}'), insights: JSON.parse(localStorage.getItem(INSIGHTS_KEY)||'{}'), exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = `algostech-data-${new Date().toISOString().slice(0,10)}.json`;
   a.click();
   showToast('Data exported successfully.','success');
 }
 
-async function confirmReset() {
+function confirmReset() {
   if (!confirm('⚠️ This will delete ALL users, trades, and stats. Are you absolutely sure?')) return;
-  await sbDelete('trades',   { user_id:'neq.00000000-0000-0000-0000-000000000000' });
-  await sbDelete('insights', { user_id:'neq.00000000-0000-0000-0000-000000000000' });
-  await sbDelete('users',    { id:'neq.00000000-0000-0000-0000-000000000000' });
-  await init();
-  showToast('All data reset.','success');
+  [USERS_KEY, TRADES_KEY, INSIGHTS_KEY].forEach(k=>localStorage.removeItem(k));
+  init(); showToast('All data reset.','success');
 }
 
 // ============================================================
@@ -734,6 +686,7 @@ async function confirmReset() {
 // ============================================================
 function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===e.currentTarget) m.classList.add('hidden'); }));
+
 function adminLogout() { window.location.href='admin-login.html'; }
 
 let toastTimer;
@@ -748,40 +701,210 @@ function showToast(msg, type='success') {
 // ============================================================
 // INIT
 // ============================================================
-async function init() {
-  const users = await getUsers();
+function init() {
+  const users = getUsers();
   renderUsersTable(users);
   updateStats(users);
-  const navMap = { 'nav-users':'users', 'nav-trades':'trades', 'nav-insights':'insights', 'nav-settings':'settings' };
-  Object.entries(navMap).forEach(([id, section]) => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('click', () => showSection(section));
-  });
 }
 init();
 
-// Demo seed removed — use Supabase dashboard to import data instead
+// ============================================================
+// DEMO DATA SEED — 500 USERS
+// ============================================================
+async function seedDemoUsers() {
+  const btn = document.getElementById('seedBtn');
+  const progress = document.getElementById('seedProgress');
+  const progressText = document.getElementById('seedProgressText');
+  const progressBar = document.getElementById('seedProgressBar');
 
-// ── MOBILE SIDEBAR ──
-function toggleAdminSidebar() {
-  document.querySelector('.sidebar').classList.toggle('mobile-open');
-  document.getElementById('sidebarOverlay').classList.toggle('hidden');
-  document.getElementById('hamburgerBtn').classList.toggle('active');
-}
-function closeAdminSidebar() {
-  document.querySelector('.sidebar').classList.remove('mobile-open');
-  document.getElementById('sidebarOverlay').classList.add('hidden');
-  document.getElementById('hamburgerBtn').classList.remove('active');
-}
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => { if (window.innerWidth <= 900) closeAdminSidebar(); });
-});
+  btn.disabled = true;
+  btn.textContent = '⏳ Seeding…';
+  progress.style.display = 'block';
 
+  const indianFirst = ['Aarav','Arjun','Rohan','Rahul','Vikram','Amit','Nikhil','Karan','Sanjay','Ravi','Deepak','Suresh','Rajesh','Pradeep','Manish','Aditya','Vivek','Gaurav','Ankit','Mohit','Sachin','Arun','Dinesh','Manoj','Pankaj','Vinay','Tushar','Harsh','Yash','Dev','Akash','Shubham','Abhishek','Varun','Nitin','Rishabh','Siddharth','Kartik','Aman','Ishaan','Pooja','Priya','Neha','Anjali','Kavya','Sneha','Divya','Ritika','Simran','Megha','Tanya','Nisha','Isha','Preeti','Swati','Ruchi','Shruti','Pallavi','Nidhi','Komal','Gauri'];
+  const indianLast  = ['Sharma','Verma','Singh','Patel','Kumar','Joshi','Gupta','Yadav','Mehta','Shah','Agarwal','Nair','Reddy','Mishra','Pandey','Chaudhary','Sinha','Chopra','Malhotra','Saxena','Kapoor','Bose','Das','Roy','Chatterjee','Mukherjee','Pillai','Menon','Iyer','Rao','Desai','Jain','Garg','Bansal','Arora','Walia','Sethi','Bhatia','Kohli','Anand'];
+  const foreignFirst= ['James','John','Michael','David','Robert','William','Richard','Thomas','Daniel','Matthew','Andrew','Joshua','Ryan','Kevin','Brian','Jason','Eric','Adam','Mark','Paul','Emma','Olivia','Ava','Sophia','Isabella','Mia','Charlotte','Amelia','Harper','Evelyn','Carlos','Luis','Miguel','Juan','Diego','Ahmed','Omar','Yusuf','Ali','Hassan','Wang','Wei','Lei','Chen','Jing','Kim','Jun','Min','Soo','Hyun'];
+  const foreignLast = ['Smith','Johnson','Williams','Brown','Jones','Miller','Davis','Wilson','Moore','Taylor','Anderson','Thomas','Jackson','White','Harris','Martin','Thompson','Garcia','Martinez','Robinson','Clark','Lewis','Lee','Walker','Hall','Allen','Young','King','Wright','Scott','Nguyen','Chen','Wang','Kim','Park','Liu','Zhang','Santos','Silva','Oliveira'];
+  const indianCities= ['Mumbai','Delhi','Bangalore','Hyderabad','Chennai','Kolkata','Pune','Ahmedabad','Jaipur','Surat','Lucknow','Kanpur','Nagpur','Indore','Bhopal','Patna','Vadodara','Coimbatore','Ludhiana','Agra','Nashik','Thane','Meerut','Rajkot','Amritsar','Varanasi','Aurangabad','Visakhapatnam','Madurai','Raipur'];
+  const foreignCities=['New York','London','Dubai','Singapore','Sydney','Toronto','Tokyo','Frankfurt','Paris','Amsterdam','Zurich','Hong Kong','Seoul','Melbourne','Kuala Lumpur','Bangkok','Cape Town','Nairobi','Lagos','Riyadh'];
+  const plans   = ['Alpha','Quantum','Infinity'];
+  const planW   = [0.45, 0.35, 0.20];
+  const servers = ['Exness-Real','XM-Global-MT5','ICMarkets-Live','Pepperstone-MT5','Vantage-Real','Binance-Pro','OANDA-Live','FXTM-Real','HotForex-Live','FBS-MT5'];
+  const symbols = ['EUR/USD','GBP/USD','XAU/USD','USD/JPY','BTC/USD','ETH/USD','AUD/USD','USD/CAD','GBP/JPY','NZD/USD','USD/CHF','EUR/GBP','XAG/USD','OIL/USD','US30','NAS100'];
+
+  function rnd(min, max) { return Math.random() * (max - min) + min; }
+  function rndInt(min, max) { return Math.floor(rnd(min, max + 1)); }
+  function pick(arr) { return arr[rndInt(0, arr.length - 1)]; }
+  function pickWeighted(arr, weights) {
+    const r = Math.random();
+    let cum = 0;
+    for (let i = 0; i < arr.length; i++) { cum += weights[i]; if (r < cum) return arr[i]; }
+    return arr[arr.length - 1];
+  }
+  function randDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  }
+  function fmt(d) { return d.toISOString().slice(0,10); }
+  function randPhone(indian) {
+    if (indian) return '+91 ' + rndInt(6,9) + Array.from({length:9}, ()=>rndInt(0,9)).join('');
+    const codes = ['+1','+44','+971','+65','+61','+81','+49'];
+    return pick(codes) + ' ' + Array.from({length:10}, ()=>rndInt(0,9)).join('');
+  }
+  function genChart(capital, totalPL) {
+    const months = 18;
+    const data = [];
+    let remaining = totalPL;
+    for (let i = 0; i < months - 1; i++) {
+      const share = rnd(0.02, 0.12);
+      const val = Math.round(totalPL * share * (Math.random() > 0.15 ? 1 : -0.3));
+      data.push(val);
+      remaining -= val;
+    }
+    data.push(Math.round(remaining));
+    return data;
+  }
+  function genTrades(uid, numTrades, symbols) {
+    const trades = {};
+    const tradeList = [];
+    const start = new Date('2024-08-01');
+    const end   = new Date('2026-01-31');
+    for (let i = 0; i < numTrades; i++) {
+      const sym    = pick(symbols);
+      const type   = Math.random() > 0.5 ? 'BUY' : 'SELL';
+      const lots   = parseFloat(rnd(0.01, 2).toFixed(2));
+      const isGold = sym === 'XAU/USD';
+      const isCrypto = sym.includes('BTC') || sym.includes('ETH');
+      let basePrice;
+      if (isGold) basePrice = rnd(1800, 2400);
+      else if (isCrypto) basePrice = sym.includes('BTC') ? rnd(25000, 70000) : rnd(1500, 4000);
+      else basePrice = rnd(0.8, 1.8);
+      const move   = rnd(0.0005, 0.008) * basePrice;
+      const win    = Math.random() > 0.28;
+      const open   = parseFloat(basePrice.toFixed(isGold||isCrypto ? 2 : 4));
+      const close  = parseFloat((win ? open + move : open - move).toFixed(isGold||isCrypto ? 2 : 4));
+      const pl     = parseFloat((win ? rnd(10, 800) : -rnd(10, 400)).toFixed(2));
+      tradeList.push({
+        id: (Date.now() - i * 1000).toString(),
+        date: fmt(randDate(start, end)),
+        symbol: sym, type, lots, open, close, pl, comment: ''
+      });
+    }
+    tradeList.sort((a,b) => b.date.localeCompare(a.date));
+    trades[uid] = tradeList;
+    return trades;
+  }
+
+  const BATCH = 25;
+  const TOTAL = 500;
+  let allUsers = getUsers();
+  let allTrades = JSON.parse(localStorage.getItem(TRADES_KEY) || '{}');
+  let allInsights = JSON.parse(localStorage.getItem(INSIGHTS_KEY) || '{}');
+  const existingEmails = new Set(allUsers.map(u => u.email));
+
+  let generated = 0;
+
+  async function processBatch(batchIndex) {
+    const start = batchIndex * BATCH;
+    const end   = Math.min(start + BATCH, TOTAL);
+
+    for (let i = start; i < end; i++) {
+      const isIndian = i < 320;
+      const firstName = isIndian ? pick(indianFirst) : pick(foreignFirst);
+      const lastName  = isIndian ? pick(indianLast)  : pick(foreignLast);
+      const name = firstName + ' ' + lastName;
+
+      let email;
+      let attempts = 0;
+      do {
+        const tag = rndInt(10, 9999);
+        email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${tag}@${pick(['gmail.com','yahoo.com','outlook.com','hotmail.com','icloud.com','proton.me'])}`;
+        attempts++;
+      } while (existingEmails.has(email) && attempts < 10);
+      existingEmails.add(email);
+
+      const plan    = pickWeighted(plans, planW);
+      const capital = plan === 'Alpha' ? rndInt(250,3000) : plan === 'Quantum' ? rndInt(500,8000) : rndInt(1000,25000);
+      const totalPL = parseFloat((capital * rnd(0.3, 25)).toFixed(2));
+      const roi     = parseFloat(((totalPL / capital) * 100).toFixed(2));
+      const totalTrades = rndInt(50, 1200);
+      const kyc     = Math.random() > 0.3 ? 'Completed' : 'Pending';
+      const status  = Math.random() > 0.1 ? 'active' : (Math.random() > 0.5 ? 'pending' : 'inactive');
+      const city    = isIndian ? pick(indianCities) : pick(foreignCities);
+      const server  = pick(servers);
+      const mt5     = rndInt(10000000, 99999999).toString();
+
+      const birthYear = rndInt(1975, 2001);
+      const birthMonth = rndInt(1,12).toString().padStart(2,'0');
+      const birthDay   = rndInt(1,28).toString().padStart(2,'0');
+      const dob = `${birthYear}-${birthMonth}-${birthDay}`;
+
+      const createdAt = randDate(new Date('2023-01-01'), new Date('2026-01-01')).toISOString();
+      const uid = (Date.now() + i + Math.random() * 10000).toString().replace('.','');
+
+      const user = {
+        id: uid, name, email,
+        pass: 'Demo@1234',
+        mobile: randPhone(isIndian),
+        city, dob, plan, mt5, server, kyc, capital, status, createdAt,
+        isDummy: true
+      };
+
+      allUsers.push(user);
+
+      // Insights
+      const chartData = genChart(capital, totalPL);
+      allInsights[uid] = { totalPL, roi, capital, totalTrades, chartData };
+
+      // Trades (5–15 per user to keep localStorage manageable)
+      const numTrades = rndInt(5, 15);
+      const tradeBatch = genTrades(uid, numTrades, symbols);
+      allTrades[uid] = tradeBatch[uid];
+
+      generated++;
+    }
+
+    // Save after each batch
+    saveUsers(allUsers);
+    localStorage.setItem(TRADES_KEY, JSON.stringify(allTrades));
+    localStorage.setItem(INSIGHTS_KEY, JSON.stringify(allInsights));
+
+    const pct = Math.round((generated / TOTAL) * 100);
+    progressBar.style.width = pct + '%';
+    progressText.textContent = `Generated ${generated} / ${TOTAL} users…`;
+
+    // Yield to browser
+    await new Promise(r => setTimeout(r, 10));
+  }
+
+  const totalBatches = Math.ceil(TOTAL / BATCH);
+  for (let b = 0; b < totalBatches; b++) {
+    await processBatch(b);
+  }
+
+  renderUsersTable(getUsers());
+  updateStats(getUsers());
+  btn.disabled = false;
+  btn.textContent = '🌱 Seed 500 Demo Users';
+  progressText.textContent = `✅ Done! ${TOTAL} demo users seeded.`;
+  progressBar.style.width = '100%';
+  showToast(`500 demo users seeded successfully!`, 'success');
+  setTimeout(() => { progress.style.display = 'none'; }, 5000);
+}
+
+function removeDemoUsers() {
+  if (!confirm('Remove all demo/dummy users and their data?')) return;
+  let users = getUsers().filter(u => !u.isDummy);
+  const dummyIds = getUsers().filter(u => u.isDummy).map(u => u.id);
+  saveUsers(users);
+  const trades   = JSON.parse(localStorage.getItem(TRADES_KEY) || '{}');
+  const insights = JSON.parse(localStorage.getItem(INSIGHTS_KEY) || '{}');
+  dummyIds.forEach(id => { delete trades[id]; delete insights[id]; });
+  localStorage.setItem(TRADES_KEY, JSON.stringify(trades));
+  localStorage.setItem(INSIGHTS_KEY, JSON.stringify(insights));
+  renderUsersTable(users);
+  updateStats(users);
+  showToast(`Removed ${dummyIds.length} demo users.`, 'success');
+}
 </script>
-
-<!-- Mobile sidebar overlay -->
-<div id="sidebarOverlay" class="hidden" onclick="closeAdminSidebar()"
-     style="position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);z-index:199;"></div>
-
 </body>
 </html>

@@ -629,14 +629,27 @@
 <div class="mobile-overlay hidden" id="mobileOverlay" onclick="toggleMobileSidebar()"></div>
 
 <script>
+// ── Supabase ──
+const SB_URL = 'https://biwmzoipryqdbkfutvfb.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpd216b2lwcnlxZGJrZnV0dmZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyMDA1NDgsImV4cCI6MjA4OTc3NjU0OH0.9wPiQVpSZqjeRYh1JoVqfbXpryKNtP7kCco7Q4tZzqo';
+const SB_H = { 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json' };
+async function sbGet(table, params) {
+  const url = new URL(`${SB_URL}/rest/v1/${table}`);
+  if (params) Object.entries(params).forEach(([k,v]) => url.searchParams.set(k,v));
+  const r = await fetch(url, { headers: SB_H });
+  return r.ok ? r.json() : [];
+}
+async function sbPatch(table, params, body) {
+  const url = new URL(`${SB_URL}/rest/v1/${table}`);
+  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k,v));
+  const r = await fetch(url, { method:'PATCH', headers:{...SB_H,'Prefer':'return=representation'}, body:JSON.stringify(body) });
+  return r.ok ? r.json() : null;
+}
+
 // ───── AUTH CHECK ─────
 const _stored = JSON.parse(localStorage.getItem('algo_logged_user') || 'null');
 if (!_stored) { window.location.href = 'auth.html'; throw 0; }
-
-// Re-read fresh user from algo_users (picks up any admin edits)
-const _users = JSON.parse(localStorage.getItem('algo_users') || '[]');
-const user   = _users.find(u => u.email === _stored.email) || _stored;
-localStorage.setItem('algo_logged_user', JSON.stringify(user));
+let user = _stored;
 
 // ───── HELPERS ─────
 function $id(id) { return document.getElementById(id); }
@@ -644,7 +657,13 @@ function setText(id, val) { const el = $id(id); if (el) el.textContent = val; }
 function fmt(n, dec=2) { return '$' + Number(n||0).toLocaleString('en',{minimumFractionDigits:dec,maximumFractionDigits:dec}); }
 
 // ───── LOAD USER DATA ─────
-function loadUserData() {
+async function loadUserData() {
+  // Refresh user from Supabase (catches admin changes)
+  try {
+    const fresh = await sbGet('users', { email:`eq.${_stored.email}`, select:'*' });
+    if (fresh.length) { user = fresh[0]; localStorage.setItem('algo_logged_user', JSON.stringify(user)); }
+  } catch(e) {}
+
   // ── Topbar ──
   const initials = user.name ? user.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) : '--';
   setText('userAvatarTop',    initials);
@@ -666,17 +685,17 @@ function loadUserData() {
   setText('prServer', user.server || '');
   const mt5PassEl  = $id('prMT5Pass');
   const mt5DotsEl  = $id('prMT5PassDots');
-  if (mt5PassEl)  mt5PassEl.textContent  = user.mt5Pass || '';
-  if (mt5DotsEl)  mt5DotsEl.textContent  = user.mt5Pass ? '••••••••' : '';
+  if (mt5PassEl)  mt5PassEl.textContent  = user.mt5_pass || '';
+  if (mt5DotsEl)  mt5DotsEl.textContent  = user.mt5_pass ? '••••••••' : '';
   // Hide eye button if no password
   const mt5EyeBtn = mt5DotsEl ? mt5DotsEl.parentElement.querySelector('.pr-eye-btn') : null;
-  if (mt5EyeBtn) mt5EyeBtn.style.display = user.mt5Pass ? 'flex' : 'none';
+  if (mt5EyeBtn) mt5EyeBtn.style.display = user.mt5_pass ? 'flex' : 'none';
   setText('prAPICode', user.mt5 ? String(user.mt5).toUpperCase() + 'ABX' : '');
 
   // ── BROKER DETAILS ──
   // ── BROKER DETAILS — blank until user fills them ──
-  if (user.brokerEmail) {
-    setText('prBrokerEmail', user.brokerEmail);
+  if (user.broker_email) {
+    setText('prBrokerEmail', user.broker_email);
     const el = $id('prBrokerEmail');
     if (el) el.classList.remove('pr-not-connected');
     const ic = $id('prBrokerWarnIcon');
@@ -690,14 +709,14 @@ function loadUserData() {
   }
   const bpEl   = $id('prBrokerPass');
   const bpDots = $id('prBrokerPassDots');
-  if (bpEl)   bpEl.textContent   = user.brokerPass || '';
-  if (bpDots) bpDots.textContent = user.brokerPass ? '••••••••' : '';
+  if (bpEl)   bpEl.textContent   = user.broker_pass || '';
+  if (bpDots) bpDots.textContent = user.broker_pass ? '••••••••' : '';
   const bpEyeBtn = bpDots ? bpDots.parentElement.querySelector('.pr-eye-btn') : null;
-  if (bpEyeBtn) bpEyeBtn.style.display = user.brokerPass ? 'flex' : 'none';
+  if (bpEyeBtn) bpEyeBtn.style.display = user.broker_pass ? 'flex' : 'none';
 
   // ── SERVICE DETAILS ──
   setText('prPlan',     user.plan || '—');
-  setText('prJoinDate', user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—');
+  setText('prJoinDate', user.created_at ? new Date(user.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—');
 
   // Account status chip
   const isActive = user.status === 'active';
@@ -721,28 +740,45 @@ function loadUserData() {
   setText('pCity',    user.city   || '—');
   setText('pPlan',    user.plan   || '—');
   setText('pCapitalDisplay', user.capital ? fmt(user.capital,0) : '—');
-  setText('pJoined',  user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—');
+  setText('pJoined',  user.created_at ? new Date(user.created_at).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—');
   const kycEl = $id('pKYC');
   if (kycEl) { kycEl.textContent = user.kyc || 'Pending'; kycEl.className = 'status-chip ' + (user.kyc === 'Completed' ? 'completed' : 'pending'); }
 
-  // ── INSIGHTS (admin-set stats) ──
-  const allInsights = JSON.parse(localStorage.getItem('algo_insights') || '{}');
-  const ins = allInsights[user.id] || {};
+  // ── INSIGHTS + TRADES from Supabase ──
+  let ins = {}, myTrades = [];
+  try {
+    const [insRows, tradeRows] = await Promise.all([
+      sbGet('insights', { user_id:`eq.${user.id}`, select:'*' }),
+      sbGet('trades',   { user_id:`eq.${user.id}`, select:'*', order:'date.desc' })
+    ]);
+    if (insRows.length) ins = insRows[0];
+    myTrades = tradeRows;
+  } catch(e) {}
 
-  // ── TRADES — source of truth ──
-  const allTradesRaw = JSON.parse(localStorage.getItem('algo_trades') || '{}');
-  const myTrades = allTradesRaw[user.id] || [];
+  // Map Supabase column names to what the dashboard expects
+  const insObj = {
+    totalPL:     ins.total_pl,
+    roi:         ins.roi,
+    capital:     ins.capital,
+    totalTrades: ins.total_trades,
+    chartData:   ins.chart_data ? ins.chart_data.split(',').map(Number).filter(v=>!isNaN(v)) : []
+  };
+  // Map trades columns
+  myTrades = myTrades.map(t => ({
+    id: t.id, date: t.date, symbol: t.symbol, type: t.type,
+    lots: t.lots, open: t.open, close: t.close, pl: t.pl,
+    comment: t.comment || ''
+  }));
 
   const winning = myTrades.filter(t => Number(t.pl) > 0);
   const losing  = myTrades.filter(t => Number(t.pl) <= 0);
   const netPL   = myTrades.reduce((s,t) => s + Number(t.pl||0), 0);
   const winPct  = myTrades.length ? ((winning.length / myTrades.length)*100).toFixed(1) : '0.0';
 
-  // Use admin-set values if available, otherwise derive from trades
-  const pl     = Number(ins.totalPL)    || netPL;
-  const roi    = Number(ins.roi)        || 0;
-  const cap    = Number(ins.capital)    || Number(user.capital) || 0;
-  const trades = Number(ins.totalTrades)|| myTrades.length;
+  const pl     = Number(insObj.totalPL)    || netPL;
+  const roi    = Number(insObj.roi)        || 0;
+  const cap    = Number(insObj.capital)    || Number(user.capital) || 0;
+  const trades = Number(insObj.totalTrades)|| myTrades.length;
   const balance = cap + pl;
 
   // ── OVERVIEW ──
@@ -780,8 +816,8 @@ function loadUserData() {
   renderTrades(allTradeData, 1);
 
   // ── CHARTS ──
-  buildChart(ins.chartData, cap);
-  buildPortfolioChart(ins.chartData, cap);
+  buildChart(insObj.chartData, cap);
+  buildPortfolioChart(insObj.chartData, cap);
 }
 
 // ───── DATE HEADER ─────
@@ -1116,12 +1152,12 @@ function openEditModal(section) {
   $id('editDOB').value    = user.dob    || '';
   $id('editCity').value   = user.city   || '';
   $id('editMT5').value    = user.mt5    || '';
-  $id('editServer').value = user.server || '';
-  $id('editMT5Pass').value = user.mt5Pass || '';
+  $id('editServer').value   = user.server   || '';
+  $id('editMT5Pass').value  = user.mt5_pass || '';
 
   if (_currentEditSection === 'broker') {
-    $id('editBrokerEmail').value = user.brokerEmail || '';
-    $id('editBrokerPass').value  = user.brokerPass  || '';
+    $id('editBrokerEmail').value = user.broker_email || '';
+    $id('editBrokerPass').value  = user.broker_pass  || '';
   }
 
   $id('editModal').classList.remove('hidden');
@@ -1129,31 +1165,31 @@ function openEditModal(section) {
 
 function closeEditModal() { document.getElementById('editModal').classList.add('hidden'); }
 
-function saveProfile() {
-  const upd = { ...user };
+async function saveProfile() {
   const isMerged = (_currentEditSection === 'merged' || _currentEditSection === 'client' || _currentEditSection === 'mt5');
+  const patch = {};
 
   if (isMerged) {
-    // Save client fields
-    upd.name   = $id('editName').value.trim()   || user.name;
-    upd.mobile = $id('editMobile').value.trim() || user.mobile;
-    upd.dob    = $id('editDOB').value           || user.dob;
-    upd.city   = $id('editCity').value.trim()   || user.city;
-    // Save MT5 fields
-    upd.mt5    = $id('editMT5').value.trim()    || user.mt5;
-    upd.server = $id('editServer').value.trim() || user.server;
-    const mp   = $id('editMT5Pass').value;
-    if (mp) upd.mt5Pass = mp;
-  } else if (_currentEditSection === 'broker') {
-    upd.brokerEmail = $id('editBrokerEmail').value.trim() || user.brokerEmail;
-    const bp        = $id('editBrokerPass').value;
-    if (bp) upd.brokerPass = bp;
+    patch.name   = $id('editName').value.trim()   || user.name;
+    patch.mobile = $id('editMobile').value.trim() || user.mobile;
+    patch.dob    = $id('editDOB').value           || user.dob;
+    patch.city   = $id('editCity').value.trim()   || user.city;
+    patch.mt5    = $id('editMT5').value.trim()    || user.mt5;
+    patch.server = $id('editServer').value.trim() || user.server;
+    const mp = $id('editMT5Pass').value;
+    if (mp) patch.mt5_pass = mp;
+  } else {
+    patch.broker_email = $id('editBrokerEmail').value.trim() || user.broker_email;
+    const bp = $id('editBrokerPass').value;
+    if (bp) patch.broker_pass = bp;
   }
 
-  localStorage.setItem('algo_logged_user', JSON.stringify(upd));
-  const users = JSON.parse(localStorage.getItem('algo_users') || '[]');
-  const idx   = users.findIndex(u => u.id === upd.id);
-  if (idx > -1) { users[idx] = upd; localStorage.setItem('algo_users', JSON.stringify(users)); }
+  try {
+    await sbPatch('users', { id:`eq.${user.id}` }, patch);
+    Object.assign(user, patch);
+    localStorage.setItem('algo_logged_user', JSON.stringify(user));
+  } catch(e) {}
+
   closeEditModal();
   location.reload();
 }
@@ -1170,7 +1206,6 @@ function logout() {
 
 // ───── INIT ─────
 loadUserData();
-currentFilteredTrades = allTradeData;
 </script>
 </body>
 </html>
