@@ -375,25 +375,22 @@ async function sbUpsert(table, body) {
   } catch(e) { console.error(`sbUpsert ${table} exception:`, e); return null; }
 }
 
-// Cache for users list
 let _usersCache = [];
 async function getUsers() {
   try {
-    const url = new URL(`${SB_URL}/rest/v1/users`);
-    url.searchParams.set('select', '*');
-    url.searchParams.set('order', 'created_at.desc');
-    const r = await fetch(url, { headers: SB_H });
+    const r = await fetch(`${SB_URL}/rest/v1/users?select=*`, { headers: SB_H });
     if (!r.ok) {
       const err = await r.text();
       console.error('getUsers error:', r.status, err);
-      showToast('Failed to load users: ' + r.status, 'error');
+      showToast('Failed to load users: ' + r.status + ' — ' + err, 'error');
       return [];
     }
     _usersCache = await r.json();
+    console.log('Users loaded:', _usersCache.length);
     return _usersCache;
   } catch(e) {
     console.error('getUsers exception:', e);
-    showToast('Connection error loading users.', 'error');
+    showToast('Connection error: ' + e.message, 'error');
     return [];
   }
 }
@@ -780,16 +777,28 @@ function showToast(msg, type='success') {
 // INIT
 // ============================================================
 async function init() {
+  // Show loading state in table
+  const tbody = document.getElementById('usersBody');
+  if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-muted);">Loading users...</td></tr>';
+
   const users = await getUsers();
   renderUsersTable(users);
   updateStats(users);
+
+  // Nav listeners
   const navMap = { 'nav-users':'users', 'nav-trades':'trades', 'nav-insights':'insights', 'nav-settings':'settings' };
   Object.entries(navMap).forEach(([id, section]) => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('click', () => showSection(section));
   });
 }
-init();
+
+// Run after DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 
 // Demo seed removed — use Supabase dashboard to import data instead
 
