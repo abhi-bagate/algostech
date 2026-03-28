@@ -278,6 +278,7 @@
           <div class="th-stat-label">Winning Trades</div>
           <div class="th-stat-val-row">
             <span class="th-stat-val green" id="thWin">—</span>
+            <span class="th-stat-pct" id="thWinPct">—%</span>
           </div>
         </div>
       </div>
@@ -305,21 +306,21 @@
     <div class="th-filter-bar">
       <div class="th-date-wrap">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <input type="date" id="startDate" class="th-date-input" placeholder="Start" onchange="filterTrades()"/>
+        <input type="date" id="startDate" class="th-date-input" placeholder="Start"/>
         <span class="th-arrow">→</span>
-        <input type="date" id="endDate" class="th-date-input" placeholder="End" onchange="filterTrades()"/>
+        <input type="date" id="endDate" class="th-date-input" placeholder="End"/>
       </div>
-      <select class="th-select" id="symbolFilter" onchange="filterTrades()">
+      <select class="th-select" id="symbolFilter">
         <option value="">All Symbols</option>
         <option>EUR/USD</option><option>GBP/USD</option><option>XAU/USD</option>
         <option>USD/JPY</option><option>BTC/USD</option><option>AUD/USD</option>
         <option>USD/CAD</option><option>GBP/JPY</option><option>NZD/USD</option>
       </select>
-      <select class="th-select" id="typeFilter" onchange="filterTrades()">
+      <select class="th-select" id="typeFilter">
         <option value="">All Types</option>
         <option>BUY</option><option>SELL</option>
       </select>
-      <select class="th-select" id="statusFilter" onchange="filterTrades()">
+      <select class="th-select" id="statusFilter">
         <option value="">All Status</option>
         <option>Win</option><option>Loss</option>
       </select>
@@ -815,14 +816,6 @@ async function loadUserData() {
   currentFilteredTrades = myTrades;
   renderTrades(allTradeData, 1);
 
-  // Populate symbol filter dynamically from actual trade data
-  const symSelect = document.getElementById('symbolFilter');
-  if (symSelect && myTrades.length) {
-    const symbols = [...new Set(myTrades.map(t => t.symbol).filter(Boolean))].sort();
-    symSelect.innerHTML = '<option value="">All Symbols</option>' +
-      symbols.map(s => `<option value="${s}">${s}</option>`).join('');
-  }
-
   // ── CHARTS ──
   buildChart(insObj.chartData, cap);
   buildPortfolioChart(insObj.chartData, cap);
@@ -1084,19 +1077,18 @@ function renderTrades(trades, page) {
 
 let currentFilteredTrades = [];
 function filterTrades() {
-  const s    = document.getElementById('startDate').value;   // YYYY-MM-DD
-  const e    = document.getElementById('endDate').value;     // YYYY-MM-DD
-  const sym  = document.getElementById('symbolFilter').value;
-  const type = document.getElementById('typeFilter').value;
-  const st   = document.getElementById('statusFilter').value;
-  const q    = (document.getElementById('tradeSearch')?.value||'').toLowerCase();
+  const s   = document.getElementById('startDate').value;
+  const e   = document.getElementById('endDate').value;
+  const sym = document.getElementById('symbolFilter').value;
+  const type= document.getElementById('typeFilter').value;
+  const st  = document.getElementById('statusFilter').value;
+  const q   = (document.getElementById('tradeSearch')?.value||'').toLowerCase();
 
   currentFilteredTrades = allTradeData.filter(t => {
-    const tradeDate = (t.date || '').slice(0, 10); // normalise to YYYY-MM-DD
-    if (s && tradeDate < s) return false;
-    if (e && tradeDate > e) return false;
+    if (s && t.date < s) return false;
+    if (e && t.date > e) return false;
     if (sym && t.symbol !== sym) return false;
-    if (type && (t.type||'').toUpperCase() !== type.toUpperCase()) return false;
+    if (type && t.type !== type) return false;
     if (st === 'Win'  && Number(t.pl||0) <  0) return false;
     if (st === 'Loss' && Number(t.pl||0) >= 0) return false;
     if (q && !(t.symbol||'').toLowerCase().includes(q) && !(t.date||'').includes(q)) return false;
