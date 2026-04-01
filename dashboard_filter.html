@@ -309,6 +309,20 @@
         <span class="th-arrow">→</span>
         <input type="date" id="endDate" class="th-date-input" placeholder="End" onchange="filterTrades()"/>
       </div>
+      <select class="th-select" id="symbolFilter" onchange="filterTrades()">
+        <option value="">All Symbols</option>
+        <option>EUR/USD</option><option>GBP/USD</option><option>XAU/USD</option>
+        <option>USD/JPY</option><option>BTC/USD</option><option>AUD/USD</option>
+        <option>USD/CAD</option><option>GBP/JPY</option><option>NZD/USD</option>
+      </select>
+      <select class="th-select" id="typeFilter" onchange="filterTrades()">
+        <option value="">All Types</option>
+        <option>BUY</option><option>SELL</option>
+      </select>
+      <select class="th-select" id="statusFilter" onchange="filterTrades()">
+        <option value="">All Status</option>
+        <option>Win</option><option>Loss</option>
+      </select>
       <div class="th-search-wrap">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input type="text" class="th-search" id="tradeSearch" placeholder="Search" oninput="filterTrades()"/>
@@ -593,7 +607,6 @@
         <div class="field"><label>MT5 Account ID</label><input type="text" id="editMT5" placeholder="e.g. 31670991"/></div>
         <div class="field"><label>MT5 Server</label><input type="text" id="editServer" placeholder="e.g. HotForex-Live"/></div>
         <div class="field" style="grid-column:1/-1"><label>MT5 Password</label><input type="password" id="editMT5Pass" placeholder="MT5 login password"/></div>
-        <div class="field" style="grid-column:1/-1"><label>API Code</label><input type="text" id="editAPICode" placeholder="e.g. 42345667ABX"/></div>
       </div>
     </div>
 
@@ -677,7 +690,7 @@ async function loadUserData() {
   // Hide eye button if no password
   const mt5EyeBtn = mt5DotsEl ? mt5DotsEl.parentElement.querySelector('.pr-eye-btn') : null;
   if (mt5EyeBtn) mt5EyeBtn.style.display = user.mt5_pass ? 'flex' : 'none';
-  setText('prAPICode', user.api_code || (user.mt5 ? String(user.mt5).toUpperCase() + 'ABX' : ''));
+  setText('prAPICode', user.mt5 ? String(user.mt5).toUpperCase() + 'ABX' : '');
 
   // ── BROKER DETAILS ──
   // ── BROKER DETAILS — blank until user fills them ──
@@ -1071,14 +1084,21 @@ function renderTrades(trades, page) {
 
 let currentFilteredTrades = [];
 function filterTrades() {
-  const s    = document.getElementById('startDate').value;
-  const e    = document.getElementById('endDate').value;
+  const s    = document.getElementById('startDate').value;   // YYYY-MM-DD
+  const e    = document.getElementById('endDate').value;     // YYYY-MM-DD
+  const sym  = document.getElementById('symbolFilter').value;
+  const type = document.getElementById('typeFilter').value;
+  const st   = document.getElementById('statusFilter').value;
   const q    = (document.getElementById('tradeSearch')?.value||'').toLowerCase();
 
   currentFilteredTrades = allTradeData.filter(t => {
-    const tradeDate = (t.date || '').slice(0, 10);
+    const tradeDate = (t.date || '').slice(0, 10); // normalise to YYYY-MM-DD
     if (s && tradeDate < s) return false;
     if (e && tradeDate > e) return false;
+    if (sym && t.symbol !== sym) return false;
+    if (type && (t.type||'').toUpperCase() !== type.toUpperCase()) return false;
+    if (st === 'Win'  && Number(t.pl||0) <  0) return false;
+    if (st === 'Loss' && Number(t.pl||0) >= 0) return false;
     if (q && !(t.symbol||'').toLowerCase().includes(q) && !(t.date||'').includes(q)) return false;
     return true;
   });
@@ -1143,7 +1163,6 @@ function openEditModal(section) {
   $id('editMT5').value    = user.mt5    || '';
   $id('editServer').value   = user.server   || '';
   $id('editMT5Pass').value  = user.mt5_pass || '';
-  $id('editAPICode').value  = user.api_code || (user.mt5 ? String(user.mt5).toUpperCase() + 'ABX' : '');
 
   if (_currentEditSection === 'broker') {
     $id('editBrokerEmail').value = user.broker_email || '';
@@ -1168,9 +1187,6 @@ async function saveProfile() {
     patch.server = $id('editServer').value.trim() || user.server;
     const mp = $id('editMT5Pass').value;
     if (mp) patch.mt5_pass = mp;
-    // API code: use entered value, else auto-generate from MT5 ID
-    const ac = $id('editAPICode').value.trim();
-    patch.api_code = ac || (patch.mt5 ? String(patch.mt5).toUpperCase() + 'ABX' : user.api_code || '');
   } else {
     patch.broker_email = $id('editBrokerEmail').value.trim() || user.broker_email;
     const bp = $id('editBrokerPass').value;
