@@ -305,13 +305,18 @@
     <div class="th-filter-bar">
       <div class="th-date-wrap">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <input type="date" id="startDate" class="th-date-input" placeholder="Start" onchange="filterTrades()"/>
+        <input type="date" id="startDate" class="th-date-input" placeholder="Start"/>
         <span class="th-arrow">→</span>
-        <input type="date" id="endDate" class="th-date-input" placeholder="End" onchange="filterTrades()"/>
+        <input type="date" id="endDate" class="th-date-input" placeholder="End"/>
       </div>
+      <button class="th-search-date-btn" onclick="filterTrades()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search
+      </button>
+      <button class="th-search-date-btn clear" onclick="clearDateFilter()">Clear</button>
       <div class="th-search-wrap">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" class="th-search" id="tradeSearch" placeholder="Search" oninput="filterTrades()"/>
+        <input type="text" class="th-search" id="tradeSearch" placeholder="Search symbol…" oninput="filterTrades()"/>
       </div>
       <button class="th-export-btn csv" onclick="exportCSV()">Export CSV</button>
       <button class="th-export-btn pdf" onclick="exportCSV()">Export PDF</button>
@@ -1083,6 +1088,12 @@ function filterTrades() {
     return true;
   });
   renderTrades(currentFilteredTrades, 1);
+}
+
+function clearDateFilter() {
+  document.getElementById('startDate').value = '';
+  document.getElementById('endDate').value   = '';
+  filterTrades();
 }
 
 function exportCSV() {

@@ -1244,3 +1244,21 @@ select option { background:#0f1423; }
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border);
 }
+
+/* ── Date filter search & clear buttons ── */
+.th-search-date-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius-sm);
+  font-family: 'Inter', 'DM Sans', sans-serif;
+  font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: var(--transition);
+  border: 1px solid var(--border-bright);
+  background: var(--primary); color: #000;
+  white-space: nowrap;
+}
+.th-search-date-btn:hover { background: #fff; }
+.th-search-date-btn.clear {
+  background: transparent; color: var(--text-dim);
+  border-color: var(--border);
+}
+.th-search-date-btn.clear:hover { border-color: var(--red); color: var(--red); }
