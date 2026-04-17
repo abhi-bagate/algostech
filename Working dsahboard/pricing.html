@@ -43,7 +43,13 @@
     <span class="section-tag">PLANS & PRICING</span>
     <h1 class="page-title">Choose Your <span class="gradient-text">Trading Plan</span></h1>
     <p class="page-desc">Flexible plans built for every level of trader. Scale up anytime as your strategy grows.</p>
-
+    <div class="billing-toggle">
+      <span class="toggle-label" id="lbl-monthly">Monthly</span>
+      <button class="toggle-btn" id="toggleBtn" onclick="switchBilling()">
+        <span class="toggle-thumb"></span>
+      </button>
+      <span class="toggle-label" id="lbl-yearly">Yearly <span class="save-badge">Save 20%</span></span>
+    </div>
   </div>
 </section>
 
@@ -66,11 +72,14 @@
         <h2 class="plan-name">Alpha</h2>
         <p class="plan-tagline">Perfect for beginners entering algorithmic trading.</p>
         <div class="price-block">
-          <div class="price-row"><span class="price-amt">$300</span><span class="price-period">/year</span></div>
+          <div class="price-row monthly-price"><span class="price-amt">$250</span><span class="price-period">/month</span></div>
+          <div class="price-row yearly-price hidden"><span class="price-amt">$200</span><span class="price-period">/month</span></div>
         </div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li><span class="feat-icon">✓</span><span><span class="feat-key">Yearly</span> :- 300 USD</span></li>
+          <li><span class="feat-icon">✓</span><span><span class="feat-key">Monthly</span> :- 250 USD</span></li>
+          <li><span class="feat-icon">✓</span><span><span class="feat-key">Quarterly</span> :- 650 USD</span></li>
+          <li><span class="feat-icon">✓</span><span><span class="feat-key">Half yearly</span> :- 1,150 USD</span></li>
           <li><span class="feat-icon">✓</span><span>AI signal access</span></li>
           <li><span class="feat-icon">✓</span><span>Basic risk management</span></li>
           <li><span class="feat-icon">✓</span><span>Email support</span></li>
@@ -93,11 +102,14 @@
         <h2 class="plan-name">Quantum</h2>
         <p class="plan-tagline">For active traders who want consistent edge.</p>
         <div class="price-block">
-          <div class="price-row"><span class="price-amt">$550</span><span class="price-period">/year</span></div>
+          <div class="price-row monthly-price"><span class="price-amt">$500</span><span class="price-period">/month</span></div>
+          <div class="price-row yearly-price hidden"><span class="price-amt">$400</span><span class="price-period">/month</span></div>
         </div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li><span class="feat-icon">✓</span><span><span class="feat-key">Yearly</span> :- 550 USD</span></li>
+          <li><span class="feat-icon">✓</span><span><span class="feat-key">Monthly</span> :- 500 USD</span></li>
+          <li><span class="feat-icon">✓</span><span><span class="feat-key">Quarterly</span> :- 1,350 USD</span></li>
+          <li><span class="feat-icon">✓</span><span><span class="feat-key">Half yearly</span> :- 2,400 USD</span></li>
           <li><span class="feat-icon">✓</span><span>Priority AI signals</span></li>
           <li><span class="feat-icon">✓</span><span>Advanced risk management</span></li>
           <li><span class="feat-icon">✓</span><span>24/7 WhatsApp support</span></li>
@@ -119,11 +131,14 @@
         <h2 class="plan-name">Infinity</h2>
         <p class="plan-tagline">For institutional traders who demand maximum power.</p>
         <div class="price-block">
-          <div class="price-row"><span class="price-amt">$1,000</span><span class="price-period">/year</span></div>
+          <div class="price-row monthly-price"><span class="price-amt">$1,000</span><span class="price-period">/month</span></div>
+          <div class="price-row yearly-price hidden"><span class="price-amt">$800</span><span class="price-period">/month</span></div>
         </div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
-          <li><span class="feat-icon">✓</span><span><span class="feat-key">Yearly</span> :- 1,000 USD</span></li>
+          <li><span class="feat-icon">✓</span><span><span class="feat-key">Monthly</span> :- 1,000 USD</span></li>
+          <li><span class="feat-icon">✓</span><span><span class="feat-key">Quarterly</span> :- 2,700 USD</span></li>
+          <li><span class="feat-icon">✓</span><span><span class="feat-key">Half yearly</span> :- 5,000 USD</span></li>
           <li><span class="feat-icon">✓</span><span>All platform signals</span></li>
           <li><span class="feat-icon">✓</span><span>Dedicated account manager</span></li>
           <li><span class="feat-icon">✓</span><span>Private strategy sessions</span></li>
@@ -264,7 +279,7 @@
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-icon">🚀</div>
     <h3 id="modalTitle">Get Started</h3>
-    <p>Proceed to payment for your yearly plan.</p>
+    <p>Choose your billing period to proceed to payment.</p>
     <div class="modal-options" id="modalOptions"></div>
     <button class="btn ghost full" onclick="closeModal()" style="margin-top:12px;">Cancel</button>
   </div>
@@ -284,10 +299,20 @@ document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', 
   document.getElementById('hamburger').classList.remove('active');
 }));
 
+let isYearly = false;
+function switchBilling() {
+  isYearly = !isYearly;
+  document.getElementById('toggleBtn').classList.toggle('on', isYearly);
+  document.getElementById('lbl-monthly').classList.toggle('active', !isYearly);
+  document.getElementById('lbl-yearly').classList.toggle('active', isYearly);
+  document.querySelectorAll('.monthly-price').forEach(el => el.classList.toggle('hidden', isYearly));
+  document.querySelectorAll('.yearly-price').forEach(el => el.classList.toggle('hidden', !isYearly));
+}
+
 const plans = {
-  Alpha:    [{ label: 'Yearly', price: '$300' }],
-  Quantum:  [{ label: 'Yearly', price: '$550' }],
-  Infinity: [{ label: 'Yearly', price: '$1,000' }],
+  Alpha:    [{ label: 'Monthly', price: '$250' }, { label: 'Quarterly', price: '$650' }, { label: 'Half Yearly', price: '$1,150' }],
+  Quantum:  [{ label: 'Monthly', price: '$500' }, { label: 'Quarterly', price: '$1,350' }, { label: 'Half Yearly', price: '$2,400' }],
+  Infinity: [{ label: 'Monthly', price: '$1,000' }, { label: 'Quarterly', price: '$2,700' }, { label: 'Half Yearly', price: '$5,000' }],
 };
 
 function selectPlan(name) {
